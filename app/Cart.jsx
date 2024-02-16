@@ -46,7 +46,7 @@ export default function Cart() {
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
                 >
-                    <Popover.Panel className='absolute inset-x-0 top-16 mt-px bg-white pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-black lg:ring-opacity-5'>
+                    <Popover.Panel className='absolute inset-x-0 top-28 rounded-md ml-10 mr-3 mt-px bg-white pb-6 shadow-lg sm:px-2 lg:left-auto lg:right-0 lg:top-full lg:-mr-1.5 lg:mt-3 lg:w-80 lg:rounded-lg lg:ring-1 lg:ring-black lg:ring-opacity-5'>
                         <h2 className='sr-only'>Shopping Cart</h2>
 
                         <form className='max-w-2xl px-4 mx-auto'>

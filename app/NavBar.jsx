@@ -86,7 +86,7 @@ export default function NavBar() {
                             leaveFrom='translate-x-0'
                             leaveTo='-translate-x-full'
                         >
-                            <Dialog.Panel className='relative flex flex-col w-full max-w-xs pb-12 overflow-y-auto bg-white shadow-xl'>
+                            <Dialog.Panel className='relative flex flex-col w-full max-w-xs pb-12 overflow-y-auto bg-[#F4E8D8] shadow-xl'>
                                 <div className='flex px-4 pt-5 pb-2'>
                                     <button
                                         type='button'
@@ -104,7 +104,7 @@ export default function NavBar() {
                                 {/* Links */}
                                 <Tab.Group
                                     as='div'
-                                    className='mt-2'
+                                    className='mt-2 bg-[#F4E8D8]'
                                 >
                                     <div className='border-b border-gray-200'>
                                         <Tab.List className='flex px-4 -mb-px space-x-8'>Tienda</Tab.List>
@@ -120,7 +120,7 @@ export default function NavBar() {
                                                         <div>
                                                             <p
                                                                 id={`mobile-featured-heading-${categoryIdx}`}
-                                                                className='font-medium text-gray-900 hover:border-b hover:w-20 hover:border-[#998779]'
+                                                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                                             >
                                                                 Aros
                                                             </p>
@@ -136,7 +136,7 @@ export default function NavBar() {
                                                                     >
                                                                         <a
                                                                             href={item.href}
-                                                                            className='text-gray-500'
+                                                                            className='text-[#998779] font-medium'
                                                                         >
                                                                             {item.name}
                                                                         </a>
@@ -147,7 +147,7 @@ export default function NavBar() {
                                                         <div>
                                                             <p
                                                                 id='mobile-categories-heading'
-                                                                className='font-medium text-gray-900 hover:border-b hover:w-20 hover:border-[#998779]'
+                                                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                                             >
                                                                 Pulseras
                                                             </p>
@@ -157,7 +157,7 @@ export default function NavBar() {
                                                         <div>
                                                             <p
                                                                 id='mobile-collection-heading'
-                                                                className='font-medium text-gray-900 hover:border-b hover:w-20 hover:border-[#998779]'
+                                                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                                             >
                                                                 Dijes
                                                             </p>
@@ -166,7 +166,7 @@ export default function NavBar() {
                                                         <div>
                                                             <p
                                                                 id='mobile-brand-heading'
-                                                                className='font-medium text-gray-900 hover:border-b hover:w-20 hover:border-[#998779]'
+                                                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                                             >
                                                                 Cadenas
                                                             </p>
@@ -174,7 +174,7 @@ export default function NavBar() {
                                                         <div>
                                                             <p
                                                                 id='mobile-brand-heading'
-                                                                className='font-medium text-gray-900 hover:border-b hover:w-20 hover:border-[#998779]'
+                                                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                                             >
                                                                 <a href='/productos'>Ver Todos</a>
                                                             </p>

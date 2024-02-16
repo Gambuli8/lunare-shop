@@ -431,11 +431,14 @@ export default function Products() {
                                 key={product.id}
                                 className='relative p-4 border-b border-r border-gray-200 group sm:p-6'
                             >
-                                <div className='overflow-hidden bg-gray-200 rounded-lg aspect-h-1 aspect-w-1 group-hover:opacity-75'>
+                                <div className='flex items-end justify-center overflow-hidden bg-gray-200 rounded-lg aspect-h-1 aspect-w-1 '>
+                                    <button className='absolute z-20 mb-5'>
+                                        <a href='/productos/1'>ver producto</a>
+                                    </button>
                                     <img
                                         src={product.imageSrc}
                                         alt={product.imageAlt}
-                                        className='object-cover object-center w-full h-full'
+                                        className='z-10 object-cover object-center w-full h-full group-hover:opacity-75'
                                     />
                                 </div>
                                 <div className='pt-10 pb-4 text-center'>
@@ -449,17 +452,7 @@ export default function Products() {
                                         </a>
                                     </h3>
                                     <div className='flex flex-col items-center mt-3'>
-                                        <p className='sr-only'>{product.rating} out of 5 stars</p>
-                                        <div className='flex items-center'>
-                                            {[0, 1, 2, 3, 4].map(rating => (
-                                                <StarIcon
-                                                    key={rating}
-                                                    className={classNames(product.rating > rating ? 'text-yellow-400' : 'text-gray-200', 'h-5 w-5 flex-shrink-0')}
-                                                    aria-hidden='true'
-                                                />
-                                            ))}
-                                        </div>
-                                        <p className='mt-1 text-sm text-gray-500'>{product.reviewCount} reviews</p>
+                                        <p className='mt-1 text-sm text-gray-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                                     </div>
                                     <p className='mt-4 text-base font-medium text-gray-900'>{product.price}</p>
                                 </div>

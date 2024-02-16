@@ -2,7 +2,7 @@
 
 import NavBar from './NavBar'
 import Footer from './footer'
-import { Raleway, Roboto } from 'next/font/google'
+import { Raleway, Italiana } from 'next/font/google'
 
 const trendingProducts = [
     {
@@ -44,70 +44,13 @@ const collections = [
         href: '#'
     }
 ]
-const testimonials = [
-    {
-        id: 1,
-        quote: 'My order arrived super quickly. The product is even better than I hoped it would be. Very happy customer over here!',
-        attribution: 'Sarah Peters, New Orleans'
-    },
-    {
-        id: 2,
-        quote: 'I had to return a purchase that didn’t fit. The whole process was so simple that I ended up ordering two new items!',
-        attribution: 'Kelly McPherson, Chicago'
-    },
-    {
-        id: 3,
-        quote: 'Now that I’m on holiday for the summer, I’ll probably order a few more shirts. It’s just so convenient, and I know the quality will always be there.',
-        attribution: 'Chris Paul, Phoenix'
-    }
-]
-const footerNavigation = {
-    products: [
-        { name: 'Bags', href: '#' },
-        { name: 'Tees', href: '#' },
-        { name: 'Objects', href: '#' },
-        { name: 'Home Goods', href: '#' },
-        { name: 'Accessories', href: '#' }
-    ],
-    customerService: [
-        { name: 'Contact', href: '#' },
-        { name: 'Shipping', href: '#' },
-        { name: 'Returns', href: '#' },
-        { name: 'Warranty', href: '#' },
-        { name: 'Secure Payments', href: '#' },
-        { name: 'FAQ', href: '#' },
-        { name: 'Find a store', href: '#' }
-    ],
-    company: [
-        { name: 'Who we are', href: '#' },
-        { name: 'Sustainability', href: '#' },
-        { name: 'Press', href: '#' },
-        { name: 'Careers', href: '#' },
-        { name: 'Terms & Conditions', href: '#' },
-        { name: 'Privacy', href: '#' }
-    ],
-    legal: [
-        { name: 'Terms of Service', href: '#' },
-        { name: 'Return Policy', href: '#' },
-        { name: 'Privacy Policy', href: '#' },
-        { name: 'Shipping Policy', href: '#' }
-    ],
-    bottomLinks: [
-        { name: 'Accessibility', href: '#' },
-        { name: 'Privacy', href: '#' },
-        { name: 'Terms', href: '#' }
-    ]
-}
 
 const raleway = Raleway({ subsets: ['latin'] })
-const roboto = Roboto({ subsets: ['latin'], weight: '500' })
+const italiano = Italiana({ subsets: ['latin'], weight: '400' })
 
 export default function Home() {
     return (
         <div className='bg-white'>
-            {/* Header */}
-            {/* <NavBar /> */}
-
             <main>
                 {/* Hero */}
                 <div className='flex flex-col border-b border-gray-200 lg:border-0'>
@@ -116,15 +59,15 @@ export default function Home() {
                             aria-hidden='true'
                             className='absolute hidden w-1/2 h-full bg-[#F4E8D8] lg:block'
                         />
-                        <div className='relative bg-gray-100 lg:bg-transparent'>
+                        <div className='relative bg-[#F4E8D8] lg:bg-transparent'>
                             <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:grid lg:grid-cols-2 lg:px-8'>
                                 <div className='max-w-2xl py-24 mx-auto lg:max-w-none lg:py-64'>
                                     <div className='lg:pr-16'>
-                                        <h1 className={`text-4xl ${roboto.className} font-bold tracking-tight text-gray-900 sm:text-5xl xl:text-6xl`}>Lunare Jewelry</h1>
-                                        <p className={` ${raleway.className} mt-4 text-lg text-gray-600`}>Cada joya, una expresión de tu estilo.</p>
+                                        <h1 className={`text-4xl ${italiano.className} tracking-tight text-gray-900 sm:text-5xl xl:text-7xl`}>Lunare Jewelry</h1>
+                                        <p className={` ${raleway.className} mt-2 md:mt-4 text-sm md:text-lg text-gray-600`}>Cada joya, una expresión de tu estilo.</p>
                                         <div className='mt-6'>
                                             <a
-                                                href='#'
+                                                href='/productos'
                                                 className='inline-block px-8 py-3 font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#938377]'
                                             >
                                                 Comprar
@@ -284,13 +227,7 @@ export default function Home() {
                             >
                                 25% off pagando en efectivo
                             </h2>
-                            <p className='max-w-xl mx-auto mt-4 text-xl text-gray-600'>Most of our products are limited releases that won t come back. Get your favorite items while they re in stock.</p>
-                            <a
-                                href='#'
-                                className='inline-block w-full px-8 py-3 mt-6 font-medium text-white bg-gray-900 border border-transparent rounded-md hover:bg-gray-800 sm:w-auto'
-                            >
-                                Get access to our one-time sale
-                            </a>
+                            <p className='max-w-xl mx-auto my-4 text-xl text-gray-600'>Most of our products are limited releases that won t come back. Get your favorite items while they re in stock.</p>
                         </div>
                     </section>
                 </div>
