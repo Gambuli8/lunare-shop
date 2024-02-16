@@ -6,8 +6,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
     title: 'Lunare Jewelry - shop',
-    description: 'Tienda online de venta de joyerias',
-    image: '/logo-redondo.png',
+    description: 'Tienda online de venta de joyas en Córdoba',
+    image: '/app/favicon.ico',
     url: 'https://lunare-shop.vercel.app',
     type: 'website',
     instagram: '@lunareJewelry',
@@ -19,6 +19,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang='es'>
+            <head>
+                <link
+                    rel='icon'
+                    href='/app/favicon.ico'
+                    type='image/x-icon'
+                    sizes='16x16'
+                />
+            </head>
             <body className={inter.className}>
                 <NavBar />
                 {children}

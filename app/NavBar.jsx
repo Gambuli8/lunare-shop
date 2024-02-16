@@ -362,19 +362,17 @@ export default function NavBar() {
                                         {/* Search */}
                                         <form
                                             action=''
-                                            class='relative mx-auto flex'
+                                            className='relative '
                                         >
                                             <input
                                                 type='search'
-                                                class='text-xs peer cursor-pointer relative z-10 h-8 w-10 rounded-lg bg-transparent pr-6 outline-none focus:rounded-r-none focus:w-full focus:cursor-text focus:border-taupeGray focus:px-3'
+                                                className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
                                                 placeholder='Buscar...'
                                             />
-                                            <button class='absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 bg-slate-300 peer-focus:relative peer-focus:rounded-l-none'>
-                                                <MagnifyingGlassIcon
-                                                    className='w-6 h-6 text-[#998779]'
-                                                    aria-hidden='true'
-                                                />
-                                            </button>
+                                            <MagnifyingGlassIcon
+                                                className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:border-r peer-focus:stroke-[#998779]'
+                                                aria-hidden='true'
+                                            />
                                         </form>
                                     </div>
 
@@ -402,7 +400,7 @@ export default function NavBar() {
                                                         <input
                                                             type='search'
                                                             className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
-                                                            placeholder='Typing...'
+                                                            placeholder='Buscar...'
                                                         />
                                                         <MagnifyingGlassIcon
                                                             className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:stroke-[#998779]'
