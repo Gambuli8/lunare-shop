@@ -310,11 +310,11 @@ export default function NavBar() {
                                                                     leaveFrom='opacity-100 translate-y-0'
                                                                     leaveTo='opacity-0 translate-y-1'
                                                                 >
-                                                                    <Popover.Panel className='absolute z-10 p-4 ml-56 -mt-2 bg-white shadow-lg -left-8 top-full w-52 rounded-3xl ring-1 ring-gray-900/5'>
+                                                                    <Popover.Panel className='absolute z-10 p-4 ml-56 -mt-2 bg-[#F4E8D8] shadow-lg -left-8 top-full w-52 rounded-3xl ring-1 ring-gray-900/5'>
                                                                         {productos.map(item => (
                                                                             <div
                                                                                 key={item.name}
-                                                                                className='relative p-4 rounded-lg hover:bg-gray-50'
+                                                                                className='relative p-4 rounded-lg hover:bg-[#998779]'
                                                                             >
                                                                                 <a
                                                                                     href={item.href}
@@ -360,16 +360,22 @@ export default function NavBar() {
                                         </button>
 
                                         {/* Search */}
-                                        <a
-                                            href='#'
-                                            className='p-2 ml-2 text-gray-400 hover:text-gray-500'
+                                        <form
+                                            action=''
+                                            class='relative mx-auto flex'
                                         >
-                                            <span className='sr-only'>Search</span>
-                                            <MagnifyingGlassIcon
-                                                className='w-6 h-6 text-[#998779]'
-                                                aria-hidden='true'
+                                            <input
+                                                type='search'
+                                                class='text-xs peer cursor-pointer relative z-10 h-8 w-10 rounded-lg bg-transparent pr-6 outline-none focus:rounded-r-none focus:w-full focus:cursor-text focus:border-taupeGray focus:px-3'
+                                                placeholder='Buscar...'
                                             />
-                                        </a>
+                                            <button class='absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 bg-slate-300 peer-focus:relative peer-focus:rounded-l-none'>
+                                                <MagnifyingGlassIcon
+                                                    className='w-6 h-6 text-[#998779]'
+                                                    aria-hidden='true'
+                                                />
+                                            </button>
+                                        </form>
                                     </div>
 
                                     {/* Logo (lg-) */}
@@ -387,18 +393,22 @@ export default function NavBar() {
 
                                     <div className='flex items-center justify-end flex-1'>
                                         <div className='flex items-center lg:ml-8'>
-                                            <div className='flex space-x-8'>
+                                            <div className='flex items-center space-x-8'>
                                                 <div className='hidden lg:flex'>
-                                                    <a
-                                                        href='#'
-                                                        className='p-2 -m-2 text-gray-400 hover:text-gray-500'
+                                                    <form
+                                                        action=''
+                                                        className='relative mx-auto '
                                                     >
-                                                        <span className='sr-only'>Buscar</span>
+                                                        <input
+                                                            type='search'
+                                                            className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
+                                                            placeholder='Typing...'
+                                                        />
                                                         <MagnifyingGlassIcon
-                                                            className='w-6 h-6 text-[#998779]'
+                                                            className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:stroke-[#998779]'
                                                             aria-hidden='true'
                                                         />
-                                                    </a>
+                                                    </form>
                                                 </div>
 
                                                 <div className='flex'>
