@@ -432,9 +432,9 @@ export default function Products() {
                                 className='relative p-4 border-b border-r border-gray-200 group sm:p-6'
                             >
                                 <div className='flex items-end justify-center overflow-hidden bg-gray-200 rounded-lg aspect-h-1 aspect-w-1 '>
-                                    <button className='absolute z-20 mb-5'>
+                                    {/* <button className='absolute z-20 mb-5'>
                                         <a href='/productos/1'>ver producto</a>
-                                    </button>
+                                    </button> */}
                                     <img
                                         src={product.imageSrc}
                                         alt={product.imageAlt}
