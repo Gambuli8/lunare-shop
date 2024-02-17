@@ -1,40 +1,9 @@
 'use client'
-
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition, Dialog, Popover } from '@headlessui/react'
 import { ChevronDownIcon, FunnelIcon, StarIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import Productos from '../api'
 
-// const filtersPrice = {
-//     price: [
-//         { value: '0', label: '$0 - $25', checked: false },
-//         { value: '25', label: '$25 - $50', checked: false },
-//         { value: '50', label: '$50 - $75', checked: false },
-//         { value: '75', label: '$75+', checked: false }
-//     ],
-//     color: [
-//         { value: 'white', label: 'White', checked: false },
-//         { value: 'beige', label: 'Beige', checked: false },
-//         { value: 'blue', label: 'Blue', checked: true },
-//         { value: 'brown', label: 'Brown', checked: false },
-//         { value: 'green', label: 'Green', checked: false },
-//         { value: 'purple', label: 'Purple', checked: false }
-//     ],
-//     size: [
-//         { value: 'xs', label: 'XS', checked: false },
-//         { value: 's', label: 'S', checked: true },
-//         { value: 'm', label: 'M', checked: false },
-//         { value: 'l', label: 'L', checked: false },
-//         { value: 'xl', label: 'XL', checked: false },
-//         { value: '2xl', label: '2XL', checked: false }
-//     ],
-//     category: [
-//         { value: 'all-new-arrivals', label: 'All New Arrivals', checked: false },
-//         { value: 'tees', label: 'Tees', checked: false },
-//         { value: 'objects', label: 'Objects', checked: false },
-//         { value: 'sweatshirts', label: 'Sweatshirts', checked: false },
-//         { value: 'pants-and-shorts', label: 'Pants & Shorts', checked: false }
-//     ]
-// }
 const filters = [
     {
         id: 'category',
@@ -79,49 +48,6 @@ const sortOptions = [
     { name: 'Price: Menor a Mayor', href: '#', current: false },
     { name: 'Price: Mayor a Menor', href: '#', current: false }
 ]
-const products = [
-    {
-        id: 1,
-        name: 'Organize Basic Set (Walnut)',
-        price: '$149',
-        rating: 5,
-        reviewCount: 38,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-01.jpg',
-        imageAlt: 'TODO',
-        href: '#'
-    },
-    {
-        id: 2,
-        name: 'Organize Pen Holder',
-        price: '$15',
-        rating: 5,
-        reviewCount: 18,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-02.jpg',
-        imageAlt: 'TODO',
-        href: '#'
-    },
-    {
-        id: 3,
-        name: 'Organize Sticky Note Holder',
-        price: '$15',
-        rating: 5,
-        reviewCount: 14,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-03.jpg',
-        imageAlt: 'TODO',
-        href: '#'
-    },
-    {
-        id: 4,
-        name: 'Organize Phone Holder',
-        price: '$15',
-        rating: 4,
-        reviewCount: 21,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-04.jpg',
-        imageAlt: 'TODO',
-        href: '#'
-    }
-    // More products...
-]
 const activeFilters = [{ value: 'objects', label: 'Objects' }]
 
 function classNames(...classes) {
@@ -130,8 +56,19 @@ function classNames(...classes) {
 
 export default function Products() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+    const [products, setProducts] = useState([])
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await Productos.getProducts.list()
+            console.log(result)
+            setProducts(result)
+        }
+        fetchData()
+    }, [])
+
     return (
         <div className='bg-white'>
+            {console.log(products)}
             <div>
                 {/* Mobile filter dialog */}
                 <Transition.Root
@@ -241,8 +178,8 @@ export default function Products() {
 
             <main className='pb-24'>
                 <div className='px-4 py-16 text-center sm:px-6 lg:px-8'>
-                    <h1 className='text-4xl font-bold tracking-tight text-gray-900'>Workspace</h1>
-                    <p className='max-w-xl mx-auto mt-4 text-base text-gray-500'>The secret to a tidy desk? Don t get rid of anything, just put it in really really nice looking containers.</p>
+                    <h1 className='text-4xl font-bold tracking-tight text-gray-900'>Tienda</h1>
+                    <p className='max-w-xl mx-auto mt-4 text-base text-gray-500'>¡Descubre la elegancia en cada detalle y encuentra la pieza perfecta que refleje tu estilo único!</p>
                 </div>
 
                 {/* Filters */}
@@ -426,9 +363,9 @@ export default function Products() {
                     </h2>
 
                     <div className='grid grid-cols-2 -mx-px border-l border-gray-200 sm:mx-0 md:grid-cols-3 lg:grid-cols-4'>
-                        {products.map(product => (
+                        {products.map(Item => (
                             <div
-                                key={product.id}
+                                key={Item.id}
                                 className='relative p-4 border-b border-r border-gray-200 group sm:p-6'
                             >
                                 <div className='flex items-end justify-center overflow-hidden bg-gray-200 rounded-lg aspect-h-1 aspect-w-1 '>
@@ -436,25 +373,25 @@ export default function Products() {
                                         <a href='/productos/1'>ver producto</a>
                                     </button> */}
                                     <img
-                                        src={product.imageSrc}
-                                        alt={product.imageAlt}
+                                        src={Item.image}
+                                        alt={Item.image}
                                         className='z-10 object-cover object-center w-full h-full group-hover:opacity-75'
                                     />
                                 </div>
                                 <div className='pt-10 pb-4 text-center'>
                                     <h3 className='text-sm font-medium text-gray-900'>
-                                        <a href={product.href}>
+                                        <a href='#'>
                                             <span
                                                 aria-hidden='true'
                                                 className='absolute inset-0'
                                             />
-                                            {product.name}
+                                            {Item.name}
                                         </a>
                                     </h3>
                                     <div className='flex flex-col items-center mt-3'>
-                                        <p className='mt-1 text-sm text-gray-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        <p className='mt-1 text-sm text-gray-500'>{Item.description}</p>
                                     </div>
-                                    <p className='mt-4 text-base font-medium text-gray-900'>{product.price}</p>
+                                    <p className='mt-4 text-base font-medium text-gray-900'>${Item.price_par}</p>
                                 </div>
                             </div>
                         ))}

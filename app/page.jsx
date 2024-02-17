@@ -1,7 +1,6 @@
 'use client'
 
-import NavBar from './NavBar'
-import Footer from './footer'
+import Footer from './components/footer'
 import { Raleway, Italiana } from 'next/font/google'
 
 const trendingProducts = [

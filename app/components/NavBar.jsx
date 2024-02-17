@@ -249,7 +249,7 @@ export default function NavBar() {
                                     aria-hidden='true'
                                 />
                                 <a
-                                    href='#'
+                                    href='/inicio-sesion'
                                     className='text-sm font-medium text-white hover:text-gray-100'
                                 >
                                     Iniciar sesion
