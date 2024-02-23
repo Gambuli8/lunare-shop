@@ -1,51 +1,45 @@
 'use client'
 
-// import { useParams } from 'next/navigation'
-
-// export default function Page() {
-//   const { id } = useParams()
-//   return <div>Product {id}</div>
-// }
-
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
 import { Dialog, RadioGroup, Transition } from '@headlessui/react'
 import { ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { CheckIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
-
-const product = {
-  name: 'Everyday Ruck Snack',
-  price: '$220',
-  rating: 3.9,
-  href: '#',
-  imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-quick-preview-03-detail.jpg',
-  imageAlt: 'Interior of light green canvas bag with padded laptop sleeve and internal organization pouch.',
-  sizes: [
-    { name: '1', description: 'Unidad' },
-    { name: '2', description: 'Par' }
-  ]
-}
+import { QuestionMarkCircleIcon, SparklesIcon } from '@heroicons/react/20/solid'
+import Productos from '../../api'
+import { Italiana } from 'next/font/google'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+const productStock = [
+  { cantidad: 1, description: 'Unidad' },
+  { cantidad: 2, description: 'Par' }
+]
+
+const Italiano = Italiana({ subsets: ['latin'], weight: '400' })
+
+export default function ProductId() {
   const [open, setOpen] = useState(true)
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const [selectedSize, setSelectedSize] = useState(productStock[0])
+  const { id } = useParams()
+  const [products, setProducts] = useState([])
+
+  // const productId = products.find(product => product.id === id)
+  // console.log(productId)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await Productos.getProduct.list(id)
+        console.log(result)
+        setProducts(result)
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+    fetchData()
+  }, [id])
 
   return (
     <Transition.Root
@@ -94,18 +88,18 @@ export default function Example() {
                     />
                   </button>
 
-                  <div className='grid items-start w-full grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8'>
+                  <div className='grid items-start w-full grid-cols-1 rounded-lg gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8'>
                     <div className='sm:col-span-4 lg:col-span-5'>
                       <div className='overflow-hidden bg-gray-100 rounded-lg aspect-h-1 aspect-w-1'>
                         <img
-                          src='https://res.cloudinary.com/ds7hhoq17/image/upload/v1708382593/Lunare/839_vfj3uo.jpg'
-                          alt={product.imageAlt}
+                          src={products.image}
+                          alt={products.name}
                           className='object-cover object-center'
                         />
                       </div>
                     </div>
                     <div className='sm:col-span-8 lg:col-span-7'>
-                      <h2 className='text-2xl font-bold text-gray-900 sm:pr-12'>teddy silver</h2>
+                      <h2 className={` ${Italiano.className} uppercase text-2xl font-extrabold text-gray-900 sm:pr-12`}>{products.name}</h2>
 
                       <section
                         aria-labelledby='information-heading'
@@ -119,25 +113,25 @@ export default function Example() {
                         </h3>
 
                         <div className='flex items-center'>
-                          <p className='text-lg text-gray-900 sm:text-xl'>{product.price}</p>
+                          <p className='text-lg text-gray-900 sm:text-xl'>{productStock[0].cantidad !== selectedSize ? `${products.price_par}` : productStock[0].cantidad === selectedSize ? `${products.price_ind}` : ''}</p>
 
                           <div className='pl-4 ml-4 border-l border-gray-300'>
                             <p className='flex items-center gap-1.5 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased'>
-                              {/* {Item.material === 'Plata' ? ( */}
-                              <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>Plata</span>
-                              {/* ) : (
-                                <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
-                              )} */}
+                              {products.material === 'Plata' ? (
+                                <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{products.material}</span>
+                              ) : (
+                                <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{products.material}</span>
+                              )}
                             </p>
                           </div>
                         </div>
 
                         <div className='flex items-center mt-6'>
-                          <CheckIcon
-                            className='flex-shrink-0 w-5 h-5 text-green-500'
+                          <SparklesIcon
+                            className='flex-shrink-0 w-7 h-7 text-[#998779]'
                             aria-hidden='true'
                           />
-                          <p className='ml-2 font-medium text-gray-500'>Superficie decorada con 6 circonitas. Diseño básico y muy combinable. Diametro de 10MM.</p>
+                          <p className='ml-2 font-medium text-gray-500'>{products.description}</p>
                         </div>
                       </section>
 
@@ -154,19 +148,19 @@ export default function Example() {
 
                         <form>
                           <div className='sm:flex sm:justify-between'>
-                            {/* Size selector */}
+                            {/* Stock selector */}
                             <RadioGroup
                               value={selectedSize}
                               onChange={setSelectedSize}
                             >
                               <RadioGroup.Label className='block text-sm font-medium text-gray-700'>Cantidad</RadioGroup.Label>
                               <div className='grid grid-cols-1 gap-4 mt-1 sm:grid-cols-2'>
-                                {product.sizes.map(size => (
+                                {productStock.map(stock => (
                                   <RadioGroup.Option
                                     as='div'
-                                    key={size.name}
-                                    value={size}
-                                    className={({ active }) => classNames(active ? 'ring-2 ring-indigo-500' : '', 'relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none')}
+                                    key={stock.cantidad}
+                                    value={stock.cantidad}
+                                    className={({ active }) => classNames(active ? 'ring-2 ring-[#998779]' : '', 'relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none')}
                                   >
                                     {({ active, checked }) => (
                                       <>
@@ -174,16 +168,16 @@ export default function Example() {
                                           as='p'
                                           className='text-base font-medium text-gray-900'
                                         >
-                                          {size.name}
+                                          {stock.cantidad}
                                         </RadioGroup.Label>
                                         <RadioGroup.Description
                                           as='p'
                                           className='mt-1 text-sm text-gray-500'
                                         >
-                                          {size.description}
+                                          {stock.description}
                                         </RadioGroup.Description>
                                         <div
-                                          className={classNames(active ? 'border' : 'border-2', checked ? 'border-indigo-500' : 'border-transparent', 'pointer-events-none absolute -inset-px rounded-lg')}
+                                          className={classNames(active ? 'border' : 'border-2', checked ? 'border-[#998779]' : 'border-transparent', 'pointer-events-none absolute -inset-px rounded-lg')}
                                           aria-hidden='true'
                                         />
                                       </>
@@ -208,22 +202,10 @@ export default function Example() {
                           <div className='mt-6'>
                             <button
                               type='submit'
-                              className='flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
+                              className='flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
                             >
-                              Add to bag
+                              Agregar al carrito
                             </button>
-                          </div>
-                          <div className='mt-6 text-center'>
-                            <a
-                              href='#'
-                              className='inline-flex text-base font-medium group'
-                            >
-                              <ShieldCheckIcon
-                                className='flex-shrink-0 w-6 h-6 mr-2 text-gray-400 group-hover:text-gray-500'
-                                aria-hidden='true'
-                              />
-                              <span className='text-gray-500 group-hover:text-gray-700'>Lifetime Guarantee</span>
-                            </a>
                           </div>
                         </form>
                       </section>

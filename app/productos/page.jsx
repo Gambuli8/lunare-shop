@@ -1,7 +1,7 @@
 'use client'
 import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition, Dialog, Popover, Listbox } from '@headlessui/react'
-import { ChevronDownIcon, FunnelIcon, StarIcon, XMarkIcon, CheckIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, FunnelIcon, StarIcon, XMarkIcon, CheckIcon, ArrowRightIcon } from '@heroicons/react/20/solid'
 import Productos from '../api'
 import { Raleway } from 'next/font/google'
 
@@ -65,6 +65,7 @@ function classNames(...classes) {
 export default function Products() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [products, setProducts] = useState([])
+  const [id, setId] = useState('')
   const [selectedCount, setSelectedCount] = useState(CantidadOptions[0])
 
   useEffect(() => {
@@ -77,9 +78,8 @@ export default function Products() {
   }, [])
 
   return (
-    <div className='bg-white'>
-      {console.log(products)}
-      <div>
+    <div className='bg-[#F4E8D8]'>
+      <div className='bg-[#F4E8D8]'>
         {/* Mobile filter dialog */}
         <Transition.Root
           show={mobileFiltersOpen}
@@ -201,7 +201,7 @@ export default function Products() {
             Filters
           </h2>
 
-          <div className='pb-4 bg-white border-b border-gray-200'>
+          <div className='pb-4 bg-[#F4E8D8] border-b border-gray-200'>
             <div className='flex items-center justify-between px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
               <Menu
                 as='div'
@@ -263,7 +263,7 @@ export default function Products() {
                       >
                         <Popover.Button className='inline-flex justify-center text-sm font-medium text-gray-700 group hover:text-gray-900'>
                           <span>{section.name}</span>
-                          {sectionIdx === 0 ? <span className='ml-1.5 rounded bg-gray-200 px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>1</span> : null}
+                          {sectionIdx === 0 ? <span className='ml-1.5 rounded bg-white px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>1</span> : null}
                           <ChevronDownIcon
                             className='flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500'
                             aria-hidden='true'
@@ -314,7 +314,7 @@ export default function Products() {
           </div>
 
           {/* Active filters */}
-          <div className='bg-gray-100'>
+          <div className='mb-10 bg-gray-100'>
             <div className='px-4 py-3 mx-auto max-w-7xl sm:flex sm:items-center sm:px-6 lg:px-8'>
               <h3 className='text-sm font-medium text-gray-500'>
                 Filters
@@ -372,23 +372,23 @@ export default function Products() {
             Products
           </h2>
 
-          <div className='grid grid-cols-2 gap-3 -mx-px border-l border-gray-200 sm:mx-0 md:grid-cols-3 md:gap-5 lg:grid-cols-3 md:px-10'>
+          <div className='grid grid-cols-2 gap-3 px-3 -mx-px border-l border-gray-200 sm:mx-0 md:grid-cols-2 md:gap-5 lg:grid-cols-3 md:px-10'>
             {products.map(Item => (
               <div
-                key={Item.name}
-                className='relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border  text-gray-700 shadow-lg'
+                key={Item.id}
+                className='relative flex w-full max-w-[20rem] md:max-h-[32rem] h-full flex-col rounded-xl bg-white bg-clip-border  text-gray-700 shadow-lg'
               >
-                <div className='relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40'>
+                <div className='relative mx-4 mt-4 overflow-hidden text-white shadow-lg md:max-h-60 max-h-40 rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40'>
                   <img
                     src={Item.image}
                     alt={Item.name}
-                    className='object-cover w-full h-80'
+                    className='object-contain w-full h-full'
                   />
                   <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/30'></div>
                 </div>
-                <div className='p-6'>
-                  <div className='flex items-center justify-between mb-3'>
-                    <h5 className={` ${raleway.className} uppercase block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
+                <div className='p-3 px-6'>
+                  <div className='flex items-center justify-between mb-1'>
+                    <h5 className={` ${raleway.className} uppercase block font-sans md:text-lg text-sm  antialiased font-medium leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
                     <p className='flex items-center gap-1.5 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased'>
                       {Item.material === 'Plata' ? (
                         <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
@@ -397,21 +397,43 @@ export default function Products() {
                       )}
                     </p>
                   </div>
-                  <div className='inline-flex flex-wrap items-center gap-3 mt-8 group'>
-                    <div>
-                      <span className='font-sans text-xl font-bold leading-relaxed text-gray-900'>{Item.price_ind}</span>
-                      {/* <span className='font-sans text-base font-normal leading-relaxed text-gray-500 line-through'>{Item.price_par}</span> */}
+                  <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                    <div className='flex items-center w-full'>
+                      <span className='font-sans text-base font-bold leading-relaxed text-gray-900 md:text-xl'>{Item.price_ind}</span>
+                    </div>
+                    <div className='flex items-center justify-end rounded-full border-2 border-transparent hover:border-[#998779] transition-all hover:scale-110 '>
+                      <a
+                        href={`/productos/${Item.id}`}
+                        className=''
+                      >
+                        {/* <button
+                      className='block w-full select-none rounded-lg bg-[#998779] py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
+                      type='button'
+                      >
+                      detalles
+                    </button> */}
+                        <ArrowRightIcon
+                          className='w-6 h-6 text-gray-900'
+                          aria-hidden='true'
+                        />
+                      </a>
                     </div>
                   </div>
                 </div>
-                <div className='p-6 pt-3'>
-                  <button
-                    className='block w-full select-none rounded-lg bg-[#998779] py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
-                    type='button'
-                  >
-                    <a href={`/productos/${Item.id}`}>detalles</a>
-                  </button>
-                </div>
+                {/* <div className='p-6'>
+                  <a href={`/productos/${Item.id}`}>
+                    <button
+                      className='block w-full select-none rounded-lg bg-[#998779] py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
+                      type='button'
+                    >
+                      detalles
+                    </button>
+                    <ArrowRightIcon
+                      className='w-6 h-6 text-gray-900'
+                      aria-hidden='true'
+                    />
+                  </a>
+                </div> */}
               </div>
             ))}
           </div>
