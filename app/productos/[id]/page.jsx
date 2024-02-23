@@ -25,9 +25,6 @@ export default function ProductId() {
   const { id } = useParams()
   const [products, setProducts] = useState([])
 
-  // const productId = products.find(product => product.id === id)
-  // console.log(productId)
-
   useEffect(() => {
     const fetchData = async () => {
       try {

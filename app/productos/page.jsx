@@ -315,7 +315,7 @@ export default function Products() {
 
           {/* Active filters */}
           <div className='mb-10 bg-gray-100'>
-            <div className='px-4 py-3 mx-auto max-w-7xl sm:flex sm:items-center sm:px-6 lg:px-8'>
+            <div className='flex items-center gap-5 px-6 py-3 mx-auto max-w-7xl lg:px-8'>
               <h3 className='text-sm font-medium text-gray-500'>
                 Filters
                 <span className='sr-only'>, active</span>
@@ -323,10 +323,10 @@ export default function Products() {
 
               <div
                 aria-hidden='true'
-                className='hidden w-px h-5 bg-gray-300 sm:ml-4 sm:block'
+                className='block w-px h-5 bg-gray-300 sm:ml-4 sm:block'
               />
 
-              <div className='mt-2 sm:ml-4 sm:mt-0'>
+              <div className='mt-0 sm:ml-4'>
                 <div className='flex flex-wrap items-center -m-1'>
                   {activeFilters.map(activeFilter => (
                     <span
