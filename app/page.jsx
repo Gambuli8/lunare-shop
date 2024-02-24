@@ -1,43 +1,36 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Footer from './components/footer'
 import { Raleway, Italiana } from 'next/font/google'
+import { ProductosDestacados } from './api'
+import { ArrowRightIcon } from '@heroicons/react/20/solid'
 
-const trendingProducts = [
-  {
-    id: 1,
-    name: 'Machined Pen',
-    color: 'Black',
-    price: '$35',
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-02-product-01.jpg',
-    imageAlt: 'Black machined steel pen with hexagonal grip and small white logo at top.',
-    availableColors: [
-      { name: 'Black', colorBg: '#111827' },
-      { name: 'Brass', colorBg: '#FDE68A' },
-      { name: 'Chrome', colorBg: '#E5E7EB' }
-    ]
-  }
-  // More products...
-]
 const collections = [
   {
-    name: 'Desk and Office',
-    description: 'Work from home accessories',
+    name: 'Aros',
+    description: 'Aros de plata y oro',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-01.jpg',
     imageAlt: 'Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.',
     href: '#'
   },
   {
-    name: 'Self-Improvement',
-    description: 'Journals and note-taking',
+    name: 'pulseras',
+    description: 'Pulseras de plata',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-02.jpg',
     imageAlt: 'Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.',
     href: '#'
   },
   {
-    name: 'Travel',
-    description: 'Daily commute essentials',
+    name: 'Dijes',
+    description: 'Dijes de plata',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg',
+    imageAlt: 'Collection of four insulated travel bottles on wooden shelf.',
+    href: '#'
+  },
+  {
+    name: 'Cadenas',
+    description: 'Cadenas de plata',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg',
     imageAlt: 'Collection of four insulated travel bottles on wooden shelf.',
     href: '#'
@@ -48,6 +41,18 @@ const raleway = Raleway({ subsets: ['latin'] })
 const italiano = Italiana({ subsets: ['latin'], weight: '400' })
 
 export default function Home() {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const fechProducts = async () => {
+      const products = await ProductosDestacados.getProducts.list()
+      setProducts(products)
+    }
+    fechProducts()
+  }, [])
+
+  console.log(products)
+
   return (
     <div className='bg-white'>
       <main>
@@ -95,58 +100,54 @@ export default function Home() {
             <div className='flex items-center justify-between px-4 sm:px-6 lg:px-0'>
               <h2
                 id='trending-heading'
-                className='text-2xl font-bold tracking-tight text-gray-900'
+                className={` ${raleway.className} uppercase text-2xl font-semibold tracking-tight text-gray-900`}
               >
-                Trending products
+                Productos destacados
               </h2>
             </div>
 
             <div className='relative mt-8'>
-              <div className='relative w-full overflow-x-auto'>
+              <div className='relative w-full'>
                 <ul
                   role='list'
-                  className='inline-flex mx-4 space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0'
+                  className='flex items-center justify-center mx-4 space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:space-x-0'
                 >
-                  {trendingProducts.map(product => (
+                  {products.map(product => (
                     <li
                       key={product.id}
-                      className='inline-flex flex-col w-64 text-center lg:w-auto'
+                      className='inline-flex flex-col w-auto h-auto text-center lg:w-72'
                     >
-                      <div className='relative group'>
+                      <div className='relative px-10 group'>
                         <div className='w-full overflow-hidden bg-gray-200 rounded-md aspect-h-1 aspect-w-1'>
                           <img
-                            src={product.imageSrc}
-                            alt={product.imageAlt}
+                            src={product.image}
+                            alt={product.name}
                             className='object-cover object-center w-full h-full group-hover:opacity-75'
                           />
                         </div>
-                        <div className='mt-6'>
-                          <p className='text-sm text-gray-500'>{product.color}</p>
-                          <h3 className='mt-1 font-semibold text-gray-900'>
+                        <div className='flex flex-col mt-6'>
+                          <h3 className={` ${raleway.className} mt-1 font-normal text-gray-900 uppercase`}>
                             <a href={product.href}>
                               <span className='absolute inset-0' />
                               {product.name}
                             </a>
                           </h3>
-                          <p className='mt-1 text-gray-900'>{product.price}</p>
+                          <div className='flex items-center justify-between w-full gap-3 mt-5'>
+                            <p className='mt-1 text-gray-900'>{product.price_ind}</p>
+                            <div className=' z-20 flex items-center justify-end rounded-full border-2 border-transparent hover:border-[#998779] transition-all hover:scale-110 '>
+                              <a
+                                href={`/productos/${product.id}`}
+                                className=''
+                              >
+                                <ArrowRightIcon
+                                  className='w-6 h-6 text-gray-900'
+                                  aria-hidden='true'
+                                />
+                              </a>
+                            </div>
+                          </div>
                         </div>
                       </div>
-
-                      <h4 className='sr-only'>Available colors</h4>
-                      <ul
-                        role='list'
-                        className='flex items-center justify-center pt-6 mt-auto space-x-3'
-                      >
-                        {product.availableColors.map(color => (
-                          <li
-                            key={color.name}
-                            className='w-4 h-4 border border-black rounded-full border-opacity-10'
-                            style={{ backgroundColor: color.colorBg }}
-                          >
-                            <span className='sr-only'>{color.name}</span>
-                          </li>
-                        ))}
-                      </ul>
                     </li>
                   ))}
                 </ul>
@@ -164,12 +165,12 @@ export default function Home() {
             <div className='max-w-2xl py-16 mx-auto sm:py-24 lg:max-w-none lg:py-32'>
               <h2
                 id='collections-heading'
-                className='text-2xl font-bold text-gray-900'
+                className={` ${raleway.className} text-2xl font-bold text-gray-900`}
               >
-                Collections
+                Categorias
               </h2>
 
-              <div className='mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0'>
+              <div className='mt-6 space-y-12 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:space-y-0'>
                 {collections.map(collection => (
                   <div
                     key={collection.name}

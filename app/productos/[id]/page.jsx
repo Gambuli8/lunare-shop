@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { Dialog, RadioGroup, Transition } from '@headlessui/react'
 import { ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { QuestionMarkCircleIcon, SparklesIcon } from '@heroicons/react/20/solid'
-import Productos from '../../api'
+import { Productos } from '../../api'
 import { Italiana } from 'next/font/google'
 
 function classNames(...classes) {
