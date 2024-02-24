@@ -107,7 +107,7 @@ export default function Home() {
             </div>
 
             <div className='relative mt-8'>
-              <div className='relative w-full'>
+              <div className='relative w-full overflow-x-auto'>
                 <ul
                   role='list'
                   className='flex items-center justify-center mx-4 space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:space-x-0'
