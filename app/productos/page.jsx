@@ -1,12 +1,10 @@
 'use client'
-import { Fragment, Suspense, useEffect, useState } from 'react'
-import { Disclosure, Menu, Transition, Dialog, Popover, Listbox } from '@headlessui/react'
-import { ChevronDownIcon, FunnelIcon, StarIcon, XMarkIcon, CheckIcon, ArrowRightIcon } from '@heroicons/react/20/solid'
+import { Fragment, useEffect, useState } from 'react'
+import { Disclosure, Menu, Transition, Dialog, Popover } from '@headlessui/react'
+import { ChevronDownIcon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/20/solid'
 import { Productos } from '../api'
 import { Raleway } from 'next/font/google'
-import { NEXT_URL } from 'next/dist/client/components/app-router-headers'
 import Image from 'next/image'
-import loading from './loading'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -509,25 +507,6 @@ export default function Products() {
               className='inline-flex items-center h-10 px-4 bg-white border border-indigo-600 rounded-md ring-1 ring-indigo-600 hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
             >
               3
-            </a>
-            <span className='inline-flex h-10 items-center px-1.5 text-gray-500'>...</span>
-            <a
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              8
-            </a>
-            <a
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              9
-            </a>
-            <a
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              10
             </a>
           </div>
           <div className='flex justify-end flex-1 min-w-0'>

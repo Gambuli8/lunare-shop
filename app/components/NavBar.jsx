@@ -56,6 +56,7 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [products, setProducts] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+
   const handlerSearch = e => {
     setSearchTerm(e.target.value)
   }

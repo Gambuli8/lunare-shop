@@ -1,12 +1,13 @@
 'use client'
 
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useContext } from 'react'
 import { useParams } from 'next/navigation'
 import { Dialog, RadioGroup, Transition } from '@headlessui/react'
 import { ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { QuestionMarkCircleIcon, SparklesIcon } from '@heroicons/react/20/solid'
 import { Productos } from '../../api'
 import { Italiana } from 'next/font/google'
+import { StoreContext } from '@/utils/store'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -24,6 +25,8 @@ export default function ProductId() {
   const [selectedSize, setSelectedSize] = useState(productStock[0])
   const { id } = useParams()
   const [products, setProducts] = useState([])
+  const { state, dispatch } = useContext(StoreContext)
+  const { cart } = state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +40,36 @@ export default function ProductId() {
     }
     fetchData()
   }, [id])
+
+  const HandlerAddToCart = () => {
+    const existItem = state.cart.items.find(i => i.id === products.id)
+    const quantity = selectedSize === 1 ? (existItem ? existItem.quantity + 1 : 1) : selectedSize === 2 ? (existItem ? existItem.quantity + 2 : 2) : 0
+
+    if (products.stock < quantity) {
+      return alert('No hay suficiente stock')
+    }
+
+    dispatch({
+      type: 'ADD_TO_CART',
+      payload: {
+        id: products.id,
+        name: products.name,
+        description: products.description,
+        material: products.material,
+        image: products.image,
+        price_ind: products.price_ind,
+        price_par: products.price_par,
+        stock: products.stock,
+        quantity
+      }
+    })
+    console.log('Agregado al carrito')
+  }
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart.items))
+    localStorage.setItem('cartCount', JSON.stringify(cart.items.reduce((a, c) => a + c.quantity, 0)))
+  }, [cart.items])
 
   return (
     <Transition.Root
@@ -198,7 +231,8 @@ export default function ProductId() {
                           </div>
                           <div className='mt-6'>
                             <button
-                              type='submit'
+                              type='button'
+                              onClick={HandlerAddToCart}
                               className='flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
                             >
                               Agregar al carrito
