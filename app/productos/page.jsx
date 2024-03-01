@@ -7,6 +7,7 @@ import { Raleway } from 'next/font/google'
 import Image from 'next/image'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import Link from 'next/link'
 
 const filters = [
   {
@@ -457,7 +458,7 @@ export default function Products() {
                         <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{Item.price_ind}</span>
                       </div>
                       <div className='flex items-center justify-end rounded-full border-2 border-transparent hover:border-[#998779] transition-all hover:scale-110 '>
-                        <a
+                        <Link
                           href={`/productos/${Item.id}`}
                           className=''
                         >
@@ -465,7 +466,7 @@ export default function Products() {
                             className='w-6 h-6 text-gray-900'
                             aria-hidden='true'
                           />
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>

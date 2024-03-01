@@ -21,6 +21,7 @@ const productStock = [
 const Italiano = Italiana({ subsets: ['latin'], weight: '400' })
 
 export default function ProductId() {
+  //* ESTADOS
   const [open, setOpen] = useState(true)
   const [selectedSize, setSelectedSize] = useState(productStock[0])
   const { id } = useParams()
@@ -28,6 +29,7 @@ export default function ProductId() {
   const { state, dispatch } = useContext(StoreContext)
   const { cart } = state
 
+  //* LLAMADAS A LA API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,6 +43,7 @@ export default function ProductId() {
     fetchData()
   }, [id])
 
+  //* AGREGAR AL CARRITO
   const HandlerAddToCart = () => {
     const existItem = state.cart.items.find(i => i.id === products.id)
     const quantity = selectedSize === 1 ? (existItem ? existItem.quantity + 1 : 1) : selectedSize === 2 ? (existItem ? existItem.quantity + 2 : 2) : 0
@@ -57,15 +60,15 @@ export default function ProductId() {
         description: products.description,
         material: products.material,
         image: products.image,
-        price_ind: products.price_ind,
-        price_par: products.price_par,
+        price: selectedSize === 1 ? products.price_ind : selectedSize === 2 ? products.price_par : 0,
         stock: products.stock,
         quantity
       }
     })
-    console.log('Agregado al carrito')
+    alert('Producto agregado al carrito')
   }
 
+  //* GUARDAR EN LOCALSTORAGE
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart.items))
     localStorage.setItem('cartCount', JSON.stringify(cart.items.reduce((a, c) => a + c.quantity, 0)))

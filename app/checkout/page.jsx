@@ -6,21 +6,28 @@ import { StoreContext } from '@/utils/store'
 
 export default function Checkout() {
   const { state, dispatch } = useContext(StoreContext)
-
   const { cart } = state
-
   const [productsCart, setProductsCart] = useState([])
 
   useEffect(() => {
-    setProductsCart(cart.items)
-  }, [cart.items])
+    const fetchProducts = async () => {
+      setProductsCart(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [])
+    }
+
+    fetchProducts()
+  }, [cart])
 
   const removeProduct = id => {
     const newProductsCart = productsCart.filter(product => product.id !== id)
+    localStorage.setItem('cart', JSON.stringify(newProductsCart))
+    localStorage.setItem('cartCount', newProductsCart.length)
     setProductsCart(newProductsCart)
   }
 
+  const total = productsCart.reduce((acc, product) => acc + product.price, '')
+
   console.log(productsCart)
+  console.log(cart)
 
   return (
     <div className='bg-white'>
@@ -37,6 +44,11 @@ export default function Checkout() {
                 role='list'
                 className='-my-6 divide-y divide-gray-200'
               >
+                {productsCart.length === 0 && (
+                  <li className='flex items-center justify-center py-10'>
+                    <p className='text-sm font-medium text-gray-900'>No hay productos en el carrito</p>
+                  </li>
+                )}
                 {productsCart.map(product => (
                   <li
                     key={product.id}
@@ -54,8 +66,8 @@ export default function Checkout() {
                             <a href={product.href}>{product.name}</a>
                           </h3>
                           <p className='text-gray-900'>{product.price}</p>
-                          <p className='hidden text-gray-500 sm:block'>{product.color}</p>
-                          <p className='hidden text-gray-500 sm:block'>{product.size}</p>
+                          <p className='hidden text-gray-500 sm:block'>{product.description}</p>
+                          <p className='hidden text-gray-500 sm:block'>{product.material}</p>
                         </div>
                         <div className='flex flex-none space-x-4'>
                           <div className='flex pl-4 border-l border-gray-300'>
@@ -78,19 +90,15 @@ export default function Checkout() {
             <dl className='mt-10 space-y-6 text-sm font-medium text-gray-500'>
               <div className='flex justify-between'>
                 <dt>Subtotal</dt>
-                <dd className='text-gray-900'>$104.00</dd>
+                <dd className='text-gray-900'>{total || '$0'}</dd>
               </div>
               <div className='flex justify-between'>
-                <dt>Taxes</dt>
-                <dd className='text-gray-900'>$8.32</dd>
-              </div>
-              <div className='flex justify-between'>
-                <dt>Shipping</dt>
-                <dd className='text-gray-900'>$14.00</dd>
+                <dt>descuento</dt>
+                <dd className='text-gray-900'>$0</dd>
               </div>
               <div className='flex justify-between pt-6 text-gray-900 border-t border-gray-200'>
                 <dt className='text-base'>Total</dt>
-                <dd className='text-base'>$126.32</dd>
+                <dd className='text-base'>{total || '$0'}</dd>
               </div>
             </dl>
           </div>
@@ -100,7 +108,7 @@ export default function Checkout() {
               type='button'
               className='flex items-center justify-center w-full py-2 text-white bg-black border border-transparent rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2'
             >
-              <span className='sr-only'>Pay with Apple Pay</span>
+              <span className='sr-only'>Pay with Mercado pago</span>
               <svg
                 className='w-auto h-5'
                 fill='currentColor'
@@ -123,7 +131,8 @@ export default function Checkout() {
             </div>
 
             <form className='mt-6'>
-              <h2 className='text-lg font-medium text-gray-900'>Contact information</h2>
+              <h2 className='text-lg font-medium text-gray-900'>pagar en efectivo</h2>
+              <p className='text-sm'>Quedar con el vendedor el retiro y el pago.</p>
 
               <div className='mt-6'>
                 <label
@@ -138,7 +147,7 @@ export default function Checkout() {
                     id='email-address'
                     name='email-address'
                     autoComplete='email'
-                    className='block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    className='block w-full px-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
               </div>
@@ -156,26 +165,9 @@ export default function Checkout() {
                     name='phone'
                     id='phone'
                     autoComplete='tel'
-                    className='block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    className='block w-full px-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                   />
                 </div>
-              </div>
-
-              <div className='flex mt-6 space-x-2'>
-                <div className='flex items-center h-5'>
-                  <input
-                    id='terms'
-                    name='terms'
-                    type='checkbox'
-                    className='w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'
-                  />
-                </div>
-                <label
-                  htmlFor='terms'
-                  className='text-sm text-gray-500'
-                >
-                  I have read the terms and conditions and agree to the sale of my personal information to the highest bidder.
-                </label>
               </div>
 
               <button
@@ -186,37 +178,6 @@ export default function Checkout() {
                 Continue
               </button>
             </form>
-
-            <div className='mt-10 border-t border-b border-gray-200 divide-y divide-gray-200'>
-              <button
-                type='button'
-                disabled
-                className='w-full py-6 text-lg font-medium text-left text-gray-500 cursor-auto'
-              >
-                Payment details
-              </button>
-              <button
-                type='button'
-                disabled
-                className='w-full py-6 text-lg font-medium text-left text-gray-500 cursor-auto'
-              >
-                Shipping address
-              </button>
-              <button
-                type='button'
-                disabled
-                className='w-full py-6 text-lg font-medium text-left text-gray-500 cursor-auto'
-              >
-                Billing address
-              </button>
-              <button
-                type='button'
-                disabled
-                className='w-full py-6 text-lg font-medium text-left text-gray-500 cursor-auto'
-              >
-                Review
-              </button>
-            </div>
           </div>
         </div>
       </div>
