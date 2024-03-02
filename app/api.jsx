@@ -22,7 +22,7 @@ const Productos = {
             .slice(1)
             .map(row => {
               const [id, product, name, category, material, description, price_ind, price_par, stock, image] = row.split('\t')
-              return { id, product, name, category, material, description, price_ind, price_par, stock: parseInt(stock), image }
+              return { id, product, name, category, material, description, price_ind: Number(price_ind), price_par: Number(price_par), stock: Number(stock), image }
             })
         })
         .catch(err => console.log(err))

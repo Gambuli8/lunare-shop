@@ -8,56 +8,34 @@ import Image from 'next/image'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Link from 'next/link'
+import Filters from '../components/Filters'
+
+const CantidadOptions = [
+  { title: '1', description: '1 unidad' },
+  { title: '2', description: 'Par' }
+]
 
 const filters = [
   {
     id: 'category',
     name: 'Category',
     options: [
-      { value: 'new-arrivals', label: 'All New Arrivals', checked: false },
-      { value: 'tees', label: 'Tees', checked: false },
-      { value: 'objects', label: 'Objects', checked: true },
-      { value: 'sweatshirts', label: 'Sweatshirts', checked: false },
-      { value: 'pants-shorts', label: 'Pants & Shorts', checked: false }
+      { value: 'All', label: 'All' },
+      { value: 'Plata', label: 'Plata' },
+      { value: 'Oro', label: 'Oro' }
     ]
   },
   {
-    id: 'color',
-    name: 'Color',
+    id: 'price',
+    name: 'Price',
     options: [
-      { value: 'white', label: 'White', checked: false },
-      { value: 'beige', label: 'Beige', checked: false },
-      { value: 'blue', label: 'Blue', checked: false },
-      { value: 'brown', label: 'Brown', checked: false },
-      { value: 'green', label: 'Green', checked: false },
-      { value: 'purple', label: 'Purple', checked: false }
-    ]
-  },
-  {
-    id: 'sizes',
-    name: 'Sizes',
-    options: [
-      { value: 'xs', label: 'XS', checked: false },
-      { value: 's', label: 'S', checked: false },
-      { value: 'm', label: 'M', checked: false },
-      { value: 'l', label: 'L', checked: false },
-      { value: 'xl', label: 'XL', checked: false },
-      { value: '2xl', label: '2XL', checked: false }
+      { value: '0', label: '0 - 1000' },
+      { value: '1000', label: '1000 - 2000' },
+      { value: '2000', label: '2000 - 3000' },
+      { value: '3000', label: '3000 - 4000' },
+      { value: '4000', label: '4000 - 5000' }
     ]
   }
-]
-const sortOptions = [
-  { name: 'Más Popular', href: '#', current: true },
-  { name: 'A - Z', href: '#', current: false },
-  { name: 'Z - A', href: '#', current: false },
-  { name: 'Price: Menor a Mayor', href: '#', current: false },
-  { name: 'Price: Mayor a Menor', href: '#', current: false }
-]
-const activeFilters = [{ value: 'objects', label: 'Objects' }]
-
-const CantidadOptions = [
-  { title: '1', description: '1 unidad' },
-  { title: '2', description: 'Par' }
 ]
 
 const raleway = Raleway({ subsets: ['latin'] })
@@ -72,6 +50,26 @@ export default function Products() {
   const [id, setId] = useState('')
   const [selectedCount, setSelectedCount] = useState(CantidadOptions[0])
   const [loading, setLoading] = useState(false)
+  const [filtered, setFiltered] = useState({
+    category: 'All',
+    minPrice: 0
+  })
+
+  const filterProducts = Products => {
+    return Products.filter(product => {
+      return product.price_ind >= filtered.minPrice && (filtered.category === 'All' || product.category === filtered.category)
+    })
+  }
+
+  const filteredProducts = filterProducts(products)
+
+  //* FORMATEAR PRECIO
+  const formatPrice = price => {
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN'
+    }).format(price)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -220,172 +218,7 @@ export default function Products() {
         </div>
 
         {/* Filters */}
-        <section aria-labelledby='filter-heading'>
-          <h2
-            id='filter-heading'
-            className='sr-only'
-          >
-            Filters
-          </h2>
-
-          <div className='pb-4 bg-[#F4E8D8] border-b border-gray-200'>
-            <div className='flex items-center justify-between px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
-              <Menu
-                as='div'
-                className='relative inline-block text-left'
-              >
-                <div>
-                  <Menu.Button className='inline-flex justify-center text-sm font-medium text-gray-700 group hover:text-gray-900'>
-                    Sort
-                    <ChevronDownIcon
-                      className='flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500'
-                      aria-hidden='true'
-                    />
-                  </Menu.Button>
-                </div>
-
-                <Transition
-                  as={Fragment}
-                  enter='transition ease-out duration-100'
-                  enterFrom='transform opacity-0 scale-95'
-                  enterTo='transform opacity-100 scale-100'
-                  leave='transition ease-in duration-75'
-                  leaveFrom='transform opacity-100 scale-100'
-                  leaveTo='transform opacity-0 scale-95'
-                >
-                  <Menu.Items className='absolute left-0 z-10 w-40 mt-2 origin-top-left bg-white rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                    <div className='py-1'>
-                      {sortOptions.map(option => (
-                        <Menu.Item key={option.name}>
-                          {({ active }) => (
-                            <a
-                              href={option.href}
-                              className={classNames(option.current ? 'font-medium text-gray-900' : 'text-gray-500', active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm')}
-                            >
-                              {option.name}
-                            </a>
-                          )}
-                        </Menu.Item>
-                      ))}
-                    </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-
-              <button
-                type='button'
-                className='inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden'
-                onClick={() => setMobileFiltersOpen(true)}
-              >
-                Filters
-              </button>
-
-              <div className='hidden sm:block'>
-                <div className='flow-root'>
-                  <Popover.Group className='flex items-center -mx-4 divide-x divide-gray-200'>
-                    {filters.map((section, sectionIdx) => (
-                      <Popover
-                        key={section.name}
-                        className='relative inline-block px-4 text-left'
-                      >
-                        <Popover.Button className='inline-flex justify-center text-sm font-medium text-gray-700 group hover:text-gray-900'>
-                          <span>{section.name}</span>
-                          {sectionIdx === 0 ? <span className='ml-1.5 rounded bg-white px-1.5 py-0.5 text-xs font-semibold tabular-nums text-gray-700'>1</span> : null}
-                          <ChevronDownIcon
-                            className='flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500'
-                            aria-hidden='true'
-                          />
-                        </Popover.Button>
-
-                        <Transition
-                          as={Fragment}
-                          enter='transition ease-out duration-100'
-                          enterFrom='transform opacity-0 scale-95'
-                          enterTo='transform opacity-100 scale-100'
-                          leave='transition ease-in duration-75'
-                          leaveFrom='transform opacity-100 scale-100'
-                          leaveTo='transform opacity-0 scale-95'
-                        >
-                          <Popover.Panel className='absolute right-0 z-10 p-4 mt-2 origin-top-right bg-white rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                            <form className='space-y-4'>
-                              {section.options.map((option, optionIdx) => (
-                                <div
-                                  key={option.value}
-                                  className='flex items-center'
-                                >
-                                  <input
-                                    id={`filter-${section.id}-${optionIdx}`}
-                                    name={`${section.id}[]`}
-                                    defaultValue={option.value}
-                                    type='checkbox'
-                                    defaultChecked={option.checked}
-                                    className='w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'
-                                  />
-                                  <label
-                                    htmlFor={`filter-${section.id}-${optionIdx}`}
-                                    className='pr-6 ml-3 text-sm font-medium text-gray-900 whitespace-nowrap'
-                                  >
-                                    {option.label}
-                                  </label>
-                                </div>
-                              ))}
-                            </form>
-                          </Popover.Panel>
-                        </Transition>
-                      </Popover>
-                    ))}
-                  </Popover.Group>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Active filters */}
-          <div className='mb-10 bg-gray-100'>
-            <div className='flex items-center gap-5 px-6 py-3 mx-auto max-w-7xl lg:px-8'>
-              <h3 className='text-sm font-medium text-gray-500'>
-                Filters
-                <span className='sr-only'>, active</span>
-              </h3>
-
-              <div
-                aria-hidden='true'
-                className='block w-px h-5 bg-gray-300 sm:ml-4 sm:block'
-              />
-
-              <div className='mt-0 sm:ml-4'>
-                <div className='flex flex-wrap items-center -m-1'>
-                  {activeFilters.map(activeFilter => (
-                    <span
-                      key={activeFilter.value}
-                      className='m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900'
-                    >
-                      <span>{activeFilter.label}</span>
-                      <button
-                        type='button'
-                        className='inline-flex flex-shrink-0 w-4 h-4 p-1 ml-1 text-gray-400 rounded-full hover:bg-gray-200 hover:text-gray-500'
-                      >
-                        <span className='sr-only'>Remove filter for {activeFilter.label}</span>
-                        <svg
-                          className='w-2 h-2'
-                          stroke='currentColor'
-                          fill='none'
-                          viewBox='0 0 8 8'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeWidth='1.5'
-                            d='M1 1l6 6m0-6L1 7'
-                          />
-                        </svg>
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <Filters setFiltered={setFiltered} />
 
         {/* Product grid */}
         <section
@@ -431,7 +264,7 @@ export default function Products() {
                 />
               </SkeletonTheme>
             ) : (
-              products.map(Item => (
+              filteredProducts.map(Item => (
                 <div
                   key={Item.id}
                   className='relative flex w-full max-w-[17rem] md:max-h-[35rem] h-full flex-col rounded-xl bg-white bg-clip-border  text-gray-700 shadow-lg'
@@ -455,7 +288,7 @@ export default function Products() {
                     </div>
                     <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
                       <div className='flex items-center w-full'>
-                        <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{Item.price_ind}</span>
+                        <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_ind)}</span>
                       </div>
                       <div className='flex items-center justify-end rounded-full border-2 border-transparent hover:border-[#998779] transition-all hover:scale-110 '>
                         <Link
