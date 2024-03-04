@@ -1,7 +1,7 @@
 import React from 'react'
 import { Fragment, useState } from 'react'
-import { Menu, Popover, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Menu, Popover, Transition, Disclosure, Dialog } from '@headlessui/react'
+import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/20/solid'
 
 const sortOptions = [
   { name: 'Más Popular', href: '#', current: true },
@@ -11,173 +11,199 @@ const sortOptions = [
   { name: 'Precio: Mayor a Menor', href: '#', current: false }
 ]
 
+const filters = [
+  {
+    id: 'category',
+    name: 'Category',
+    options: [
+      { value: 'Plata', label: 'Plata' },
+      { value: 'Plata Dorada', label: 'Plata Dorada' }
+    ]
+  },
+  {
+    id: 'sort',
+    name: 'Sort',
+    options: [
+      { value: 'A - Z', label: 'A - Z' },
+      { value: 'Z - A', label: 'Z - A' },
+      { value: 'asc', label: 'Precio: Menor a Mayor' },
+      { value: 'desc', label: 'Precio: Mayor a Menor' }
+    ]
+  }
+]
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Filters({ setFiltered, SortProducts }) {
+export default function Filters({ setFiltered }) {
   const [category, setCategory] = useState('')
+  const [sort, setSort] = useState('')
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
-  const handlerFilterPrice = e => {
+  const handleCategory = e => {
+    setCategory(e.target.value)
     setFiltered(prevState => {
-      return {
-        ...prevState,
-        minPrice: e.target.value
-      }
+      return { ...prevState, category: e.target.value }
     })
   }
 
-  const handlerFilterCategory = e => {
-    setCategory(e.target.value)
+  const handleSort = e => {
+    setSort(e.target.value)
+
     setFiltered(prevState => {
-      return {
-        ...prevState,
-        category: e.target.value
-      }
+      return { ...prevState, sort: e.target.value }
     })
   }
 
   return (
-    <div>
+    <div className='w-full mb-10'>
+      {/* Mobile filter dialog
+      <Transition.Root
+        show={mobileFiltersOpen}
+        as={Fragment}
+      >
+        <Dialog
+          as='div'
+          className='relative z-40 sm:hidden'
+          onClose={setMobileFiltersOpen}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter='transition-opacity ease-linear duration-300'
+            enterFrom='opacity-0'
+            enterTo='opacity-100'
+            leave='transition-opacity ease-linear duration-300'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
+          >
+            <div className='fixed inset-0 bg-black bg-opacity-25' />
+          </Transition.Child>
+
+          <div className='fixed inset-0 z-40 flex'>
+            <Transition.Child
+              as={Fragment}
+              enter='transition ease-in-out duration-300 transform'
+              enterFrom='translate-x-full'
+              enterTo='translate-x-0'
+              leave='transition ease-in-out duration-300 transform'
+              leaveFrom='translate-x-0'
+              leaveTo='translate-x-full'
+            >
+              <Dialog.Panel className='relative flex flex-col w-full h-full max-w-xs py-4 pb-6 ml-auto overflow-y-auto bg-white shadow-xl'>
+                <div className='flex items-center justify-between px-4'>
+                  <h2 className='text-lg font-medium text-gray-900'>Filters</h2>
+                  <button
+                    type='button'
+                    className='flex items-center justify-center w-10 h-10 p-2 -mr-2 text-gray-400 bg-white rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                    onClick={() => setMobileFiltersOpen(false)}
+                  >
+                    <span className='sr-only'>Close menu</span>
+                    <XMarkIcon
+                      className='w-6 h-6'
+                      aria-hidden='true'
+                    />
+                  </button>
+                </div>
+
+                {/* Filters */}
+      {/* <form className='mt-4'>
+                  {filters.map(section => (
+                    <Disclosure
+                      as='div'
+                      key={section.name}
+                      className='px-4 py-6 border-t border-gray-200'
+                    >
+                      {({ open }) => (
+                        <>
+                          <h3 className='flow-root -mx-2 -my-3'>
+                            <Disclosure.Button className='flex items-center justify-between w-full px-2 py-3 text-sm text-gray-400 bg-white'>
+                              <span className='font-medium text-gray-900'>{section.name}</span>
+                              <span className='flex items-center ml-6'>
+                                <ChevronDownIcon
+                                  className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-5 w-5 transform')}
+                                  aria-hidden='true'
+                                />
+                              </span>
+                            </Disclosure.Button>
+                          </h3>
+                          <Disclosure.Panel className='pt-6'>
+                            <div className='space-y-6'>
+                              {section.options.map((option, optionIdx) => (
+                                <div
+                                  key={option.value}
+                                  className='flex items-center'
+                                >
+                                  <input
+                                    id={`filter-mobile-${section.id}-${optionIdx}`}
+                                    name={`${section.id}[]`}
+                                    defaultValue={option.value}
+                                    type='checkbox'
+                                    defaultChecked={option.checked}
+                                    className='w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500'
+                                    onChange={handleCategory}
+                                  />
+                                  <label
+                                    htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                                    className='ml-3 text-sm text-gray-500'
+                                  >
+                                    {option.label}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  ))}
+                </form>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root> */}
+
       {/* Filters */}
-      <section aria-labelledby='filter-heading'>
+      <section
+        aria-labelledby='filter-heading'
+        className='pt-6 border-t border-gray-200'
+      >
         <h2
           id='filter-heading'
           className='sr-only'
         >
-          Filters
+          Product filters
         </h2>
 
-        <div className='pb-4 bg-[#F4E8D8] border-b border-gray-200'>
-          <div className='flex items-center justify-between px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
-            <Menu
-              as='div'
-              className='relative inline-block text-left'
+        <div className='flex items-center justify-start gap-5 mx-5'>
+          <div>
+            <select
+              name=''
+              id=''
+              onChange={handleSort}
+              value={sort}
+              className='w-full bg-transparent '
             >
-              <div>
-                <Menu.Button className='inline-flex justify-center text-sm font-medium text-gray-700 group hover:text-gray-900'>
-                  Sort
-                  <ChevronDownIcon
-                    className='flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500'
-                    aria-hidden='true'
-                  />
-                </Menu.Button>
-              </div>
-
-              <Transition
-                as={Fragment}
-                enter='transition ease-out duration-100'
-                enterFrom='transform opacity-0 scale-95'
-                enterTo='transform opacity-100 scale-100'
-                leave='transition ease-in duration-75'
-                leaveFrom='transform opacity-100 scale-100'
-                leaveTo='transform opacity-0 scale-95'
-              >
-                <Menu.Items className='absolute left-0 z-10 w-40 mt-2 origin-top-left bg-white rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                  <div className='py-1'>
-                    {sortOptions.map(option => (
-                      <Menu.Item key={option.name}>
-                        {({ active }) => (
-                          <a
-                            href={option.href}
-                            value={option.name}
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            onChange={handlerSort}
-                          >
-                            {option.name}
-                          </a>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </div>
-                </Menu.Items>
-              </Transition>
-            </Menu>
-
-            <button
-              type='button'
-              className='inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden'
-              onClick={() => setMobileFiltersOpen(true)}
-            >
-              Filters
-            </button>
-
-            <div className='hidden sm:block'>
-              <div className='grid grid-flow-col gap-3'>
-                <div>
-                  <label htmlFor='category'>Categoria</label>
-                  <select
-                    className='w-auto mx-2 bg-gray-100'
-                    id='category'
-                    onChange={handlerFilterCategory}
-                    value={category}
-                  >
-                    <option value='All'>All</option>
-                    <option value='Argolla'>Argolla</option>
-                    <option value='Pasante'>Pasante</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor='minPrice'>Precio Minimo</label>
-                  <select
-                    className='w-auto mx-2 bg-gray-100'
-                    id='minPrice'
-                    onChange={handlerFilterPrice}
-                  >
-                    <option value='1000'>$1,000</option>
-                    <option value='2000'>$2,000</option>
-                    <option value='4000'>$4,000</option>
-                    <option value='6000'>$6,000</option>
-                  </select>
-                </div>
-              </div>
-            </div>
+              <option value='All'>Filtrar por</option>
+              <option value='A - Z'>A - Z</option>
+              <option value='Z - A'>Z - A</option>
+              <option value='asc'>Precio: Menor a Mayor</option>
+              <option value='desc'>Precio: Mayor a Menor</option>
+            </select>
           </div>
-        </div>
-
-        {/* Active filters */}
-        <div className='mb-10 bg-gray-100'>
-          <div className='flex items-center gap-5 px-6 py-3 mx-auto max-w-7xl lg:px-8'>
-            <h3 className='text-sm font-medium text-gray-500'>
-              Filters
-              <span className='sr-only'>, active</span>
-            </h3>
-
-            <div
-              aria-hidden='true'
-              className='block w-px h-5 bg-gray-300 sm:ml-4 sm:block'
-            />
-
-            <div className='mt-0 sm:ml-4'>
-              {/* <div className='flex flex-wrap items-center -m-1'> */}
-              {/* {sort.map(activeFilter => (
-                  <span
-                    key={activeFilter.name}
-                    className='m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 pl-3 pr-2 text-sm font-medium text-gray-900'
-                  >
-                    <span>{activeFilter.name}</span>
-                    <button
-                      type='button'
-                      className='inline-flex flex-shrink-0 w-4 h-4 p-1 ml-1 text-gray-400 rounded-full hover:bg-gray-200 hover:text-gray-500'
-                    >
-                      <span className='sr-only'>Remove filter for {activeFilter.name}</span>
-                      <svg
-                        className='w-2 h-2'
-                        stroke='currentColor'
-                        fill='none'
-                        viewBox='0 0 8 8'
-                      >
-                        <path
-                          strokeLinecap='round'
-                          strokeWidth='1.5'
-                          d='M1 1l6 6m0-6L1 7'
-                        />
-                      </svg>
-                    </button>
-                  </span>
-                ))}
-              </div> */}
-            </div>
+          <div>
+            <select
+              name=''
+              id=''
+              value={category}
+              onChange={handleCategory}
+              className='w-full bg-transparent'
+            >
+              <option value='All'>Categoría</option>
+              <option value='Plata'>Plata</option>
+              <option value='Plata Dorada'>Plata Dorada</option>
+            </select>
           </div>
         </div>
       </section>
