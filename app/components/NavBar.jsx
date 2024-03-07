@@ -57,15 +57,6 @@ export default function NavBar() {
   const [products, setProducts] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
 
-  const handlerSearch = e => {
-    setSearchTerm(e.target.value)
-  }
-  const filteredProducts = products.filter(product => {
-    return product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  })
-
-  console.log(filteredProducts)
-
   const debounceRef = useRef()
 
   const queryChange = e => {
@@ -75,7 +66,6 @@ export default function NavBar() {
     }
     debounceRef.current = setTimeout(() => {
       setSearchTerm(value)
-      console.log(value)
     }, 1000)
   }
 
@@ -83,7 +73,6 @@ export default function NavBar() {
     const fetchData = async () => {
       try {
         const result = await Productos.getProducts.list()
-        console.log(result)
         setProducts(result)
       } catch (error) {
         console.log(error.message)

@@ -1,16 +1,15 @@
 'use client'
 
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { RadioGroup } from '@headlessui/react'
 import { ShieldCheckIcon } from '@heroicons/react/24/outline'
 import { Productos } from '../../api'
 import { Italiana } from 'next/font/google'
-import { StoreContext } from '@/utils/store'
 import { CheckIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
 import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
-import toast, { Toast } from 'react-hot-toast'
+import useCart from '../../hooks/useCart.jsx'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -25,20 +24,16 @@ const Italiano = Italiana({ subsets: ['latin'], weight: '400' })
 
 export default function ProductId() {
   //* ESTADOS
-  const [open, setOpen] = useState(true)
   const [selectedSize, setSelectedSize] = useState(productStock[0])
   const { id } = useParams()
   const [products, setProducts] = useState([])
-  const { state, dispatch } = useContext(StoreContext)
-  const { cart } = state
-  const [loading, setLoading] = useState(false)
+  const { AddToCart, Cart } = useCart()
 
   //* LLAMADAS A LA API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await Productos.getProduct.list(id)
-        console.log(result)
         setProducts(result)
       } catch (error) {
         console.log(error.message)
@@ -47,26 +42,10 @@ export default function ProductId() {
     fetchData()
   }, [id])
 
-  //* AGREGAR PRODUCTO AL CARRITO
-  const HandlerAddToCart = () => {
-    const existItem = cart.items.find(i => i.id === products.id)
-    const quantity = selectedSize === 1 ? (existItem ? existItem.quantity + 1 : 1) : selectedSize === 2 ? (existItem ? existItem.quantity + 2 : 2) : 0
-    const newItems = {
-      id: products.id,
-      name: products.name,
-      image: products.image,
-      price: selectedSize === 1 ? formatPrice(products.price_ind) : formatPrice(products.price_par),
-      quantity
-    }
-    const newCart = existItem ? cart.items.map(i => (i.id === products.id ? newItems : i)) : [...cart.items, newItems]
-    dispatch({ type: 'ADD_TO_CART', payload: newCart })
-    toast.success('Producto agregado al carrito', {
-      duration: 4000,
-      position: 'top-center'
-    })
-    localStorage.setItem('cart', JSON.stringify(newCart))
-    localStorage.setItem('cartCount', newCart.length)
-  }
+  console.log(products)
+  console.log(Cart)
+
+  // //* AGREGAR PRODUCTO AL CARRITO
 
   //* FORMATEAR PRECIO
   const formatPrice = price => {
@@ -209,9 +188,9 @@ export default function ProductId() {
                 </div>
                 <div className='mt-10'>
                   <button
-                    type='submit'
+                    type='button'
                     className='flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
-                    onClick={HandlerAddToCart}
+                    onClick={() => AddToCart(products, selectedSize)}
                   >
                     Agregar al carrito
                   </button>

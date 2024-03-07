@@ -61,7 +61,7 @@ export default function Filters({ setFiltered }) {
       {/* Filters */}
       <section
         aria-labelledby='filter-heading'
-        className='flex items-center justify-center p-3 border-t border-gray-200'
+        className='flex items-center justify-center p-3'
       >
         <h2
           id='filter-heading'
@@ -70,8 +70,8 @@ export default function Filters({ setFiltered }) {
           Product filters
         </h2>
 
-        <div className='flex items-center justify-start h-full gap-5 mx-5'>
-          <span className='pr-5 text-base font-medium border-r-2 border-gray-300'>Filtros</span>
+        <div className='flex items-center justify-start h-full gap-5 mx-3'>
+          <span className='pr-3 text-base font-medium border-r-2 border-gray-300'>Filtros</span>
           <div>
             <select
               name=''

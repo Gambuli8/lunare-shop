@@ -1,33 +1,20 @@
 'use client'
 
-import { Productos } from '../api'
-import { useEffect, useState, useContext } from 'react'
-import { StoreContext } from '@/utils/store'
+import useCart from '../hooks/useCart'
 
 export default function Checkout() {
-  const { state, dispatch } = useContext(StoreContext)
-  const { cart } = state
-  const [productsCart, setProductsCart] = useState([])
+  const { Cart, RemoveFromCart } = useCart()
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setProductsCart(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [])
-    }
+  const total = Cart.reduce((acc, item) => acc + Number(item.price), 0)
 
-    fetchProducts()
-  }, [cart])
-
-  const removeProduct = id => {
-    const newProductsCart = productsCart.filter(product => product.id !== id)
-    localStorage.setItem('cart', JSON.stringify(newProductsCart))
-    localStorage.setItem('cartCount', newProductsCart.length)
-    setProductsCart(newProductsCart)
+  const formatPrice = price => {
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN'
+    }).format(price)
   }
 
-  const total = productsCart.reduce((acc, product) => acc + product.price, '')
-
-  console.log(productsCart)
-  console.log(cart)
+  console.log(Cart)
 
   return (
     <div className='bg-white'>
@@ -44,12 +31,12 @@ export default function Checkout() {
                 role='list'
                 className='-my-6 divide-y divide-gray-200'
               >
-                {productsCart.length === 0 && (
+                {Cart.length === 0 && (
                   <li className='flex items-center justify-center py-10'>
                     <p className='text-sm font-medium text-gray-900'>No hay productos en el carrito</p>
                   </li>
                 )}
-                {productsCart.map(product => (
+                {Cart.map(product => (
                   <li
                     key={product.id}
                     className='flex py-6 space-x-6'
@@ -65,7 +52,7 @@ export default function Checkout() {
                           <h3 className='text-gray-900'>
                             <a href={product.href}>{product.name}</a>
                           </h3>
-                          <p className='text-gray-900'>{product.price}</p>
+                          <p className='text-gray-900'>{formatPrice(product.price)}</p>
                           <p className='hidden text-gray-500 sm:block'>{product.description}</p>
                           <p className='hidden text-gray-500 sm:block'>{product.material}</p>
                         </div>
@@ -74,7 +61,7 @@ export default function Checkout() {
                             <button
                               type='button'
                               className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
-                              onClick={() => removeProduct(product.id)}
+                              onClick={() => RemoveFromCart(product)}
                             >
                               Remove
                             </button>
@@ -90,7 +77,7 @@ export default function Checkout() {
             <dl className='mt-10 space-y-6 text-sm font-medium text-gray-500'>
               <div className='flex justify-between'>
                 <dt>Subtotal</dt>
-                <dd className='text-gray-900'>{total || '$0'}</dd>
+                <dd className='text-gray-900'>{formatPrice(total) || '$0'}</dd>
               </div>
               <div className='flex justify-between'>
                 <dt>descuento</dt>
@@ -98,7 +85,7 @@ export default function Checkout() {
               </div>
               <div className='flex justify-between pt-6 text-gray-900 border-t border-gray-200'>
                 <dt className='text-base'>Total</dt>
-                <dd className='text-base'>{total || '$0'}</dd>
+                <dd className='text-base'>{formatPrice(total) || '$0'}</dd>
               </div>
             </dl>
           </div>

@@ -1,35 +1,23 @@
-import Image from 'next/image'
+'use client'
+
 import React from 'react'
 import { Fragment } from 'react'
 import { ShoppingBagIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { Popover, Transition } from '@headlessui/react'
-import { useState, useEffect, useContext } from 'react'
-import { StoreContext } from '@/utils/store'
+import useCart from '../hooks/useCart'
 
 export default function Cart() {
   //* ESTADOS
-  const [cartCount, setCartCount] = useState(0)
-  const { state, dispatch } = useContext(StoreContext)
-  const { cart } = state
-  const [cartItems, setCartItems] = useState([])
+  const { Cart, RemoveFromCart } = useCart()
 
-  //* FUNCIONES
-  useEffect(() => {
-    setCartCount(localStorage.getItem('cartCount') || 0)
-  }, [cart.items])
-
-  useEffect(() => {
-    setCartItems(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : cart.items)
-  }, [cart])
-
-  const removeProduct = id => {
-    const newProductsCart = cartItems.filter(product => product.id !== id)
-    localStorage.setItem('cart', JSON.stringify(newProductsCart))
-    localStorage.setItem('cartCount', newProductsCart.length)
-    setCartItems(newProductsCart)
+  const formatPrice = price => {
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN'
+    }).format(price)
   }
 
-  const total = cartItems.reduce((acc, product) => acc + product.price, '')
+  const SumaTotal = Cart.reduce((acc, item) => acc + Number(item.price), 0)
 
   return (
     <div>
@@ -40,7 +28,7 @@ export default function Cart() {
             className='flex-shrink-0 w-6 h-6 text-[#998779] group-hover:text-[#938377]'
             aria-hidden='true'
           />
-          <span className='ml-2 text-sm font-medium text-[#998779] group-hover:text-[#938377]'>{cartCount}</span>
+          <span className='ml-2 text-sm font-medium text-[#998779] group-hover:text-[#938377]'>{Cart.length}</span>
           <span className='sr-only'>items in cart, view bag</span>
         </Popover.Button>
         <Transition
@@ -60,12 +48,12 @@ export default function Cart() {
                 role='list'
                 className='grid grid-flow-row divide-y divide-gray-200'
               >
-                {cartItems.length === 0 ? (
+                {Cart.length === 0 ? (
                   <li className='flex items-center justify-center py-6'>
                     <p>No hay productos en el carrito</p>
                   </li>
                 ) : null}
-                {cartItems.map(product => (
+                {Cart.map(product => (
                   <li
                     key={product.id}
                     className='flex items-center py-6'
@@ -79,7 +67,7 @@ export default function Cart() {
                       <h3 className='text-base font-medium text-gray-900'>
                         <a>{product.name}</a>
                       </h3>
-                      <p className='text-gray-500'>{product.price}</p>
+                      <p className='text-gray-500'>{formatPrice(product.price)}</p>
                       <p className='text-gray-500'>Cantidad: {product.quantity}</p>
                     </div>
                     <div className='flex items-center justify-center'>
@@ -88,7 +76,7 @@ export default function Cart() {
                           className='w-5 h-5 text-gray-400 hover:text-gray-500'
                           aria-hidden='true'
                           onClick={() => {
-                            removeProduct(product.id)
+                            RemoveFromCart(product)
                           }}
                         />
                       </button>
@@ -97,7 +85,7 @@ export default function Cart() {
                 ))}
                 <div className='flex items-center justify-between px-4 py-6'>
                   <span className='text-lg font-medium text-gray-900'>Total</span>
-                  <span className='text-sm font-medium text-gray-900'>{total || '$0'}</span>
+                  <span className='text-sm font-medium text-gray-900'>{formatPrice(SumaTotal) || '$0'}</span>
                 </div>
               </ul>
 
