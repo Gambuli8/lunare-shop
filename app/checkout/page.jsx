@@ -4,6 +4,7 @@ import useCart from '../hooks/useCart'
 
 export default function Checkout() {
   const { Cart, RemoveFromCart } = useCart()
+  
 
   const total = Cart.reduce((acc, item) => acc + Number(item.price), 0)
 
