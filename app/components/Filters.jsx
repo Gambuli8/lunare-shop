@@ -1,45 +1,9 @@
 import React from 'react'
-import { Fragment, useState } from 'react'
-import { Menu, Popover, Transition, Disclosure, Dialog } from '@headlessui/react'
-import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/20/solid'
-
-const sortOptions = [
-  { name: 'Más Popular', href: '#', current: true },
-  { name: 'A - Z', href: '#', current: false },
-  { name: 'Z - A', href: '#', current: false },
-  { name: 'Precio: Menor a Mayor', href: '#', current: false },
-  { name: 'Precio: Mayor a Menor', href: '#', current: false }
-]
-
-const filters = [
-  {
-    id: 'category',
-    name: 'Category',
-    options: [
-      { value: 'Plata', label: 'Plata' },
-      { value: 'Plata Dorada', label: 'Plata Dorada' }
-    ]
-  },
-  {
-    id: 'sort',
-    name: 'Sort',
-    options: [
-      { value: 'A - Z', label: 'A - Z' },
-      { value: 'Z - A', label: 'Z - A' },
-      { value: 'asc', label: 'Precio: Menor a Mayor' },
-      { value: 'desc', label: 'Precio: Mayor a Menor' }
-    ]
-  }
-]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+import { useState } from 'react'
 
 export default function Filters({ setFiltered }) {
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('')
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   const handleCategory = e => {
     setCategory(e.target.value)

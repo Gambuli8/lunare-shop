@@ -1,7 +1,6 @@
 'use client'
-import { Fragment, useEffect, useState } from 'react'
-import { Disclosure, Menu, Transition, Dialog, Popover } from '@headlessui/react'
-import { ChevronDownIcon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/20/solid'
+import { useEffect, useState } from 'react'
+import { ArrowRightIcon } from '@heroicons/react/20/solid'
 import { Productos } from '../api'
 import { Raleway } from 'next/font/google'
 import Image from 'next/image'
@@ -10,45 +9,10 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Link from 'next/link'
 import Filters from '../components/Filters'
 
-const CantidadOptions = [
-  { title: '1', description: '1 unidad' },
-  { title: '2', description: 'Par' }
-]
-
-const filters = [
-  {
-    id: 'category',
-    name: 'Category',
-    options: [
-      { value: 'All', label: 'All' },
-      { value: 'Plata', label: 'Plata' },
-      { value: 'Oro', label: 'Oro' }
-    ]
-  },
-  {
-    id: 'price',
-    name: 'Price',
-    options: [
-      { value: '0', label: '0 - 1000' },
-      { value: '1000', label: '1000 - 2000' },
-      { value: '2000', label: '2000 - 3000' },
-      { value: '3000', label: '3000 - 4000' },
-      { value: '4000', label: '4000 - 5000' }
-    ]
-  }
-]
-
 const raleway = Raleway({ subsets: ['latin'] })
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 export default function Products() {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [products, setProducts] = useState([])
-  const [id, setId] = useState('')
-  const [selectedCount, setSelectedCount] = useState(CantidadOptions[0])
   const [loading, setLoading] = useState(false)
   const [filtered, setFiltered] = useState({
     category: 'All',

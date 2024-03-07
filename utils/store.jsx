@@ -57,11 +57,19 @@ export const StoreContext = createContext()
 // }
 
 export const CartProvider = ({ children }) => {
-  const [Cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || [])
-  const [cartCount, setCartCount] = useState(JSON.parse(localStorage.getItem('cartCount')) || 0)
+  const [Cart, setCart] = useState(localGet('cart') || [])
+  const [cartCount, setCartCount] = useState(localGet('cartCount') || 0)
 
-  localStorage.setItem('cart', JSON.stringify(Cart))
-  localStorage.setItem('cartCount', Cart.length)
+  const localGet = key => {
+    if (window !== 'undefined') {
+      return JSON.parse(localStorage.getItem(key))
+    }
+  }
+
+  if (window !== 'undefined') {
+    localStorage.setItem('cart', JSON.stringify(Cart))
+    localStorage.setItem('cartCount', Cart.length)
+  }
 
   const AddToCart = (product, selectedSize) => {
     const existItem = Cart.findIndex(i => i.id === product.id)
@@ -90,8 +98,12 @@ export const CartProvider = ({ children }) => {
   }
 
   const SaveLocal = () => {
-    localStorage.setItem('cart', JSON.stringify(Cart))
-    localStorage.setItem('cartCount', Cart.length)
+    if (window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(Cart))
+      localStorage.setItem('cartCount', Cart.length)
+    } else {
+      return
+    }
   }
 
   return (

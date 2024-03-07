@@ -1,8 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
 import useCart from '../hooks/useCart'
-import { usePathname } from 'next/navigation'
 
 export default function Checkout() {
   const { Cart, RemoveFromCart } = useCart()
