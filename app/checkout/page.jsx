@@ -1,6 +1,8 @@
 'use client'
 
+import { useEffect } from 'react'
 import useCart from '../hooks/useCart'
+import { usePathname } from 'next/navigation'
 
 export default function Checkout() {
   const { Cart, RemoveFromCart } = useCart()
@@ -13,8 +15,6 @@ export default function Checkout() {
       currency: 'MXN'
     }).format(price)
   }
-
-  console.log(Cart)
 
   return (
     <div className='bg-white'>
@@ -92,8 +92,9 @@ export default function Checkout() {
 
           <div className='w-full max-w-lg mx-auto'>
             <button
-              type='button'
-              className='flex items-center justify-center w-full py-2 text-white bg-black border border-transparent rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2'
+              type='submit'
+              disabled
+              className='flex items-center justify-center w-full py-2 text-white bg-black border border-transparent rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500'
             >
               <span className='sr-only'>Pay with Mercado pago</span>
               <svg

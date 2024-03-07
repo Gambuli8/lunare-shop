@@ -89,12 +89,14 @@ export default function Cart() {
                 </div>
               </ul>
 
-              <button
-                type='submit'
-                className='w-full px-4 py-2 text-sm font-medium text-white bg-[#998779] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
-              >
-                <a href='/checkout'>Ir al carrito</a>
-              </button>
+              {Cart.length === 0 ? null : (
+                <button
+                  type='submit'
+                  className='w-full px-4 py-2 text-sm font-medium text-white bg-[#998779] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
+                >
+                  <a href='/checkout'>Ir al carrito</a>
+                </button>
+              )}
             </form>
           </Popover.Panel>
         </Transition>
