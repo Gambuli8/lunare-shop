@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { toast, Toaster } from 'react-hot-toast'
 
 export const StoreContext = createContext()
@@ -57,19 +57,13 @@ export const StoreContext = createContext()
 // }
 
 export const CartProvider = ({ children }) => {
-  const [Cart, setCart] = useState(localGet('cart') || [])
-  const [cartCount, setCartCount] = useState(localGet('cartCount') || 0)
+  const [Cart, setCart] = useState(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [])
+  const [cartCount, setCartCount] = useState(localStorage.getItem('cartCount') ? JSON.parse(localStorage.getItem('cartCount')) : 0)
 
-  const localGet = key => {
-    if (window !== 'undefined') {
-      return JSON.parse(localStorage.getItem(key))
-    }
-  }
-
-  if (window !== 'undefined') {
-    localStorage.setItem('cart', JSON.stringify(Cart))
-    localStorage.setItem('cartCount', Cart.length)
-  }
+  useEffect(() => {
+    SaveLocal()
+    setCartCount(Cart.length)
+  }, [Cart])
 
   const AddToCart = (product, selectedSize) => {
     const existItem = Cart.findIndex(i => i.id === product.id)
@@ -98,7 +92,7 @@ export const CartProvider = ({ children }) => {
   }
 
   const SaveLocal = () => {
-    if (window !== 'undefined') {
+    if (typeof window !== 'undefined' || typeof window === 'object') {
       localStorage.setItem('cart', JSON.stringify(Cart))
       localStorage.setItem('cartCount', Cart.length)
     } else {
