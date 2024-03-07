@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 
 export default function Checkout() {
   const { Cart, RemoveFromCart } = useCart()
+  
 
   const total = Cart.reduce((acc, item) => acc + Number(item.price), 0)
 
