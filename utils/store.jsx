@@ -57,12 +57,29 @@ export const StoreContext = createContext()
 // }
 
 export const CartProvider = ({ children }) => {
-  const [Cart, setCart] = useState(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [])
-  const [cartCount, setCartCount] = useState(localStorage.getItem('cartCount') ? JSON.parse(localStorage.getItem('cartCount')) : 0)
+  const [Cart, setCart] = useState([])
+  const [cartCount, setCartCount] = useState(0)
 
   useEffect(() => {
-    SaveLocal()
-    setCartCount(Cart.length)
+    const item = localStorage.getItem('cart')
+    const cart = JSON.parse(item)
+    if (cart.length > 0) {
+      setCart(cart)
+    }
+  }, [])
+
+  useEffect(() => {
+    const item = localStorage.getItem('cartCount')
+    const cartCount = JSON.parse(item)
+    setCartCount(cartCount)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(Cart))
+  }, [Cart])
+
+  useEffect(() => {
+    localStorage.setItem('cartCount', JSON.stringify(Cart.length))
   }, [Cart])
 
   const AddToCart = (product, selectedSize) => {
@@ -72,14 +89,20 @@ export const CartProvider = ({ children }) => {
       newItems[existItem].quantity = selectedSize === 1 ? newItems[existItem].quantity + 1 : newItems[existItem].quantity + 2
       newItems[existItem].price = selectedSize === 1 ? product.price_ind : product.price_par
       setCart(newItems)
-      SaveLocal()
+    } else {
+      setCart(prevState => [...prevState, { ...product, quantity: selectedSize === 1 ? 1 : 2, price: selectedSize === 1 ? product.price_ind : product.price_par }])
     }
-    setCart(prevState => [...prevState, { ...product, quantity: selectedSize === 1 ? 1 : 2, price: selectedSize === 1 ? product.price_ind : product.price_par }])
     SaveLocal()
     toast.success('Producto agregado al carrito')
   }
 
   const RemoveFromCart = product => {
+    const existItem = Cart.findIndex(i => i.id === product.id)
+    if (existItem > 0) {
+      const newItems = structuredClone(Cart)
+      newItems[existItem].quantity -= 1
+      setCart(newItems)
+    }
     setCart(prevState => prevState.filter(item => item.id !== product.id))
     SaveLocal()
     toast.error('Producto eliminado del carrito')
@@ -92,7 +115,7 @@ export const CartProvider = ({ children }) => {
   }
 
   const SaveLocal = () => {
-    if (typeof window !== 'undefined' || typeof window === 'object') {
+    if (window !== 'undefined') {
       localStorage.setItem('cart', JSON.stringify(Cart))
       localStorage.setItem('cartCount', Cart.length)
     } else {
@@ -101,7 +124,7 @@ export const CartProvider = ({ children }) => {
   }
 
   return (
-    <StoreContext.Provider value={{ Cart, AddToCart, ClearCart, RemoveFromCart, cartCount }}>
+    <StoreContext.Provider value={{ Cart, AddToCart, ClearCart, RemoveFromCart, cartCount, setCart, setCartCount }}>
       {children}
       <Toaster />
     </StoreContext.Provider>
