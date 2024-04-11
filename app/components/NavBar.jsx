@@ -257,7 +257,7 @@ export default function NavBar() {
         </Dialog>
       </Transition.Root>
 
-      <header className='relative z-10 w-full '>
+      <header className='fixed z-10 w-full'>
         <nav aria-label='Top'>
           {/* Top navigation */}
           <div className='bg-[#998779]'>

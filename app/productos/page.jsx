@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { ArrowRightIcon } from '@heroicons/react/20/solid'
+import { ShoppingCartIcon } from '@heroicons/react/20/solid'
 import { Productos } from '../api'
 import { Raleway } from 'next/font/google'
 import Image from 'next/image'
@@ -8,12 +8,14 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Link from 'next/link'
 import Filters from '../components/Filters'
+import useCart from '../hooks/useCart'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
 export default function Products() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
+  const { AddToCart } = useCart()
   const [filtered, setFiltered] = useState({
     category: 'All',
     sort: 'All'
@@ -59,7 +61,7 @@ export default function Products() {
   }, [])
 
   return (
-    <div className='bg-[#F4E8D8]'>
+    <div className='bg-[#F4E8D8] pt-24'>
       <main className='pb-24'>
         <div className='relative m-0 mb-5 overflow-hidden'>
           <div
@@ -140,40 +142,40 @@ export default function Products() {
                   key={Item.id}
                   className='relative flex w-full max-w-[17rem] md:max-h-[35rem] h-full flex-col rounded-xl bg-white bg-clip-border  text-gray-700 shadow-lg'
                 >
-                  <div className='relative overflow-hidden text-white md:max-h-60 max-h-40 rounded-xl'>
-                    <img
-                      src={Item.image}
-                      alt={Item.name}
-                      className='object-contain w-full h-full'
-                    />
-                    <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/10'></div>
-                  </div>
-                  <div className='p-3 px-2 md:px-4'>
-                    <div className='flex items-center justify-between mb-1'>
-                      <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
-                      {Item.material === 'Plata' ? (
-                        <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
-                      ) : (
-                        <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
-                      )}
+                  <Link
+                    href={`/productos/${Item.id}`}
+                    className=''
+                  >
+                    <div className='relative overflow-hidden text-white md:max-h-60 max-h-40 rounded-xl'>
+                      <img
+                        src={Item.image}
+                        alt={Item.name}
+                        className='object-contain w-full h-full'
+                      />
+                      <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/10'></div>
                     </div>
-                    <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
-                      <div className='flex items-center w-full'>
-                        <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_ind)}</span>
+                    <div className='p-3 px-2 md:px-4'>
+                      <div className='flex items-center justify-between mb-1'>
+                        <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
+                        {Item.material === 'Plata' ? (
+                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
+                        ) : (
+                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
+                        )}
                       </div>
-                      <div className='flex items-center justify-end rounded-full border-2 border-transparent hover:border-[#998779] transition-all hover:scale-110 '>
-                        <Link
-                          href={`/productos/${Item.id}`}
-                          className=''
+                      <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                        <div className='flex items-center w-full'>
+                          <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_ind)}</span>
+                        </div>
+                        <button
+                          onClick={() => AddToCart(Item)}
+                          className='z-10 flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
                         >
-                          <ArrowRightIcon
-                            className='w-6 h-6 text-gray-900'
-                            aria-hidden='true'
-                          />
-                        </Link>
+                          <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                        </button>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ))
             )}
