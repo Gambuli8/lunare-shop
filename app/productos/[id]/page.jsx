@@ -56,7 +56,7 @@ export default function ProductId() {
   }
 
   return (
-    <div className='bg-white'>
+    <div className='pt-16 bg-white'>
       {products.length === 0 ? (
         <div className='flex items-center justify-center h-screen'>
           <Loading />

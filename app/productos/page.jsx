@@ -15,7 +15,7 @@ const raleway = Raleway({ subsets: ['latin'] })
 export default function Products() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
-  const { AddToCart } = useCart()
+  const { AddToCartCard } = useCart()
   const [filtered, setFiltered] = useState({
     category: 'All',
     sort: 'All'
@@ -154,28 +154,28 @@ export default function Products() {
                       />
                       <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/10'></div>
                     </div>
-                    <div className='p-3 px-2 md:px-4'>
-                      <div className='flex items-center justify-between mb-1'>
-                        <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
-                        {Item.material === 'Plata' ? (
-                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
-                        ) : (
-                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
-                        )}
-                      </div>
-                      <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
-                        <div className='flex items-center w-full'>
-                          <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_ind)}</span>
-                        </div>
-                        <button
-                          onClick={() => AddToCart(Item)}
-                          className='z-10 flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
-                        >
-                          <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
-                        </button>
-                      </div>
-                    </div>
                   </Link>
+                  <div className='p-3 px-2 md:px-4'>
+                    <div className='flex items-center justify-between mb-1'>
+                      <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
+                      {Item.material === 'Plata' ? (
+                        <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
+                      ) : (
+                        <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
+                      )}
+                    </div>
+                    <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                      <div className='flex items-center w-full'>
+                        <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_par)}</span>
+                      </div>
+                      <button
+                        onClick={() => AddToCartCard(Item)}
+                        className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
+                      >
+                        <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))
             )}

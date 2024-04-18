@@ -4,13 +4,16 @@ import { useState, useEffect } from 'react'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import { ProductosDestacados } from '../api'
 import { Raleway } from 'next/font/google'
-import { ArrowRightIcon } from '@heroicons/react/20/solid'
+import { ShoppingCartIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
+import useCart from '../hooks/useCart'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
 export default function ProductTrending() {
   const [loading, setLoading] = useState(false)
   const [products, setProducts] = useState([])
+  const { AddToCartCard } = useCart()
 
   useEffect(() => {
     const fechProducts = async () => {
@@ -21,6 +24,14 @@ export default function ProductTrending() {
     }
     fechProducts()
   }, [])
+
+  //* FORMATEAR PRECIO
+  const formatPrice = price => {
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN'
+    }).format(price)
+  }
 
   return (
     <section
@@ -69,13 +80,18 @@ export default function ProductTrending() {
                     className='inline-flex flex-col w-auto h-auto text-center lg:w-72'
                   >
                     <div className='relative px-10 group'>
-                      <div className='w-full overflow-hidden bg-gray-200 rounded-md aspect-h-1 aspect-w-1'>
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className='object-cover object-center w-full h-full group-hover:opacity-75'
-                        />
-                      </div>
+                      <Link
+                        rel='stylesheet'
+                        href={`/productos/${product.id}`}
+                      >
+                        <div className='w-full overflow-hidden bg-gray-200 rounded-md aspect-h-1 aspect-w-1'>
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className='object-cover object-center w-full h-full group-hover:opacity-75'
+                          />
+                        </div>
+                      </Link>
                       <div className='flex flex-col mt-6'>
                         <h3 className={` ${raleway.className} mt-1 font-normal text-gray-900 uppercase`}>
                           <a href={product.href}>
@@ -84,18 +100,13 @@ export default function ProductTrending() {
                           </a>
                         </h3>
                         <div className='flex items-center justify-between w-full gap-3 mt-5'>
-                          <p className='mt-1 text-gray-900'>{product.price_ind}</p>
-                          <div className=' z-20 flex items-center justify-end rounded-full border-2 border-transparent hover:border-[#998779] transition-all hover:scale-110 '>
-                            <a
-                              href={`/productos/${product.id}`}
-                              className=''
-                            >
-                              <ArrowRightIcon
-                                className='w-6 h-6 text-gray-900'
-                                aria-hidden='true'
-                              />
-                            </a>
-                          </div>
+                          <p className='mt-1 text-gray-900'>{product.price_par}</p>
+                          <button
+                            onClick={() => AddToCartCard(product)}
+                            className='z-0 flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
+                          >
+                            <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                          </button>
                         </div>
                       </div>
                     </div>
