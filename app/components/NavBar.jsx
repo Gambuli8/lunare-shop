@@ -37,14 +37,15 @@ const navigation = {
   pages: [
     { name: 'Inicio', href: '/' },
     { name: 'Contacto', href: '/contacto' },
-    { name: 'Política de devolución', href: '#' }
+    { name: 'Política de devolución', href: '/Politica-de-devolución' }
   ]
 }
 const productos = [
-  { name: 'Aros', href: '#' },
-  { name: 'Pulseras', href: '#' },
-  { name: 'Dijes', href: '#' },
-  { name: 'Cadenas', href: '#' },
+  { name: 'Aros', href: '/productos?Aro' },
+  { name: 'Pulseras', href: '/productos?pulsera' },
+  { name: 'Dijes', href: '/productos?dije' },
+  { name: 'Cadenas', href: '/productos?cadena' },
+  { name: 'Conjuntos', href: '/productos?Conjunto' },
   { name: 'Vér Todos ', href: '/productos' }
 ]
 
@@ -54,7 +55,6 @@ function classNames(...classes) {
 
 export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [products, setProducts] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
 
   const debounceRef = useRef()
@@ -68,18 +68,6 @@ export default function NavBar() {
       setSearchTerm(value)
     }, 1000)
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await Productos.getProducts.list()
-        setProducts(result)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    fetchData()
-  }, [])
 
   return (
     <div>
@@ -257,7 +245,7 @@ export default function NavBar() {
         </Dialog>
       </Transition.Root>
 
-      <header className='relative z-10 w-full '>
+      <header className='fixed z-10 w-full'>
         <nav aria-label='Top'>
           {/* Top navigation */}
           <div className='bg-[#998779]'>

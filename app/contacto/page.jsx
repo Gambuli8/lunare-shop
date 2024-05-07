@@ -5,7 +5,7 @@ const raleway = Raleway({ subsets: ['latin'] })
 
 export default function Contacto() {
   return (
-    <div className='relative bg-white isolate'>
+    <div className='relative bg-white pt-14 isolate'>
       {/* <NavBar /> */}
       <div className='grid grid-cols-1 mx-auto max-w-7xl lg:grid-cols-2'>
         <div className='relative px-6 pt-20 pb-12 lg:static lg:px-8'>

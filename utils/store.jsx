@@ -96,6 +96,20 @@ export const CartProvider = ({ children }) => {
     toast.success('Producto agregado al carrito')
   }
 
+  const AddToCartCard = (product, selectedSize) => {
+    const existItem = Cart.findIndex(i => i.id === product.id)
+    if (existItem > 0) {
+      const newItems = structuredClone(Cart)
+      newItems[existItem].quantity + 1
+      newItems[existItem].price = product.price_par
+      setCart(newItems)
+    } else {
+      setCart(prevState => [...prevState, { ...product, quantity: 1, price: product.price_par }])
+    }
+    SaveLocal()
+    toast.success('Producto agregado al carrito')
+  }
+
   const RemoveFromCart = product => {
     const existItem = Cart.findIndex(i => i.id === product.id)
     if (existItem > 0) {
@@ -124,7 +138,7 @@ export const CartProvider = ({ children }) => {
   }
 
   return (
-    <StoreContext.Provider value={{ Cart, AddToCart, ClearCart, RemoveFromCart, cartCount, setCart, setCartCount }}>
+    <StoreContext.Provider value={{ Cart, AddToCart, ClearCart, RemoveFromCart, cartCount, setCart, setCartCount, AddToCartCard }}>
       {children}
       <Toaster />
     </StoreContext.Provider>
