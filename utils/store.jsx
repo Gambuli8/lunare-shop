@@ -101,10 +101,10 @@ export const CartProvider = ({ children }) => {
     if (existItem > 0) {
       const newItems = structuredClone(Cart)
       newItems[existItem].quantity + 1
-      newItems[existItem].price = product.price_ind
+      newItems[existItem].price = product.price_par
       setCart(newItems)
     } else {
-      setCart(prevState => [...prevState, { ...product, quantity: 1, price: product.price_ind }])
+      setCart(prevState => [...prevState, { ...product, quantity: 1, price: product.price_par }])
     }
     SaveLocal()
     toast.success('Producto agregado al carrito')

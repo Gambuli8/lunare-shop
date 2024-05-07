@@ -11,6 +11,10 @@ const Productos = {
     method: 'get',
     url: '/productos/:name'
   },
+  filteredProductsCategory: {
+    method: 'get',
+    url: '/productos?:product'
+  },
 
   getProducts: {
     list: async () => {
@@ -41,7 +45,7 @@ const Productos = {
               const [id, product, name, category, material, description, price_ind, price_par, stock, image] = row.split('\t')
               return { id, product, name, category, material, description, price_ind, price_par, stock: parseInt(stock), image }
             })
-            .find(product => product.id === id)
+            .find(products => products.id === id)
         })
         .catch(err => console.log(err))
     }
@@ -59,7 +63,25 @@ const Productos = {
               const [id, product, name, category, material, description, price_ind, price_par, stock, image] = row.split('\t')
               return { id, product, name, category, material, description, price_ind, price_par, stock: parseInt(stock), image }
             })
-            .filter(product => product.name === name)
+            .filter(products => products.name === name)
+        })
+        .catch(err => console.log(err))
+    }
+  },
+
+  filteredProductsCategory: {
+    list: async product => {
+      return await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSpv9p-CMI9c3oTr1ywNcM400pZPZpoUeWTlYxhgb0LbI-ObM2MoHbDSVStiCOGkhIuWLsvoi2LcbEa/pub?output=tsv')
+        .then(res => res.text())
+        .then(text => {
+          return text
+            .split('\n')
+            .slice(1)
+            .map(row => {
+              const [id, product, name, category, material, description, price_ind, price_par, stock, image] = row.split('\t')
+              return { id, product, name, category, material, description, price_ind, price_par, stock: parseInt(stock), image }
+            })
+            .filter(products => products.product === product)
         })
         .catch(err => console.log(err))
     }

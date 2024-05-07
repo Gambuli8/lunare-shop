@@ -25,7 +25,7 @@ const Italiano = Italiana({ subsets: ['latin'], weight: '400' })
 export default function ProductId() {
   //* ESTADOS
   const [selectedSize, setSelectedSize] = useState(productStock[0])
-  const { id } = useParams()
+  const { id, product } = useParams()
   const [products, setProducts] = useState([])
   const { AddToCart, Cart } = useCart()
 
@@ -42,9 +42,6 @@ export default function ProductId() {
     fetchData()
   }, [id])
 
-  console.log(products)
-  console.log(Cart)
-
   // //* AGREGAR PRODUCTO AL CARRITO
 
   //* FORMATEAR PRECIO
@@ -56,7 +53,7 @@ export default function ProductId() {
   }
 
   return (
-    <div className='pt-16 bg-white'>
+    <div className='pt-20 bg-white'>
       {products.length === 0 ? (
         <div className='flex items-center justify-center h-screen'>
           <Loading />
@@ -114,7 +111,7 @@ export default function ProductId() {
 
           {/* Product image */}
           <div className='mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center'>
-            <div className='overflow-hidden rounded-lg aspect-h-1 aspect-w-1'>
+            <div className='p-20 overflow-hidden rounded-lg aspect-h-1 aspect-w-1'>
               <img
                 src={products.image}
                 alt={products.name}
