@@ -45,11 +45,11 @@ export default function Products() {
   const filteredProducts = filterProducts(products).sort(SortAll)
 
   const productSelect = () => {
-    if (location.href === 'https://lunare-shop.vercel.app/productos?Aro') return 'Aro'
-    if (location.href === 'https://lunare-shop.vercel.app/productos?pulsera') return 'pulsera'
-    if (location.href === 'https://lunare-shop.vercel.app/productos?dije') return 'dije'
-    if (location.href === 'https://lunare-shop.vercel.app/productos?cadena') return 'cadena'
-    if (location.href === 'https://lunare-shop.vercel.app/productos?Conjunto') return 'Conjunto'
+    if (location.search === '?Aro') return 'Aro'
+    if (location.search === '?pulsera') return 'pulsera'
+    if (location.search === '?dije') return 'dije'
+    if (location.search === '?cadena') return 'cadena'
+    if (location.search === '?Conjunto') return 'Conjunto'
   }
 
   //* FORMATEAR PRECIO
