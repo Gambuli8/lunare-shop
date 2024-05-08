@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       <head>
         <link
           rel='icon'
-          href='/app/favicon.ico'
+          href='https://res.cloudinary.com/ds7hhoq17/image/upload/v1708557816/Logo/logo-redondo_bzmu99.png'
           type='image/x-icon'
         />
       </head>
