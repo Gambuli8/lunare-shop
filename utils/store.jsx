@@ -65,6 +65,8 @@ export const CartProvider = ({ children }) => {
     const cart = JSON.parse(item)
     if (cart.length > 0) {
       setCart(cart)
+    } else {
+      null
     }
   }, [])
 
