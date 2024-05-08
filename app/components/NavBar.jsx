@@ -1,12 +1,11 @@
 'use client'
 
-import { Fragment, useState, useEffect, useRef } from 'react'
+import { Fragment, useState, useRef } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import Cart from './Cart'
 import Image from 'next/image'
-import { Productos } from '../api'
 
 const navigation = {
   categories: [
@@ -252,7 +251,7 @@ export default function NavBar() {
             <div className='flex items-center justify-between h-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
               <div className='hidden lg:block lg:flex-1'></div>
 
-              <p className='flex-1 text-sm font-medium text-center text-white lg:flex-none'>25% OFF en Efectivo & 3 CUOTAS SIN INTERES con tarjetas.</p>
+              <p className='flex-1 text-sm font-medium text-center text-white lg:flex-none'>15% OFF en Efectivo & 3 CUOTAS SIN INTERES con tarjetas.</p>
 
               <div className='hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6'>
                 <a
@@ -382,7 +381,7 @@ export default function NavBar() {
                         type='search'
                         className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
                         placeholder='Buscar...'
-                        onChange={queryChange}
+                        onChange={() => queryChange()}
                       />
                       <MagnifyingGlassIcon
                         className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:border-r peer-focus:stroke-[#998779]'
@@ -419,6 +418,7 @@ export default function NavBar() {
                               className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
                               placeholder='Buscar...'
                               onChange={queryChange}
+                              id='1'
                             />
                             <MagnifyingGlassIcon
                               className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:stroke-[#998779]'
