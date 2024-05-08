@@ -382,6 +382,7 @@ export default function NavBar() {
                         className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
                         placeholder='Buscar...'
                         onChange={() => queryChange()}
+                        id='2'
                       />
                       <MagnifyingGlassIcon
                         className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:border-r peer-focus:stroke-[#998779]'
