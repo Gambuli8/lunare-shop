@@ -5,10 +5,11 @@ import { useParams } from 'next/navigation'
 import { RadioGroup } from '@headlessui/react'
 import { Productos } from '../../api'
 import { Italiana } from 'next/font/google'
-import { CheckIcon, QuestionMarkCircleIcon } from '@heroicons/react/20/solid'
+import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
+import toast from 'react-hot-toast'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -23,9 +24,9 @@ const Italiano = Italiana({ subsets: ['latin'], weight: '400' })
 
 export default function ProductId() {
   //* ESTADOS
-  const [selectedSize, setSelectedSize] = useState(productStock[0])
   const { id, product } = useParams()
   const [products, setProducts] = useState([])
+  const [quantity, setQuantity] = useState(1)
   const { AddToCart, Cart } = useCart()
 
   //* LLAMADAS A LA API
@@ -51,14 +52,34 @@ export default function ProductId() {
     }).format(price)
   }
 
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1)
+    }
+  }
+
+  const increaseQuantity = () => {
+    if (quantity < products.stock) {
+      setQuantity(quantity + 1)
+    }
+    if (quantity === products.stock) {
+      toast.success('maximo de stock')
+    }
+  }
+
+  const Addtocart = () => {
+    AddToCart(products, quantity)
+    setQuantity(1)
+  }
+
   return (
-    <div className='pt-20 bg-white'>
+    <div className='bg-white pt-14'>
       {products.length === 0 ? (
         <div className='flex items-center justify-center h-screen'>
           <Loading />
         </div>
       ) : (
-        <div className='max-w-2xl px-4 py-8 mx-auto sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8'>
+        <div className='max-w-2xl px-4 pt-4 mx-auto sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8'>
           {/* Product details */}
           <div className='lg:max-w-lg lg:self-end'>
             <Breadcrumb products={products} />
@@ -79,7 +100,13 @@ export default function ProductId() {
               </h2>
 
               <div className='flex items-center'>
-                <p className='text-lg text-gray-900 sm:text-xl'>{productStock[0].cantidad !== selectedSize ? `${formatPrice(products.price_par)}` : productStock[0].cantidad === selectedSize ? `${formatPrice(products.price_ind)}` : ''}</p>
+                {products.stock >= 1 ? (
+                  <p className='text-lg text-gray-900 sm:text-xl'>
+                    {quantity === 2 ? `${formatPrice(products.price_par)}` : quantity === 1 ? `${formatPrice(products.price_ind)}` : quantity > 2 ? `${formatPrice(products.price_ind * quantity)}` : ''}
+                  </p>
+                ) : (
+                  <p>-</p>
+                )}
 
                 <div className='pl-4 ml-4 border-l border-gray-300'>
                   <div className='flex items-center'>
@@ -99,10 +126,17 @@ export default function ProductId() {
               </div>
 
               <div className='flex items-center mt-6'>
-                <CheckIcon
-                  className='flex-shrink-0 w-5 h-5 text-green-500'
-                  aria-hidden='true'
-                />
+                {products.stock ? (
+                  <CheckIcon
+                    className='flex-shrink-0 w-5 h-5 text-green-500'
+                    aria-hidden='true'
+                  />
+                ) : (
+                  <XMarkIcon
+                    className='flex-shrink-0 w-6 h-6 text-red-500'
+                    aria-hidden='true'
+                  />
+                )}
                 <p className='ml-2 text-sm text-gray-500'>{products.stock > 0 ? `En Stock` : 'No hay stock'}</p>
               </div>
             </section>
@@ -130,46 +164,34 @@ export default function ProductId() {
               </h2>
 
               <form>
-                <div className='sm:flex sm:justify-between'>
-                  {/* Size selector */}
-                  <RadioGroup
-                    value={selectedSize}
-                    onChange={setSelectedSize}
-                  >
-                    <RadioGroup.Label className='block text-sm font-medium text-gray-700'>Cantidad</RadioGroup.Label>
-                    <div className='grid grid-cols-1 gap-4 mt-1 sm:grid-cols-2'>
-                      {productStock.map(size => (
-                        <RadioGroup.Option
-                          as='div'
-                          key={size.cantidad}
-                          value={size.cantidad}
-                          className={({ active }) => classNames(active ? 'ring-2 ring-[#998779]' : '', 'relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none')}
-                        >
-                          {({ active, checked }) => (
-                            <>
-                              <RadioGroup.Label
-                                as='p'
-                                className='text-base font-medium text-gray-900'
-                              >
-                                {size.cantidad}
-                              </RadioGroup.Label>
-                              <RadioGroup.Description
-                                as='p'
-                                className='mt-1 text-sm text-gray-500'
-                              >
-                                {size.description}
-                              </RadioGroup.Description>
-                              <div
-                                className={classNames(active ? 'border' : 'border-2', checked ? 'border-[#998779]' : 'border-transparent', 'pointer-events-none absolute -inset-px rounded-lg')}
-                                aria-hidden='true'
-                              />
-                            </>
-                          )}
-                        </RadioGroup.Option>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </div>
+                {/* select counter */}
+                {products.stock ? (
+                  <div className='flex flex-row items-center gap-4 p-2 rounded-md bg-[#998779] w-28 h-14 justify-center'>
+                    <button
+                      type='button'
+                      onClick={() => decreaseQuantity()}
+                      className='w-10 h-10 text-xl rounded-sm bg-transparent flex items-center justify-center hover:bg-[#F4E8D8] hover:opacity-75'
+                    >
+                      -
+                    </button>
+                    <input
+                      type='button'
+                      value={quantity}
+                      onChange={e => setQuantity(parseInt(e.target.value))}
+                      min={1}
+                      max={products.stock}
+                      className='flex items-center justify-center text-xl font-medium'
+                    />
+                    <button
+                      type='button'
+                      onClick={increaseQuantity}
+                      className='w-10 h-10 text-xl rounded-sm bg-transparent flex items-center justify-center hover:bg-[#F4E8D8] hover:opacity-75'
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : null}
+
                 <div className='mt-4'>
                   <a
                     href='#'
@@ -182,15 +204,17 @@ export default function ProductId() {
                     />
                   </a>
                 </div>
-                <div className='mt-10'>
-                  <button
-                    type='button'
-                    className='flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
-                    onClick={() => AddToCart(products, selectedSize)}
-                  >
-                    Agregar al carrito
-                  </button>
-                </div>
+                {products.stock ? (
+                  <div className='mt-10'>
+                    <button
+                      type='button'
+                      className='flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
+                      onClick={() => Addtocart()}
+                    >
+                      Agregar al carrito
+                    </button>
+                  </div>
+                ) : null}
               </form>
             </section>
           </div>

@@ -74,7 +74,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className='pt-20 bg-white'>
+    <div className='bg-white pt-28'>
       {/* <NavBar /> */}
       <div className='px-4 pt-4 pb-16 mx-auto max-w-7xl sm:px-6 sm:pb-24 sm:pt-8 lg:px-8 xl:px-2 xl:pt-14'>
         <h1 className='sr-only'>Checkout</h1>
@@ -106,9 +106,18 @@ export default function Checkout() {
                     <div className='flex-auto'>
                       <div className='space-y-1 sm:flex sm:items-start sm:justify-between sm:space-x-6'>
                         <div className='flex-auto space-y-1 text-sm font-medium'>
-                          <h3 className='text-gray-900'>
+                          <div className='flex items-center justify-start gap-5 text-gray-900 '>
                             <a href={product.href}>{product.name}</a>
-                          </h3>
+                            {product.quantity === 1 ? (
+                              <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md'>Individual</span>
+                            ) : product.quantity === 2 ? (
+                              <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md'>Par</span>
+                            ) : product.quantity > 2 ? (
+                              <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md'>
+                                Cantidad: <p className='px-1 font-medium text-gray-700'>{product.quantity}</p>
+                              </span>
+                            ) : null}
+                          </div>
                           <p className='text-gray-900'>{formatPrice(product.price)}</p>
                           <p className='hidden text-gray-500 sm:block'>{product.description}</p>
                           <p className='hidden text-gray-500 sm:block'>{product.material}</p>
@@ -117,10 +126,10 @@ export default function Checkout() {
                           <div className='flex pl-4 border-l border-gray-300'>
                             <button
                               type='button'
-                              className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
+                              className='text-sm font-medium '
                               onClick={() => RemoveFromCart(product)}
                             >
-                              Remove
+                              <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded-md'>Quitar</span>
                             </button>
                           </div>
                         </div>
@@ -172,7 +181,7 @@ export default function Checkout() {
 
             <form className='mt-6'>
               <h2 className='text-lg font-medium text-gray-900'>pagar en efectivo</h2>
-              <p className='text-sm'>Quedar con el vendedor el retiro y el pago.</p>
+              <p className='text-sm'>Acordar con el vendedor el retiro y el pago.</p>
 
               <div className='mt-6'>
                 <label
