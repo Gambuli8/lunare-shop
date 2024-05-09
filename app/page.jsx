@@ -51,7 +51,7 @@ export default function Home() {
         {/* Trending products */}
         <ProductTrending />
         {/* Collections */}
-        <Collections />
+        {/* <Collections /> */}
         {/* Sale and testimonials */}
         <Sale />
       </main>

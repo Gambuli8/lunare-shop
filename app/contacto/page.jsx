@@ -1,4 +1,4 @@
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
+import { EnvelopeIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline'
 import { Raleway } from 'next/font/google'
 
 const raleway = Raleway({ subsets: ['latin'] })
@@ -69,7 +69,7 @@ export default function Contacto() {
               <div className='flex gap-x-4'>
                 <dt className='flex-none'>
                   <span className='sr-only'>Telefono</span>
-                  <PhoneIcon
+                  <ChatBubbleOvalLeftEllipsisIcon
                     className='w-6 text-gray-400 h-7'
                     aria-hidden='true'
                   />
@@ -77,7 +77,8 @@ export default function Contacto() {
                 <dd>
                   <a
                     className='hover:text-gray-900'
-                    href='tel:+1 (555) 234-5678'
+                    href='https://wa.me/+542954476558'
+                    target='_blank'
                   >
                     +54 2954-476558
                   </a>
@@ -94,9 +95,9 @@ export default function Contacto() {
                 <dd>
                   <a
                     className='hover:text-gray-900'
-                    href='mailto:hello@example.com'
+                    href='mailto:lunarejewelry.shop@gmail.com'
                   >
-                    lunareJewerly@gmail.com
+                    lunarejewelry.shop@gmail.com
                   </a>
                 </dd>
               </div>
