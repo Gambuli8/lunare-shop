@@ -134,12 +134,14 @@ export default function NavBar() {
                         <div className='grid items-start grid-cols-1 gap-x-6 gap-y-10'>
                           <div className='grid grid-cols-1 gap-x-6 gap-y-10'>
                             <div>
-                              <p
-                                id={`mobile-featured-heading-${categoryIdx}`}
-                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
-                              >
-                                Aros
-                              </p>
+                              <a href='/productos?Aro'>
+                                <p
+                                  id={`mobile-featured-heading-${categoryIdx}`}
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                >
+                                  Aros
+                                </p>
+                              </a>
                               <ul
                                 role='list'
                                 aria-labelledby={`mobile-featured-heading-${categoryIdx}`}
@@ -161,31 +163,48 @@ export default function NavBar() {
                               </ul>
                             </div>
                             <div>
-                              <p
-                                id='mobile-categories-heading'
-                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
-                              >
-                                Pulseras
-                              </p>
+                              <a href='/productos?pulsera'>
+                                <p
+                                  id={`mobile-featured-heading`}
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                >
+                                  Pulseras
+                                </p>
+                              </a>
                             </div>
                           </div>
                           <div className='grid grid-cols-1 gap-x-6 gap-y-10'>
                             <div>
-                              <p
-                                id='mobile-collection-heading'
-                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
-                              >
-                                Dijes
-                              </p>
+                              <a href='/productos?dije'>
+                                <p
+                                  id={`mobile-featured-heading`}
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                >
+                                  Dijes
+                                </p>
+                              </a>
                             </div>
 
                             <div>
-                              <p
-                                id='mobile-brand-heading'
-                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
-                              >
-                                Cadenas
-                              </p>
+                              <a href='/productos?cadena'>
+                                <p
+                                  id={`mobile-featured-heading`}
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                >
+                                  Cadenas
+                                </p>
+                              </a>
+                            </div>
+
+                            <div>
+                              <a href='/productos?Conjunto'>
+                                <p
+                                  id={`mobile-featured-heading`}
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                >
+                                  Conjuntos
+                                </p>
+                              </a>
                             </div>
                             <div>
                               <p
@@ -218,25 +237,6 @@ export default function NavBar() {
                   ))}
                 </div>
 
-                <div className='px-4 py-6 space-y-6 border-t border-gray-200'>
-                  <div className='flow-root'>
-                    <a
-                      href='#'
-                      className='block p-2 -m-2 font-medium text-gray-900'
-                    >
-                      Crear sesion
-                    </a>
-                  </div>
-                  <div className='flow-root'>
-                    <a
-                      href='#'
-                      className='block p-2 -m-2 font-medium text-gray-900'
-                    >
-                      Iniciar sesion
-                    </a>
-                  </div>
-                </div>
-
                 <div></div>
               </Dialog.Panel>
             </Transition.Child>
@@ -248,29 +248,8 @@ export default function NavBar() {
         <nav aria-label='Top'>
           {/* Top navigation */}
           <div className='bg-[#998779]'>
-            <div className='flex items-center justify-between h-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
-              <div className='hidden lg:block lg:flex-1'></div>
-
-              <p className='flex-1 text-sm font-medium text-center text-white lg:flex-none'>15% OFF en Efectivo & 3 CUOTAS SIN INTERES con tarjetas.</p>
-
-              <div className='hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6'>
-                <a
-                  href='#'
-                  className='text-sm font-medium text-white hover:text-gray-100'
-                >
-                  Crear sesion
-                </a>
-                <span
-                  className='w-px h-6 bg-gray-600'
-                  aria-hidden='true'
-                />
-                <a
-                  href='/inicio-sesion'
-                  className='text-sm font-medium text-white hover:text-gray-100'
-                >
-                  Iniciar sesion
-                </a>
-              </div>
+            <div className='flex items-center justify-center h-8 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
+              <p className='flex-1 text-base font-medium text-center text-white lg:flex-none'>15% OFF en Efectivo</p>
             </div>
           </div>
 
