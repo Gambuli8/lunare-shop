@@ -7,6 +7,7 @@ import { Raleway } from 'next/font/google'
 import { ShoppingCartIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import useCart from '../hooks/useCart'
+import Image from 'next/image'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -80,34 +81,40 @@ export default function ProductTrending() {
                     className='inline-flex flex-col w-auto h-auto text-center lg:w-72'
                   >
                     <div className='relative px-10 group'>
-                      <Link
-                        rel='stylesheet'
-                        href={`/productos/${product.id}`}
-                      >
-                        <div className='w-full overflow-hidden bg-gray-200 rounded-md aspect-h-1 aspect-w-1'>
+                      <a href={`/productos/${product.realid}`}>
+                        <div className='w-full overflow-auto bg-gray-200 rounded-md aspect-h-1 aspect-w-1'>
                           <img
                             src={product.image}
                             alt={product.name}
                             className='object-cover object-center w-full h-full group-hover:opacity-75'
                           />
                         </div>
-                      </Link>
+                      </a>
                       <div className='flex flex-col mt-6'>
                         <h3 className={` ${raleway.className} mt-1 font-normal text-gray-900 uppercase`}>
-                          <a href={product.href}>
-                            <span className='absolute inset-0' />
-                            {product.name}
-                          </a>
+                          <span className='absolute inset-0' />
+                          {product.name}
                         </h3>
-                        <div className='flex items-center justify-between w-full gap-3 mt-5'>
-                          <p className='mt-1 text-gray-900'>{product.price_par}</p>
-                          <button
-                            onClick={() => AddToCartCard(product)}
-                            className='z-0 flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
-                          >
-                            <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
-                          </button>
-                        </div>
+                        {product.stock ? (
+                          <div className='flex items-center justify-between w-full gap-3 mt-5'>
+                            <p className='mt-1 text-gray-900'>{formatPrice(product.price_par)}</p>
+                            <button
+                              onClick={() => AddToCartCard(product)}
+                              className='z-10 flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
+                            >
+                              <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                            <div className='flex items-center w-full'>
+                              <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-red-400 rounded-md bg-red-400/10 ring-1 ring-inset ring-red-400/20'>Sin Stock</span>
+                            </div>
+                            <button className='flex items-center justify-end transition-all border-2 border-transparent rounded-full '>
+                              <ShoppingCartIcon className='w-6 h-6 text-slate-300' />
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </li>

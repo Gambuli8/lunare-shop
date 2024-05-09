@@ -9,6 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Link from 'next/link'
 import Filters from '../components/Filters'
 import useCart from '../hooks/useCart'
+import SvgShoppinCartPlus from './svgShoppinCartPlus'
 import { useParams } from 'next/navigation'
 
 const raleway = Raleway({ subsets: ['latin'] })
@@ -18,7 +19,7 @@ export default function Products() {
   const [productsCat, setProductsCat] = useState([])
   const [loading, setLoading] = useState(false)
   const {} = useParams()
-  const { AddToCartCard } = useCart()
+  const { AddToCartCard, Cart } = useCart()
   const [filtered, setFiltered] = useState({
     category: 'All',
     sort: 'All'
@@ -58,6 +59,12 @@ export default function Products() {
       style: 'currency',
       currency: 'MXN'
     }).format(price)
+  }
+
+  const IdCart = () => {
+    Cart.filter(item => {
+      item.id === products.id
+    })
   }
 
   useEffect(() => {
@@ -185,17 +192,39 @@ export default function Products() {
                         <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
                       )}
                     </div>
-                    <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
-                      <div className='flex items-center w-full'>
-                        <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_par)}</span>
+                    {Item.stock > 0 ? (
+                      <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                        <div className='flex items-center w-full'>
+                          <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_par || Item.price_ind)}</span>
+                        </div>
+                        {/* {( */}
+
+                        {/* ) ? ( */}
+                        <button
+                          onClick={() => AddToCartCard(Item)}
+                          className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
+                        >
+                          <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                        </button>
+                        {/* ) : ( */}
+                        {/* <button
+                          onClick={() => AddToCartCard(Item)}
+                          className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
+                        >
+                          <SvgShoppinCartPlus className='w-6 h-6 text-[#938377]' />
+                        </button> */}
+                        {/* )} */}
                       </div>
-                      <button
-                        onClick={() => AddToCartCard(Item)}
-                        className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
-                      >
-                        <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
-                      </button>
-                    </div>
+                    ) : (
+                      <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                        <div className='flex items-center w-full'>
+                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-red-400 rounded-md bg-red-400/10 ring-1 ring-inset ring-red-400/20'>Sin Stock</span>
+                        </div>
+                        <button className='flex items-center justify-end transition-all border-2 border-transparent rounded-full '>
+                          <ShoppingCartIcon className='w-6 h-6 text-slate-300' />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))

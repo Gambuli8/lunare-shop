@@ -5,57 +5,6 @@ import { toast, Toaster } from 'react-hot-toast'
 
 export const StoreContext = createContext()
 
-// const initialState = {
-//   cart: {
-//     items: []
-//   },
-//   user: null
-// }
-
-// const reducer = (state, action) => {
-//   switch (action.type) {
-//     case 'ADD_TO_CART': {
-//       const newItems = action.payload
-//       const existItem = state.cart.items.find(i => i.id === action.payload.id)
-
-//       if (existItem) {
-//         return {
-//           ...state,
-//           cart: {
-//             ...state.cart.items,
-//             items: state.cart.items.map(i => (i.id === action.payload.id ? newItems : i))
-//           }
-//         }
-//       } else {
-//         return {
-//           ...state,
-//           cart: {
-//             ...state.cart,
-//             items: [...state.cart.items, newItems]
-//           }
-//         }
-//       }
-//     }
-//     case 'REMOVE_FROM_CART':
-//       return {
-//         ...state,
-//         cart: state.cart.filter(item => item.id !== action.payload.id)
-//       }
-//     case 'SET_PRODUCTS':
-//       return {
-//         ...state,
-//         products: action.payload
-//       }
-//     case 'SET_USER':
-//       return {
-//         ...state,
-//         user: action.payload
-//       }
-//     default:
-//       return state
-//   }
-// }
-
 export const CartProvider = ({ children }) => {
   const [Cart, setCart] = useState([])
   const [cartCount, setCartCount] = useState(0)
@@ -63,6 +12,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const item = localStorage.getItem('cart')
     const cart = JSON.parse(item)
+    //al cart agregarle cart.lenght > 0
     if (cart) return setCart(cart)
   }, [])
 
@@ -80,15 +30,13 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cartCount', JSON.stringify(Cart.length))
   }, [Cart])
 
-  const AddToCart = (product, selectedSize) => {
+  const AddToCart = (product, quantity) => {
     const existItem = Cart.findIndex(i => i.id === product.id)
     if (existItem > 0) {
       const newItems = structuredClone(Cart)
-      newItems[existItem].quantity = selectedSize === 1 ? newItems[existItem].quantity + 1 : newItems[existItem].quantity + 2
-      newItems[existItem].price = selectedSize === 1 ? product.price_ind : product.price_par
       setCart(newItems)
     } else {
-      setCart(prevState => [...prevState, { ...product, quantity: selectedSize === 1 ? 1 : 2, price: selectedSize === 1 ? product.price_ind : product.price_par }])
+      setCart(prevState => [...prevState, { ...product, quantity, price: quantity === 2 ? product.price_par : quantity === 1 ? product.price_ind : quantity > 2 ? product.price_ind * quantity : '' }])
     }
     SaveLocal()
     toast.success('Producto agregado al carrito')
@@ -102,7 +50,7 @@ export const CartProvider = ({ children }) => {
       newItems[existItem].price = product.price_par
       setCart(newItems)
     } else {
-      setCart(prevState => [...prevState, { ...product, quantity: 1, price: product.price_par }])
+      setCart(prevState => [...prevState, { ...product, quantity: 2, price: product.price_par }])
     }
     SaveLocal()
     toast.success('Producto agregado al carrito')
