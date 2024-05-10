@@ -10,7 +10,7 @@ import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
 import toast from 'react-hot-toast'
-import Carousel from '@/app/components/carousel'
+import Carousell from '@/app/components/Carousell'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -152,7 +152,7 @@ export default function ProductId() {
                 className='object-cover object-center w-full h-full'
               />
             </div> */}
-            <Carousel />
+            <Carousell />
           </div>
 
           {/* Product form */}
