@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
     const item = localStorage.getItem('cart')
     const cart = JSON.parse(item)
     //al cart agregarle cart.lenght > 0
-    if (cart) return setCart(cart)
+    if (cart.length > 0) return setCart(cart)
   }, [])
 
   useEffect(() => {
@@ -32,28 +32,34 @@ export const CartProvider = ({ children }) => {
 
   const AddToCart = (product, quantity) => {
     const existItem = Cart.findIndex(i => i.id === product.id)
-    if (existItem > 0) {
+    if (existItem !== -1) {
       const newItems = structuredClone(Cart)
+      {
+        newItems[existItem].quantity < newItems[existItem].stock ? (newItems[existItem].quantity += 1 && toast.success('Producto agregado al carrito')) : toast.error('Maxímo de stock')
+      }
       setCart(newItems)
     } else {
       setCart(prevState => [...prevState, { ...product, quantity, price: quantity === 2 ? product.price_par : quantity === 1 ? product.price_ind : quantity > 2 ? product.price_ind * quantity : '' }])
+      toast.success('Producto agregado al carrito')
     }
     SaveLocal()
-    toast.success('Producto agregado al carrito')
   }
 
   const AddToCartCard = (product, selectedSize) => {
     const existItem = Cart.findIndex(i => i.id === product.id)
     if (existItem > 0) {
       const newItems = structuredClone(Cart)
-      newItems[existItem].quantity + 1
+      {
+        newItems[existItem].quantity < newItems[existItem].stock ? (newItems[existItem].quantity += 1) : toast.error('Maxímo de stock')
+      }
       newItems[existItem].price = product.price_par
       setCart(newItems)
+      toast.success('Producto agregado al carrito')
     } else {
       setCart(prevState => [...prevState, { ...product, quantity: 2, price: product.price_par }])
+      toast.success('Producto agregado al carrito')
     }
     SaveLocal()
-    toast.success('Producto agregado al carrito')
   }
 
   const RemoveFromCart = product => {

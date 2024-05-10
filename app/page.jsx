@@ -21,7 +21,7 @@ export default function Home() {
               aria-hidden='true'
               className='absolute hidden w-1/2 h-full bg-[#F4E8D8] lg:block'
             />
-            <div className='relative bg-[#F4E8D8] lg:bg-transparent'>
+            <div className='relative mt-16 bg-[#F4E8D8] lg:bg-transparent'>
               <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:grid lg:grid-cols-2 lg:px-8'>
                 <div className='max-w-2xl py-24 mx-auto lg:max-w-none lg:py-64'>
                   <div className='lg:pr-16'>

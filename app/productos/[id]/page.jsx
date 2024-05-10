@@ -10,6 +10,7 @@ import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
 import toast from 'react-hot-toast'
+import Carousel from '@/app/components/carousel'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -63,17 +64,17 @@ export default function ProductId() {
       setQuantity(quantity + 1)
     }
     if (quantity === products.stock) {
-      toast.success('maximo de stock')
+      toast.error('Maxímo de stock')
     }
   }
 
   const Addtocart = () => {
     AddToCart(products, quantity)
-    setQuantity(1)
+    // setQuantity(1)
   }
 
   return (
-    <div className='bg-white pt-14'>
+    <div className='pt-24 bg-white'>
       {products.length === 0 ? (
         <div className='flex items-center justify-center h-screen'>
           <Loading />
@@ -144,13 +145,14 @@ export default function ProductId() {
 
           {/* Product image */}
           <div className='mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center'>
-            <div className='p-20 overflow-hidden rounded-lg aspect-h-1 aspect-w-1'>
+            {/* <div className='p-20 overflow-hidden rounded-lg aspect-h-1 aspect-w-1'>
               <img
                 src={products.image}
                 alt={products.name}
                 className='object-cover object-center w-full h-full'
               />
-            </div>
+            </div> */}
+            <Carousel />
           </div>
 
           {/* Product form */}
