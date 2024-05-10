@@ -36,7 +36,8 @@ const navigation = {
   pages: [
     { name: 'Inicio', href: '/' },
     { name: 'Contacto', href: '/contacto' },
-    { name: 'Política de devolución', href: '/Politica-de-devolución' }
+    { name: 'Cuidados', href: '/cuidados' },
+    { name: 'Política de Cambios', href: '/politica' }
   ]
 }
 const productos = [
