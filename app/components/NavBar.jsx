@@ -1,11 +1,14 @@
 'use client'
 
-import { Fragment, useState, useRef } from 'react'
+import { Fragment, useState, useRef, useEffect } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Raleway } from 'next/font/google'
 import Cart from './Cart'
 import Image from 'next/image'
+import { Productos } from '../api'
+import { useParams } from 'next/navigation'
 
 const navigation = {
   categories: [
@@ -53,9 +56,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+const raleway = Raleway({ subsets: ['latin'] })
+
 export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [product, setProduct] = useState([])
 
   const debounceRef = useRef()
 
@@ -64,10 +70,21 @@ export default function NavBar() {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
-    debounceRef.current = setTimeout(() => {
-      setSearchTerm(value)
-    }, 1000)
+    setSearchTerm(value)
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await Productos.getProductName.list(searchTerm)
+        setProduct(result)
+        console.log(result)
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+    fetchData()
+  }, [searchTerm])
 
   return (
     <div>
@@ -353,22 +370,38 @@ export default function NavBar() {
                     </button>
 
                     {/* Search */}
-                    <form
-                      action=''
-                      className='relative '
-                    >
-                      <input
-                        type='search'
-                        className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
-                        placeholder='Buscar...'
-                        onChange={() => queryChange()}
-                        id='2'
-                      />
-                      <MagnifyingGlassIcon
-                        className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:border-r peer-focus:stroke-[#998779]'
-                        aria-hidden='true'
-                      />
-                    </form>
+                    <div className='flex flex-col items-center justify-center w-full h-full'>
+                      <form
+                        action=''
+                        className='relative '
+                      >
+                        <input
+                          type='search'
+                          className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
+                          placeholder='Buscar...'
+                          onChange={e => queryChange(e)}
+                          id='2'
+                        />
+                        <MagnifyingGlassIcon
+                          className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:border-r peer-focus:stroke-[#998779]'
+                          aria-hidden='true'
+                        />
+                      </form>
+                      {searchTerm.length > 0 ? (
+                        <div className='z-30 bg-[#F4E8D8] absolute flex-col w-48 h-full mt-[140px] overflow-y-auto rounded shadow-md max-h-60'>
+                          {product.map(result => {
+                            return (
+                              <a
+                                key={result.id}
+                                href={`/productos/${result.id}`}
+                              >
+                                <div className='hover:bg-[#998779]'>{result.name}</div>
+                              </a>
+                            )
+                          })}
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
 
                   {/* Logo (lg-) */}
@@ -389,7 +422,7 @@ export default function NavBar() {
                   <div className='flex items-center justify-end flex-1'>
                     <div className='flex items-center lg:ml-8'>
                       <div className='flex items-center space-x-8'>
-                        <div className='hidden lg:flex'>
+                        <div className='hidden lg:flex lg:flex-col lg:w-full lg:h-full'>
                           <form
                             action=''
                             className='relative mx-auto '
@@ -406,6 +439,29 @@ export default function NavBar() {
                               aria-hidden='true'
                             />
                           </form>
+                          {searchTerm.length > 0 ? (
+                            <div className='z-30 bg-[#F4E8D8] absolute flex-col w-72 h-auto mt-[35px] right-44 overflow-y-auto rounded-md shadow-md max-h-80'>
+                              {product.map(result => {
+                                return (
+                                  <a
+                                    key={result.id}
+                                    href={`/productos/${result.id}`}
+                                  >
+                                    <div className={` ${raleway.className} ml-1 hover:bg-[#998779] my-2 flex items-center gap-3 text-base`}>
+                                      <img
+                                        src={result.image}
+                                        alt={result.name}
+                                        className='object-cover w-10 h-10 rounded-md aspect-auto'
+                                      />
+                                      <div>
+                                        <p className='capitalize'>{result.name}</p>
+                                      </div>
+                                    </div>
+                                  </a>
+                                )
+                              })}
+                            </div>
+                          ) : null}
                         </div>
 
                         <div className='flex'>

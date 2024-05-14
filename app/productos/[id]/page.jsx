@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { RadioGroup } from '@headlessui/react'
 import { Productos } from '../../api'
 import { Italiana } from 'next/font/google'
-import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
@@ -74,7 +74,7 @@ export default function ProductId() {
   }
 
   return (
-    <div className='pt-24 bg-white'>
+    <div className='bg-white pt-28'>
       {products.length === 0 ? (
         <div className='flex items-center justify-center h-screen'>
           <Loading />
@@ -86,7 +86,7 @@ export default function ProductId() {
             <Breadcrumb products={products} />
 
             <div className='mt-4'>
-              <h1 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>{products.name}</h1>
+              <h1 className='text-3xl font-bold tracking-tight text-gray-900 capitalize sm:text-4xl'>{products.name}</h1>
             </div>
 
             <section
@@ -140,19 +140,29 @@ export default function ProductId() {
                 )}
                 <p className='ml-2 text-sm text-gray-500'>{products.stock > 0 ? `En Stock` : 'No hay stock'}</p>
               </div>
+              {quantity === 1 ? (
+                <div className='flex my-2'>
+                  <ExclamationCircleIcon className='w-5 h-5 text-red-600' />
+                  <p className='ml-2 text-sm text-gray-500 '>Precio por Unidad</p>
+                </div>
+              ) : (
+                <div className='flex my-2'>
+                  <ExclamationCircleIcon className='w-5 h-5 text-red-600' />
+                  <p className='ml-2 text-sm text-gray-500 '>Precio por par</p>
+                </div>
+              )}
             </section>
           </div>
 
           {/* Product image */}
           <div className='mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center'>
-            {/* <div className='p-20 overflow-hidden rounded-lg aspect-h-1 aspect-w-1'>
+            <div className='p-20 overflow-hidden rounded-lg aspect-h-1 aspect-w-1'>
               <img
                 src={products.image}
                 alt={products.name}
                 className='object-cover object-center w-full h-full'
               />
-            </div> */}
-            <Carousell />
+            </div>
           </div>
 
           {/* Product form */}
@@ -164,7 +174,6 @@ export default function ProductId() {
               >
                 Product options
               </h2>
-
               <form>
                 {/* select counter */}
                 {products.stock ? (

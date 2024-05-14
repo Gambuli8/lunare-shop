@@ -156,7 +156,44 @@ export default function Checkout() {
             </dl>
           </div>
 
-          <div className='w-full max-w-lg mx-auto'>
+          <div className='w-full max-w-lg mx-auto '>
+            <form className='mb-10'>
+              <h2 className='text-lg font-medium text-gray-900'>Metodo de envio</h2>
+
+              <div className='flex items-center justify-between gap-2 mt-6'>
+                <label
+                  htmlFor='email-address'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Retiro por Nueva Córdoba
+                  <p className='text-sm'>Se puede pagar en efectivo.</p>
+                </label>
+                <div className='flex items-center justify-center mt-1'>
+                  <p className='mx-2 text-sm'>(Gratis)</p>
+                  <input
+                    type='checkbox'
+                    className='rounded-md'
+                  />
+                </div>
+              </div>
+
+              <div className='flex items-center justify-between gap-2 mt-6'>
+                <label
+                  htmlFor='email-address'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Envio a domicilio
+                  <p className='text-sm'>Acordar con el vendedor.</p>
+                </label>
+                <div className='flex items-center justify-center mt-1'>
+                  <input
+                    type='checkbox'
+                    className='rounded-md'
+                  />
+                </div>
+              </div>
+            </form>
+
             <button
               type='button'
               onClick={handlerPreference}
@@ -166,67 +203,6 @@ export default function Checkout() {
               Comprar con Mercado pago
             </button>
             {preferenceId && <Wallet preferenceId={preferenceId} />}
-
-            <div className='relative mt-8'>
-              <div
-                className='absolute inset-0 flex items-center'
-                aria-hidden='true'
-              >
-                <div className='w-full border-t border-gray-200' />
-              </div>
-              <div className='relative flex justify-center'>
-                <span className='px-4 text-sm font-medium text-gray-500 bg-white'>o</span>
-              </div>
-            </div>
-
-            <form className='mt-6'>
-              <h2 className='text-lg font-medium text-gray-900'>pagar en efectivo</h2>
-              <p className='text-sm'>Acordar con el vendedor el retiro y el pago.</p>
-
-              <div className='mt-6'>
-                <label
-                  htmlFor='email-address'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Email address
-                </label>
-                <div className='mt-1'>
-                  <input
-                    type='email'
-                    id='email-address'
-                    name='email-address'
-                    autoComplete='email'
-                    className='block w-full px-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                  />
-                </div>
-              </div>
-
-              <div className='mt-6'>
-                <label
-                  htmlFor='phone'
-                  className='block text-sm font-medium text-gray-700'
-                >
-                  Phone number
-                </label>
-                <div className='mt-1'>
-                  <input
-                    type='text'
-                    name='phone'
-                    id='phone'
-                    autoComplete='tel'
-                    className='block w-full px-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-                  />
-                </div>
-              </div>
-
-              <button
-                type='submit'
-                disabled
-                className='w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500'
-              >
-                Continue
-              </button>
-            </form>
           </div>
         </div>
       </div>
