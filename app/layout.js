@@ -22,7 +22,8 @@ export default function RootLayout({ children }) {
 
       <body className={inter.className}>
         <CartProvider>
-          <NavBar />
+          {location.pathname === '/inicio-sesion' ? null : <NavBar />}
+          {/* <NavBar /> */}
           {children}
         </CartProvider>
       </body>
