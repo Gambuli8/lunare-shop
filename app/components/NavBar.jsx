@@ -7,7 +7,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Raleway } from 'next/font/google'
 import Cart from './Cart'
 import Image from 'next/image'
-import { Productos } from '../api'
+import { Productos } from '../apiLocal'
 import { useParams } from 'next/navigation'
 
 const navigation = {
@@ -388,14 +388,23 @@ export default function NavBar() {
                         />
                       </form>
                       {searchTerm.length > 0 ? (
-                        <div className='z-30 bg-[#F4E8D8] absolute flex-col w-48 h-full mt-[140px] overflow-y-auto rounded shadow-md max-h-60'>
+                        <div className='z-30 bg-[#F4E8D8] absolute flex-col w-44 h-auto right-40 overflow-y-auto mt-44 rounded-md shadow-md max-h-28'>
                           {product.map(result => {
                             return (
                               <a
                                 key={result.id}
                                 href={`/productos/${result.id}`}
                               >
-                                <div className='hover:bg-[#998779]'>{result.name}</div>
+                                <div className={` ${raleway.className} ml-1 hover:bg-[#998779] my-2 flex items-center gap-3 text-sm`}>
+                                  <img
+                                    src={result.image}
+                                    alt={result.name}
+                                    className='object-cover rounded-md w-7 h-7 aspect-auto'
+                                  />
+                                  <div>
+                                    <p className='capitalize'>{result.name}</p>
+                                  </div>
+                                </div>
                               </a>
                             )
                           })}

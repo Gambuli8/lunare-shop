@@ -3,14 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { RadioGroup } from '@headlessui/react'
-import { Productos } from '../../api'
+import { Productos } from '../../apiLocal'
 import { Italiana } from 'next/font/google'
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
 import toast from 'react-hot-toast'
-import Carousell from '@/app/components/Carousell'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')

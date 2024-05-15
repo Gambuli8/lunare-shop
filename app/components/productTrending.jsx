@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
-import { ProductosDestacados } from '../api'
+import { ProductosDestacados } from '../apiLocal'
 import { Raleway } from 'next/font/google'
 import { ShoppingCartIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'

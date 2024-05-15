@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { ShoppingCartIcon } from '@heroicons/react/20/solid'
-import { Productos } from '../api'
+import { Productos } from '../apiLocal'
 import { Raleway } from 'next/font/google'
 import Image from 'next/image'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
@@ -10,7 +10,6 @@ import Link from 'next/link'
 import Filters from '../components/Filters'
 import useCart from '../hooks/useCart'
 import SvgShoppinCartPlus from './svgShoppinCartPlus'
-import { useParams } from 'next/navigation'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -18,7 +17,6 @@ export default function Products() {
   const [products, setProducts] = useState([])
   const [productsCat, setProductsCat] = useState([])
   const [loading, setLoading] = useState(false)
-  const {} = useParams()
   const { AddToCartCard, Cart } = useCart()
   const [filtered, setFiltered] = useState({
     category: 'All',
