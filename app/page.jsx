@@ -6,6 +6,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import ProductTrending from './components/productTrending'
 import Sale from './components/sale'
 import Collections from './components/collections'
+import NavBar from './components/NavBar'
 
 const raleway = Raleway({ subsets: ['latin'] })
 const italiano = Italiana({ subsets: ['latin'], weight: '400' })
