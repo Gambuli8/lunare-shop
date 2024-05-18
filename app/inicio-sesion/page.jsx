@@ -25,17 +25,10 @@ export default function SignIn() {
 
   return (
     <>
-      <div className='flex flex-col justify-center flex-1 min-h-full py-12 sm:px-6 lg:px-8'>
-        <a href='/'>
+      <div className='flex flex-col justify-center flex-1 min-h-full pb-6 pt-28 sm:px-6 lg:px-8'>
+        {/* <a href='/'>
           <ArrowLeftCircleIcon className='w-12 md:w-14 h-auto px-1 text-[#998779] hover:scale-105 transition-all' />
-        </a>
-        <div className='sm:mx-auto sm:w-full sm:max-w-md'>
-          <img
-            className='w-40 h-auto mx-auto -mt-10'
-            src='https://res.cloudinary.com/ds7hhoq17/image/upload/v1708557835/Logo/logoLunareSinFondo_ovzq4x.png'
-            alt='Your Company'
-          />
-        </div>
+        </a> */}
 
         <div className=' sm:mx-auto sm:w-full sm:max-w-[480px]'>
           <div className='px-6 py-4 bg-white shadow sm:rounded-lg sm:px-12'>
