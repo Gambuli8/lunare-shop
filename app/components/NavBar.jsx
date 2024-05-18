@@ -377,7 +377,7 @@ export default function NavBar() {
                       >
                         <input
                           type='search'
-                          className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
+                          className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border border-transparent focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer'
                           placeholder='Buscar...'
                           onChange={e => queryChange(e)}
                           id='2'
@@ -438,7 +438,7 @@ export default function NavBar() {
                           >
                             <input
                               type='search'
-                              className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer '
+                              className='relative z-10 bg-transparent text-gray-500 pl-8 pr-4 w-8 h-8 rounded-full border border-transparent focus:w-full focus:pl-12 focus:pr-4 focus:cursor-text focus:border-[#998779] outline-none cursor-pointer'
                               placeholder='Buscar...'
                               onChange={queryChange}
                               id='1'
