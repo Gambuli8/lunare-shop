@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import axios from 'axios'
+import Link from 'next/link'
 
 export default function Checkout() {
   const { Cart, RemoveFromCart } = useCart()
@@ -107,7 +108,7 @@ export default function Checkout() {
                       <div className='space-y-1 sm:flex sm:items-start sm:justify-between sm:space-x-6'>
                         <div className='flex-auto space-y-1 text-sm font-medium'>
                           <div className='flex items-center justify-start gap-5 text-gray-900 '>
-                            <a href={product.href}>{product.name}</a>
+                            <Link href={product.href}>{product.name}</Link>
                             {product.quantity === 1 ? (
                               <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md'>Individual</span>
                             ) : product.quantity === 2 ? (

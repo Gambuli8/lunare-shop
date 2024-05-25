@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const navigation = {
   main: [
     { name: 'Inicio', href: '/' },
@@ -39,18 +41,18 @@ export default function Footer() {
               key={item.name}
               className='pb-6'
             >
-              <a
+              <Link
                 href={item.href}
                 className='text-sm leading-6 text-gray-600 hover:text-gray-900'
               >
                 {item.name}
-              </a>
+              </Link>
             </div>
           ))}
         </nav>
         <div className='flex justify-center mt-4 space-x-10'>
           {navigation.social.map(item => (
-            <a
+            <Link
               key={item.name}
               href={item.href}
               target='_blank'
@@ -61,7 +63,7 @@ export default function Footer() {
                 className='w-6 h-6'
                 aria-hidden='true'
               />
-            </a>
+            </Link>
           ))}
         </div>
         <p className='mt-10 text-xs leading-5 text-center text-gray-500'>&copy; 2024 Lunare Jewelry, Inc. Todos los derechos reservados.</p>

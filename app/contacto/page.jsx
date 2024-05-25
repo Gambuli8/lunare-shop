@@ -63,7 +63,7 @@ export default function Contacto() {
                 target='_blank'
               >
                 @lunareJewerly
-              </a>
+              </Link>
             </p>
             <dl className='mt-10 space-y-4 text-base leading-7 text-gray-600'>
               <div className='flex gap-x-4'>
@@ -81,7 +81,7 @@ export default function Contacto() {
                     target='_blank'
                   >
                     +54 2954-476558
-                  </a>
+                  </Link>
                 </dd>
               </div>
               <div className='flex gap-x-4'>
@@ -93,12 +93,12 @@ export default function Contacto() {
                   />
                 </dt>
                 <dd>
-                  <a
+                  <Link
                     className='hover:text-gray-900'
                     href='mailto:lunarejewelry.shop@gmail.com'
                   >
                     lunarejewelry.shop@gmail.com
-                  </a>
+                  </Link>
                 </dd>
               </div>
             </dl>

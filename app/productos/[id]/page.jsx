@@ -10,6 +10,8 @@ import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
 import toast from 'react-hot-toast'
+import Link from 'next/link'
+import {preload} from 'react-dom'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -39,7 +41,7 @@ export default function ProductId() {
         console.log(error.message)
       }
     }
-    fetchData()
+    preload(fetchData())
   }, [id])
 
   // //* AGREGAR PRODUCTO AL CARRITO
@@ -203,7 +205,7 @@ export default function ProductId() {
                 ) : null}
 
                 <div className='mt-4'>
-                  <a
+                  <Link
                     href='#'
                     className='inline-flex text-sm text-gray-500 group hover:text-gray-700'
                   >
@@ -212,7 +214,7 @@ export default function ProductId() {
                       className='flex-shrink-0 w-5 h-5 ml-2 text-gray-400 group-hover:text-gray-500'
                       aria-hidden='true'
                     />
-                  </a>
+                  </Link>
                 </div>
                 {products.stock ? (
                   <div className='mt-10'>

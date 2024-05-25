@@ -5,8 +5,7 @@ import { Raleway, Italiana } from 'next/font/google'
 import 'react-loading-skeleton/dist/skeleton.css'
 import ProductTrending from './components/productTrending'
 import Sale from './components/sale'
-import Collections from './components/collections'
-import NavBar from './components/NavBar'
+import Link from 'next/link'
 
 const raleway = Raleway({ subsets: ['latin'] })
 const italiano = Italiana({ subsets: ['latin'], weight: '400' })
@@ -29,12 +28,12 @@ export default function Home() {
                     <h1 className={`text-4xl ${italiano.className} tracking-tight text-gray-900 sm:text-5xl xl:text-7xl`}>Lunare Jewelry</h1>
                     <p className={` ${raleway.className} mt-2 md:mt-4 text-sm md:text-lg text-gray-600`}>Cada joya, una expresión de tu estilo.</p>
                     <div className='mt-6'>
-                      <a
+                      <Link
                         href='/productos'
                         className='inline-block px-8 py-3 font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#938377]'
                       >
                         Comprar
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -51,8 +50,6 @@ export default function Home() {
         </div>
         {/* Trending products */}
         <ProductTrending />
-        {/* Collections */}
-        {/* <Collections /> */}
         {/* Sale and testimonials */}
         <Sale />
       </main>
