@@ -21,6 +21,7 @@ export default function ProductTrending() {
       setLoading(true)
       const products = await ProductosDestacados.getProducts.list()
       setProducts(products)
+      console.log(products);
       setLoading(false)
     }
     fechProducts()
@@ -80,23 +81,25 @@ export default function ProductTrending() {
                     key={product.id}
                     className='inline-flex flex-col w-auto h-auto text-center lg:w-72'
                   >
-                    <div className='relative px-10 group'>
-                      <a href={`/productos/${product.realid}`}>
-                        <div className='w-full overflow-auto bg-gray-200 rounded-md aspect-h-1 aspect-w-1'>
-                          <img
+                    <div className='relative px-10'>
+                        <div className='w-full bg-gray-200 rounded-md'>
+                      <Link href={`/productos/${product.realid}`}>
+                          <Image
                             src={product.image}
+                            width={300}
+                            height={300}
                             alt={product.name}
-                            className='object-cover object-center w-full h-full group-hover:opacity-75'
+                            className='object-cover object-center w-full h-full cursor-pointer hover:transition-all hover:scale-110 hover:duration-300'
                           />
+                        </Link>
                         </div>
-                      </a>
                       <div className='flex flex-col mt-6'>
                         <h3 className={` ${raleway.className} mt-1 font-normal text-gray-900 uppercase`}>
-                          <span className='absolute inset-0' />
+                          {/* <span className='absolute inset-0' /> */}
                           {product.name}
                         </h3>
                         {product.stock ? (
-                          <div className='flex items-center justify-between w-full gap-3 mt-5'>
+                          <div className='flex items-center justify-between gap-3 mt-5 '>
                             <p className='mt-1 text-gray-900'>{formatPrice(product.price_par)}</p>
                             <button
                               onClick={() => AddToCartCard(product)}

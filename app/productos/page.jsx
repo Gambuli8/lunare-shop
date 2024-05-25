@@ -10,6 +10,7 @@ import Link from 'next/link'
 import Filters from '../components/Filters'
 import useCart from '../hooks/useCart'
 import SvgShoppinCartPlus from './svgShoppinCartPlus'
+import { preload } from 'react-dom'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -72,7 +73,7 @@ export default function Products() {
       setProducts(result)
       setLoading(false)
     }
-    fetchData()
+    preload(fetchData())
   }, [])
 
   useEffect(() => {
@@ -176,15 +177,15 @@ export default function Products() {
                       <img
                         src={Item.image}
                         alt={Item.name}
-                        className='object-contain w-full h-full'
+                        className='top-0 z-50 object-contain object-center w-full h-full cursor-pointer hover:transition-all hover:scale-110 hover:duration-300 hover:ease-in-out'
                       />
-                      <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/10'></div>
+                      {/* <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/10'></div> */}
                     </div>
                   </Link>
-                  <div className='p-3 px-2 md:px-4'>
-                    <div className='flex items-center justify-between mb-1'>
+                  <div className='p-3 px-2 bg-transparent md:px-4'>
+                    <div className='flex items-center justify-between mb-1 bg-transparent'>
                       <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
-                      {Item.material === 'Plata' ? (
+                      {Item.material === 'silver' ? (
                         <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
                       ) : (
                         <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
@@ -278,41 +279,41 @@ export default function Products() {
           className='flex justify-between px-4 mx-auto mt-6 text-sm font-medium text-gray-700 max-w-7xl sm:px-6 lg:px-8'
         >
           <div className='flex-1 min-w-0'>
-            <a
+            <Link
               href='#'
               className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
             >
               Anterior
-            </a>
+            </Link>
           </div>
           <div className='hidden space-x-2 sm:flex'>
             {/* Current: "border-indigo-600 ring-1 ring-indigo-600", Default: "border-gray-300" */}
-            <a
+            <Link
               href='#'
               className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
             >
               1
-            </a>
-            <a
+            </Link>
+            <Link
               href='#'
               className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
             >
               2
-            </a>
-            <a
+            </Link>
+            <Link
               href='#'
               className='inline-flex items-center h-10 px-4 bg-white border border-indigo-600 rounded-md ring-1 ring-indigo-600 hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
             >
               3
-            </a>
+            </Link>
           </div>
           <div className='flex justify-end flex-1 min-w-0'>
-            <a
+            <Link
               href='#'
               className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
             >
               Siguiente
-            </a>
+            </Link>
           </div>
         </nav>
       </main>

@@ -8,7 +8,9 @@ import { Raleway } from 'next/font/google'
 import Cart from './Cart'
 import Image from 'next/image'
 import { Productos } from '../apiLocal'
-import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import { useAuth } from '../context/authContext'
+import ModalProfile from './ModalProfile'
 
 const navigation = {
   categories: [
@@ -62,6 +64,8 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [product, setProduct] = useState([])
+  const { user } = useAuth()
+  const [showModal, setShowModal] = useState(false)
 
   const debounceRef = useRef()
 
@@ -152,14 +156,14 @@ export default function NavBar() {
                         <div className='grid items-start grid-cols-1 gap-x-6 gap-y-10'>
                           <div className='grid grid-cols-1 gap-x-6 gap-y-10'>
                             <div>
-                              <a href='/productos?Aro'>
+                              <Link href='/productos?Aro'>
                                 <p
                                   id={`mobile-featured-heading-${categoryIdx}`}
                                   className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                 >
                                   Aros
                                 </p>
-                              </a>
+                              </Link>
                               <ul
                                 role='list'
                                 aria-labelledby={`mobile-featured-heading-${categoryIdx}`}
@@ -170,66 +174,66 @@ export default function NavBar() {
                                     key={item.name}
                                     className='flex'
                                   >
-                                    <a
+                                    <Link
                                       href={item.href}
                                       className='text-[#998779] font-medium'
                                     >
                                       {item.name}
-                                    </a>
+                                    </Link>
                                   </li>
                                 ))}
                               </ul>
                             </div>
                             <div>
-                              <a href='/productos?pulsera'>
+                              <Link href='/productos?pulsera'>
                                 <p
                                   id={`mobile-featured-heading`}
                                   className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                 >
                                   Pulseras
                                 </p>
-                              </a>
+                              </Link>
                             </div>
                           </div>
                           <div className='grid grid-cols-1 gap-x-6 gap-y-10'>
                             <div>
-                              <a href='/productos?dije'>
+                              <Link href='/productos?dije'>
                                 <p
                                   id={`mobile-featured-heading`}
                                   className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                 >
                                   Dijes
                                 </p>
-                              </a>
+                              </Link>
                             </div>
 
                             <div>
-                              <a href='/productos?cadena'>
+                              <Link href='/productos?cadena'>
                                 <p
                                   id={`mobile-featured-heading`}
                                   className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                 >
                                   Cadenas
                                 </p>
-                              </a>
+                              </Link>
                             </div>
 
                             <div>
-                              <a href='/productos?Conjunto'>
+                              <Link href='/productos?Conjunto'>
                                 <p
                                   id={`mobile-featured-heading`}
                                   className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                                 >
                                   Conjuntos
                                 </p>
-                              </a>
+                              </Link>
                             </div>
                             <div>
                               <p
                                 id='mobile-brand-heading'
                                 className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
                               >
-                                <a href='/productos'>Ver Todos</a>
+                                <Link href='/productos'>Ver Todos</Link>
                               </p>
                             </div>
                           </div>
@@ -245,12 +249,12 @@ export default function NavBar() {
                       key={page.name}
                       className='flow-root'
                     >
-                      <a
+                      <Link
                         href={page.href}
                         className='block p-2 -m-2 font-medium text-gray-900'
                       >
                         {page.name}
-                      </a>
+                      </Link>
                     </div>
                   ))}
                 </div>
@@ -278,7 +282,7 @@ export default function NavBar() {
                 <div className='flex items-center justify-between h-16'>
                   {/* Logo (lg+) */}
                   <div className='hidden lg:flex lg:items-center'>
-                    <a href='/'>
+                    <Link href='/'>
                       <span className='sr-only'>Your Company</span>
                       <Image
                         className='flex items-center justify-center w-auto h-36'
@@ -287,7 +291,7 @@ export default function NavBar() {
                         src='https://res.cloudinary.com/ds7hhoq17/image/upload/v1708557835/Logo/logoLunareSinFondo_ovzq4x.png'
                         alt=''
                       />
-                    </a>
+                    </Link>
                   </div>
 
                   <div className='hidden h-full lg:flex'>
@@ -326,13 +330,13 @@ export default function NavBar() {
                                         key={item.name}
                                         className='relative p-4 rounded-lg hover:bg-[#998779]'
                                       >
-                                        <a
+                                        <Link
                                           href={item.href}
                                           className='block text-sm font-semibold leading-6 text-gray-900'
                                         >
                                           {item.name}
                                           <span className='absolute inset-0' />
-                                        </a>
+                                        </Link>
                                       </div>
                                     ))}
                                   </Popover.Panel>
@@ -343,13 +347,13 @@ export default function NavBar() {
                         ))}
 
                         {navigation.pages.map(page => (
-                          <a
+                          <Link
                             key={page.name}
                             href={page.href}
                             className='flex items-center text-sm font-medium text-gray-700 hover:text-gray-800'
                           >
                             {page.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </Popover.Group>
@@ -391,7 +395,7 @@ export default function NavBar() {
                         <div className='z-30 bg-[#F4E8D8] absolute flex-col w-44 h-auto right-40 overflow-y-auto mt-44 rounded-md shadow-md max-h-28'>
                           {product.map(result => {
                             return (
-                              <a
+                              <Link
                                 key={result.id}
                                 href={`/productos/${result.id}`}
                               >
@@ -405,7 +409,7 @@ export default function NavBar() {
                                     <p className='capitalize'>{result.name}</p>
                                   </div>
                                 </div>
-                              </a>
+                              </Link>
                             )
                           })}
                         </div>
@@ -414,7 +418,7 @@ export default function NavBar() {
                   </div>
 
                   {/* Logo (lg-) */}
-                  <a
+                  <Link
                     href='/'
                     className='lg:hidden'
                   >
@@ -426,7 +430,7 @@ export default function NavBar() {
                       width={100}
                       height={100}
                     />
-                  </a>
+                  </Link>
 
                   <div className='flex items-center justify-end flex-1'>
                     <div className='flex items-center lg:ml-8'>
@@ -452,7 +456,7 @@ export default function NavBar() {
                             <div className='z-30 bg-[#F4E8D8] absolute flex-col w-72 h-auto mt-[35px] right-44 overflow-y-auto rounded-md shadow-md max-h-80'>
                               {product.map(result => {
                                 return (
-                                  <a
+                                  <Link
                                     key={result.id}
                                     href={`/productos/${result.id}`}
                                   >
@@ -466,27 +470,24 @@ export default function NavBar() {
                                         <p className='capitalize'>{result.name}</p>
                                       </div>
                                     </div>
-                                  </a>
+                                  </Link>
                                 )
                               })}
                             </div>
                           ) : null}
                         </div>
 
+                        {/* Modal */}
                         <div className='flex'>
-                          <a
-                            href='/inicio-sesion'
-                            className='p-2 -m-2 text-gray-400 hover:text-gray-500'
-                          >
-                            <span className='sr-only'>Perfil</span>
-                            <UserIcon
-                              className='w-6 h-6 text-[#998779]'
-                              aria-hidden='true'
-                            />
-                          </a>
+                          <span className='sr-only'>Perfil</span>
+                          {console.log(user)}
+                          <ModalProfile
+                            handleClose={() => setShowModal(false)}
+                            handlerOpen={() => setShowModal(true)}
+                            show={showModal}
+                          />
                         </div>
                       </div>
-
                       <span
                         className='w-px h-6 mx-4 bg-gray-200 lg:mx-6'
                         aria-hidden='true'

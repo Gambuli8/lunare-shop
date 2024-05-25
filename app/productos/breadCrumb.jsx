@@ -1,4 +1,5 @@
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
 
 export default function Breadcrumb({ products }) {
   return (
@@ -12,7 +13,7 @@ export default function Breadcrumb({ products }) {
       >
         <li>
           <div>
-            <a
+            <Link
               href='/'
               className='text-gray-400 hover:text-gray-500'
             >
@@ -21,7 +22,7 @@ export default function Breadcrumb({ products }) {
                 aria-hidden='true'
               />
               <span className='sr-only'>Home</span>
-            </a>
+            </Link>
           </div>
         </li>
         <li>
@@ -30,12 +31,12 @@ export default function Breadcrumb({ products }) {
               className='flex-shrink-0 w-5 h-5 text-gray-400'
               aria-hidden='true'
             />
-            <a
+            <Link
               href='/productos'
               className='ml-2 text-sm font-medium text-gray-500 hover:text-gray-700'
             >
               productos
-            </a>
+            </Link>
           </div>
         </li>
         <li>
@@ -44,12 +45,12 @@ export default function Breadcrumb({ products }) {
               className='flex-shrink-0 w-5 h-5 text-gray-400'
               aria-hidden='true'
             />
-            <a
+            <Link
               href={'/productos/' + products.id}
               className='ml-2 text-sm font-medium text-gray-500 hover:text-gray-700'
             >
               {products.name}
-            </a>
+            </Link>
           </div>
         </li>
       </ol>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Raleway } from 'next/font/google'
+import Link from 'next/link'
 
 const collections = [
   {
@@ -46,7 +47,7 @@ export default function Collections() {
             id='collections-heading'
             className={` ${raleway.className} text-2xl font-bold text-gray-900`}
           >
-            Categorias
+            Categorías
           </h2>
 
           <div className='mt-6 space-y-12 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:space-y-0'>
@@ -63,10 +64,10 @@ export default function Collections() {
                   />
                 </div>
                 <h3 className='mt-6 text-sm text-gray-500'>
-                  <a href={collection.href}>
+                  <Link href={collection.href}>
                     <span className='absolute inset-0' />
                     {collection.name}
-                  </a>
+                  </Link>
                 </h3>
                 <p className='text-base font-semibold text-gray-900'>{collection.description}</p>
               </div>

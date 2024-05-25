@@ -1,3 +1,4 @@
 {
-    "editor.matchBrackets": "never"
+  "editor.matchBrackets": "never",
+  "cSpell.words": ["cloudinary", "flowbite", "headlessui", "heroicons", "logueado", "lunare", "Lunare", "lunarejewelry", "mercadopago", "realid", "sesion", "Swal", "sweetalert", "tailwindcss"]
 }

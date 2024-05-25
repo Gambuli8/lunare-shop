@@ -1,5 +1,6 @@
 import { EnvelopeIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline'
 import { Raleway } from 'next/font/google'
+import Link from 'next/link'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -57,13 +58,13 @@ export default function Contacto() {
             <h2 className={` ${raleway.className} text-3xl font-bold tracking-tight text-gray-900`}>Contacto</h2>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
               Ante cualquier duda o consulta, envianos un mensaje directo a nuestro instagram{' '}
-              <a
+              <Link
                 href='https://www.instagram.com/gerogambuli/'
                 className='border-b hover:scale-110 transition-all border-transparent hover:border-[#998779] hover:text-[#998779] '
                 target='_blank'
               >
                 @lunareJewerly
-              </a>
+              </Link>
             </p>
             <dl className='mt-10 space-y-4 text-base leading-7 text-gray-600'>
               <div className='flex gap-x-4'>
@@ -75,13 +76,13 @@ export default function Contacto() {
                   />
                 </dt>
                 <dd>
-                  <a
+                  <Link
                     className='hover:text-gray-900'
                     href='https://wa.me/+542954476558'
                     target='_blank'
                   >
                     +54 2954-476558
-                  </a>
+                  </Link>
                 </dd>
               </div>
               <div className='flex gap-x-4'>
@@ -93,12 +94,12 @@ export default function Contacto() {
                   />
                 </dt>
                 <dd>
-                  <a
+                  <Link
                     className='hover:text-gray-900'
                     href='mailto:lunarejewelry.shop@gmail.com'
                   >
                     lunarejewelry.shop@gmail.com
-                  </a>
+                  </Link>
                 </dd>
               </div>
             </dl>

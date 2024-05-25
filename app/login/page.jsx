@@ -1,26 +1,85 @@
 'use client'
 
-import { ArrowLeftCircleIcon } from '@heroicons/react/24/outline'
-import axios from 'axios'
 import { useState } from 'react'
+import Link from 'next/link'
+import { useAuth } from '../context/authContext'
+import Swal from 'sweetalert2'
 
-export default function SignIn() {
-  const [credentials, setCredentials] = useState({
+export default function Login() {
+  const { login, auth, loginWithGoogle } = useAuth()
+  const [user, setUser] = useState({
     email: '',
     password: ''
   })
 
+  const handlerGoogle = async () => {
+    try {
+      await loginWithGoogle()
+      Swal.fire({
+        icon: 'success',
+        title: 'Bienvenido',
+        text: 'Has iniciado sesion',
+        confirmButtonColor: '#998779'
+      }).then(() => {
+        window.location.href = '/'
+      })
+    } catch (error) {
+      console.log(error.message)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Hubo un error',
+        confirmButtonColor: '#998779'
+      })
+    }
+  }
+
   const handlerChange = e => {
-    setCredentials({
-      ...credentials,
+    setUser({
+      ...user,
       [e.target.name]: e.target.value
     })
   }
 
   const handlerSubmit = async e => {
     e.preventDefault()
-    const response = await axios.post('/api/auth/login', credentials)
-    console.log(response)
+    try {
+      await login(user.email, user.password)
+      Swal.fire({
+        icon: 'success',
+        title: 'Bienvenido',
+        text: 'Has iniciado sesion',
+        confirmButtonColor: '#998779'
+      }).then(() => {
+        window.location.href = '/'
+      })
+    } catch (error) {
+      console.log(error.code)
+      if (error.code === 'auth/invalid-credential') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El usuario no existe',
+          confirmButtonColor: '#998779'
+        })
+      }
+      if (error.code === 'auth/wrong-password') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'La contraseña es incorrecta',
+          confirmButtonColor: '#998779'
+        })
+      }
+      if (error.code === 'auth/invalid-email') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El correo no es valido',
+          confirmButtonColor: '#998779'
+        })
+      }
+    }
   }
 
   return (
@@ -35,8 +94,6 @@ export default function SignIn() {
             <form
               onSubmit={handlerSubmit}
               className='space-y-6'
-              action='#'
-              method='POST'
             >
               <div>
                 <label
@@ -50,6 +107,7 @@ export default function SignIn() {
                     id='email'
                     name='email'
                     type='email'
+                    required
                     autoComplete='email'
                     onChange={handlerChange}
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
@@ -69,8 +127,8 @@ export default function SignIn() {
                     id='password'
                     name='password'
                     type='password'
-                    autoComplete='password'
                     onChange={handlerChange}
+                    autoComplete='current-password'
                     required
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
                   />
@@ -78,38 +136,28 @@ export default function SignIn() {
               </div>
 
               <div className='flex items-center justify-between'>
-                <div className='flex items-center'>
-                  <input
-                    id='remember-me'
-                    name='remember-me'
-                    type='checkbox'
-                    className='w-4 h-4 text-[#998779] border-gray-300 rounded focus:ring-[#998779]'
-                  />
-                  <label
-                    htmlFor='remember-me'
-                    className='block ml-3 text-sm leading-6 text-gray-900'
-                  >
-                    Recordarme
-                  </label>
-                </div>
+                <div className=''></div>
 
-                <div className='text-sm leading-6'>
-                  <a
+                <div className='text-sm leading-6 cursor-pointer hover:scale-105 hover:transition-all hover:underline hover:duration-300'>
+                  <Link
                     href='#'
-                    className='font-semibold text-[#998779] hover:text-[#998779]'
+                    className='font-semibold text-[#998779]'
                   >
                     Olvidaste tu contraseña?
-                  </a>
+                  </Link>
                 </div>
               </div>
 
               <div>
-                <button
-                  type='submit'
-                  className='flex w-full justify-center rounded-md bg-[#998779] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#998779] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#998779]'
-                >
-                  iniciar sesion
+                <button className='flex w-full justify-center rounded-md bg-[#998779] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#998779] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#998779]'>
+                  Iniciar Sesion
                 </button>
+                <p className='flex items-center justify-start gap-2 mt-3 text-sm leading-6 text-gray-600'>
+                  ¿No tienes una cuenta?
+                  <Link href='/register'>
+                    <p className='font-semibold text-sm text-[#998779] hover:scale-105 hover:transition-all hover:underline hover:duration-300 '>Crear cuenta</p>
+                  </Link>
+                </p>
               </div>
             </form>
 
@@ -126,9 +174,10 @@ export default function SignIn() {
                 </div>
               </div>
 
-              <div className='flex items-center justify-center gap-4 mt-6'>
-                <a
-                  href='#'
+              <div className='grid grid-cols-2 gap-4 mt-6'>
+                {/* <Link className='flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent'> */}
+                <button
+                  onClick={handlerGoogle}
                   className='flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent'
                 >
                   <svg
@@ -153,8 +202,23 @@ export default function SignIn() {
                       fill='#34A853'
                     />
                   </svg>
-                  <span className='text-sm font-semibold leading-6'>Google</span>
-                </a>
+                  <span className='text-sm font-semibold leading-6'> Google</span>
+                </button>
+                {/* </Link> */}
+                <button className='flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      fill='#000000'
+                      d='m15.079 5.999l.239.012c1.43.097 3.434 1.013 4.508 2.586a1 1 0 0 1-.344 1.44c-.05.028-.372.158-.497.217a4 4 0 0 0-.722.431c-.614.461-.948 1.009-.942 1.694c.01.885.339 1.454.907 1.846c.208.143.436.253.666.33c.126.043.426.116.444.122a1 1 0 0 1 .662.942C20 18.24 16.96 22 14.714 22c-.79 0-1.272-.091-1.983-.315l-.098-.031c-.463-.146-.702-.192-1.133-.192c-.52 0-.863.06-1.518.237l-.197.053c-.575.153-.964.226-1.5.248C5.536 22 3 16.907 3 12.928c0-3.87 1.786-6.92 5.286-6.92q.444.002.909.128c.403.107.774.26 1.296.508c.787.374.948.44 1.009.44h.016c.03-.003.128-.047 1.056-.457c1.061-.467 1.864-.685 2.746-.616l-.24-.012zM14 1a1 1 0 0 1 1 1a3 3 0 0 1-3 3a1 1 0 0 1-1-1a3 3 0 0 1 3-3'
+                    />
+                  </svg>
+                  <span className='text-sm font-semibold leading-6'>Apple</span>
+                </button>
               </div>
             </div>
           </div>
