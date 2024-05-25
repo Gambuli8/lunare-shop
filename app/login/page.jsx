@@ -2,33 +2,84 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import appFirebase from './firebase/credentials'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { useAuth } from '../context/authContext'
+import Swal from 'sweetalert2'
 
-const auth = getAuth(appFirebase)
-export default function SignIn() {
-  const [register, setRegister] = useState(false)
-  const [credentials, setCredentials] = useState({
-    username: '',
+export default function Login() {
+  const { login, auth, loginWithGoogle } = useAuth()
+  const [user, setUser] = useState({
     email: '',
     password: ''
   })
 
-  const funAuth = async e => {
-    e.preventDefault()
-    if (register) {
-      await signInWithEmailAndPassword(auth, credentials.email, credentials.password)
-    } else {
-      await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
+  const handlerGoogle = async () => {
+    try {
+      await loginWithGoogle()
+      Swal.fire({
+        icon: 'success',
+        title: 'Bienvenido',
+        text: 'Has iniciado sesion',
+        confirmButtonColor: '#998779'
+      }).then(() => {
+        window.location.href = '/'
+      })
+    } catch (error) {
+      console.log(error.message)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Hubo un error',
+        confirmButtonColor: '#998779'
+      })
     }
-    console.log(user)
   }
 
   const handlerChange = e => {
-    setCredentials({
-      ...credentials,
+    setUser({
+      ...user,
       [e.target.name]: e.target.value
     })
+  }
+
+  const handlerSubmit = async e => {
+    e.preventDefault()
+    try {
+      await login(user.email, user.password)
+      Swal.fire({
+        icon: 'success',
+        title: 'Bienvenido',
+        text: 'Has iniciado sesion',
+        confirmButtonColor: '#998779'
+      }).then(() => {
+        window.location.href = '/'
+      })
+    } catch (error) {
+      console.log(error.code)
+      if (error.code === 'auth/invalid-credential') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El usuario no existe',
+          confirmButtonColor: '#998779'
+        })
+      }
+      if (error.code === 'auth/wrong-password') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'La contraseña es incorrecta',
+          confirmButtonColor: '#998779'
+        })
+      }
+      if (error.code === 'auth/invalid-email') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El correo no es valido',
+          confirmButtonColor: '#998779'
+        })
+      }
+    }
   }
 
   return (
@@ -41,31 +92,9 @@ export default function SignIn() {
         <div className=' sm:mx-auto sm:w-full sm:max-w-[480px]'>
           <div className='px-6 py-4 bg-white shadow sm:rounded-lg sm:px-12'>
             <form
-              onSubmit={funAuth}
+              onSubmit={handlerSubmit}
               className='space-y-6'
-              action='#'
-              method='POST'
             >
-              {register ? (
-                <div>
-                  <label
-                    htmlFor='username'
-                    className='block text-sm font-medium leading-6 text-gray-900'
-                  >
-                    Nombre de usuario
-                  </label>
-                  <div className='mt-2'>
-                    <input
-                      id='username'
-                      name='username'
-                      type='username'
-                      autoComplete='username'
-                      onChange={handlerChange}
-                      className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
-                    />
-                  </div>
-                </div>
-              ) : null}
               <div>
                 <label
                   htmlFor='email'
@@ -78,6 +107,7 @@ export default function SignIn() {
                     id='email'
                     name='email'
                     type='email'
+                    required
                     autoComplete='email'
                     onChange={handlerChange}
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
@@ -119,14 +149,11 @@ export default function SignIn() {
               </div>
 
               <div>
-                <button
-                  type='submit'
-                  className='flex w-full justify-center rounded-md bg-[#998779] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#998779] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#998779]'
-                >
-                  {register ? 'Registrarse' : 'Iniciar Sesion'}
+                <button className='flex w-full justify-center rounded-md bg-[#998779] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#998779] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#998779]'>
+                  Iniciar Sesion
                 </button>
                 <p className='flex items-center justify-start gap-2 mt-3 text-sm leading-6 text-gray-600'>
-                  {register ? '¿No tienes una cuenta? ' : '¿Ya tienes una cuenta? '}{' '}
+                  ¿No tienes una cuenta?
                   <Link href='/register'>
                     <p className='font-semibold text-sm text-[#998779] hover:scale-105 hover:transition-all hover:underline hover:duration-300 '>Crear cuenta</p>
                   </Link>
@@ -148,43 +175,37 @@ export default function SignIn() {
               </div>
 
               <div className='grid grid-cols-2 gap-4 mt-6'>
-                <Link
-                  href='#'
+                {/* <Link className='flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent'> */}
+                <button
+                  onClick={handlerGoogle}
                   className='flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent'
                 >
-                  <button
-                    className='flex items-center gap-3'
-                    onClick=''
+                  <svg
+                    className='w-5 h-5'
+                    aria-hidden='true'
+                    viewBox='0 0 24 24'
                   >
-                    <svg
-                      className='w-5 h-5'
-                      aria-hidden='true'
-                      viewBox='0 0 24 24'
-                    >
-                      <path
-                        d='M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z'
-                        fill='#EA4335'
-                      />
-                      <path
-                        d='M23.49 12.275C23.49 11.49 23.415 10.73 23.3 10H12V14.51H18.47C18.18 15.99 17.34 17.25 16.08 18.1L19.945 21.1C22.2 19.01 23.49 15.92 23.49 12.275Z'
-                        fill='#4285F4'
-                      />
-                      <path
-                        d='M5.26498 14.2949C5.02498 13.5699 4.88501 12.7999 4.88501 11.9999C4.88501 11.1999 5.01998 10.4299 5.26498 9.7049L1.275 6.60986C0.46 8.22986 0 10.0599 0 11.9999C0 13.9399 0.46 15.7699 1.28 17.3899L5.26498 14.2949Z'
-                        fill='#FBBC05'
-                      />
-                      <path
-                        d='M12.0004 24.0001C15.2404 24.0001 17.9654 22.935 19.9454 21.095L16.0804 18.095C15.0054 18.82 13.6204 19.245 12.0004 19.245C8.8704 19.245 6.21537 17.135 5.2654 14.29L1.27539 17.385C3.25539 21.31 7.3104 24.0001 12.0004 24.0001Z'
-                        fill='#34A853'
-                      />
-                    </svg>
-                    <span className='text-sm font-semibold leading-6'> Google</span>
-                  </button>
-                </Link>
-                <Link
-                  href='#'
-                  className='flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent'
-                >
+                    <path
+                      d='M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z'
+                      fill='#EA4335'
+                    />
+                    <path
+                      d='M23.49 12.275C23.49 11.49 23.415 10.73 23.3 10H12V14.51H18.47C18.18 15.99 17.34 17.25 16.08 18.1L19.945 21.1C22.2 19.01 23.49 15.92 23.49 12.275Z'
+                      fill='#4285F4'
+                    />
+                    <path
+                      d='M5.26498 14.2949C5.02498 13.5699 4.88501 12.7999 4.88501 11.9999C4.88501 11.1999 5.01998 10.4299 5.26498 9.7049L1.275 6.60986C0.46 8.22986 0 10.0599 0 11.9999C0 13.9399 0.46 15.7699 1.28 17.3899L5.26498 14.2949Z'
+                      fill='#FBBC05'
+                    />
+                    <path
+                      d='M12.0004 24.0001C15.2404 24.0001 17.9654 22.935 19.9454 21.095L16.0804 18.095C15.0054 18.82 13.6204 19.245 12.0004 19.245C8.8704 19.245 6.21537 17.135 5.2654 14.29L1.27539 17.385C3.25539 21.31 7.3104 24.0001 12.0004 24.0001Z'
+                      fill='#34A853'
+                    />
+                  </svg>
+                  <span className='text-sm font-semibold leading-6'> Google</span>
+                </button>
+                {/* </Link> */}
+                <button className='flex items-center justify-center w-full gap-3 px-3 py-2 text-sm font-semibold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     width='24'
@@ -197,7 +218,7 @@ export default function SignIn() {
                     />
                   </svg>
                   <span className='text-sm font-semibold leading-6'>Apple</span>
-                </Link>
+                </button>
               </div>
             </div>
           </div>

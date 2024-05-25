@@ -2,33 +2,43 @@
 
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { useState } from 'react'
 import NavBar from './components/NavBar'
 import { CartProvider } from '@/utils/store'
-import './inicio-sesion/firebase/credentials'
-import Home from './page'
-import appFirebase from './inicio-sesion/firebase/credentials'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import './firebase/credentials'
+import { AuthProvider } from './context/authContext'
 
-const auth = getAuth(appFirebase)
 const inter = Inter({ subsets: ['latin'] })
 
 //metadatos
 
 export default function RootLayout({ children }) {
-  const [user, setUser] = useState(null)
-
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      setUser(user)
-    } else {
-      setUser(null)
-    }
-  })
   return (
     <html lang='es'>
       <head>
+        <title>Lunare Shop</title>
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0'
+        />
+        <meta
+          name='description'
+          content='Lunare Shop'
+        />
+
+        <meta
+          property='og:title'
+          content='Lunare Shop'
+        />
+        <meta
+          property='og:description'
+          content='Lunare Shop'
+        />
+        <meta
+          property='og:image'
+          content='https://res.cloudinary.com/ds7hhoq17/image/upload/v1708557816/Logo/logo-redondo_bzmu99.png'
+        />
         <link
+          title='Lunare Shop'
           rel='icon'
           href='https://res.cloudinary.com/ds7hhoq17/image/upload/v1708557816/Logo/logo-redondo_bzmu99.png'
           type='image/x-icon'
@@ -36,11 +46,13 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className={inter.className}>
-        <CartProvider>
-          <NavBar user={user} />
-          {user ? <Home user={user} /> : null}
-          {children}
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <NavBar />
+            {/* {user ? <Home user={user} /> : null} */}
+            {children}
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   )

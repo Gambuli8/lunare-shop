@@ -8,8 +8,9 @@ import { Raleway } from 'next/font/google'
 import Cart from './Cart'
 import Image from 'next/image'
 import { Productos } from '../apiLocal'
-import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { useAuth } from '../context/authContext'
+import ModalProfile from './ModalProfile'
 
 const navigation = {
   categories: [
@@ -59,11 +60,12 @@ function classNames(...classes) {
 
 const raleway = Raleway({ subsets: ['latin'] })
 
-export default function NavBar(user) {
+export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [product, setProduct] = useState([])
-  const [isOpen, setIsOpen] = useState(false)
+  const { user } = useAuth()
+  const [showModal, setShowModal] = useState(false)
 
   const debounceRef = useRef()
 
@@ -475,34 +477,17 @@ export default function NavBar(user) {
                           ) : null}
                         </div>
 
+                        {/* Modal */}
                         <div className='flex'>
-                          {/* <Link
-                            href='/inicio-sesion'
-                            className='p-2 -m-2 text-gray-400 hover:text-gray-500'
-                          > */}
                           <span className='sr-only'>Perfil</span>
-                          <button
-                            className='p-2 -m-2 text-gray-400 hover:text-gray-500 hover:scale-110 hover:ease-in hover:transition-all hover:duration-300'
-                            onClick={() => {
-                              setIsOpen(true)
-                            }}
-                          >
-                            <UserIcon
-                              className='w-6 h-6 text-[#998779]'
-                              aria-hidden='true'
-                            />
-                          </button>
-                          {/* </Link> */}
+                          {console.log(user)}
+                          <ModalProfile
+                            handleClose={() => setShowModal(false)}
+                            handlerOpen={() => setShowModal(true)}
+                            show={showModal}
+                          />
                         </div>
-                        {setIsOpen === true ? (
-                          <div className='absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                            <Link href='/inicio-sesion'>
-                              <button className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none'>Iniciar Sesion</button>
-                            </Link>
-                          </div>
-                        ) : null}
                       </div>
-
                       <span
                         className='w-px h-6 mx-4 bg-gray-200 lg:mx-6'
                         aria-hidden='true'
