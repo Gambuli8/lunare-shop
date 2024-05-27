@@ -21,7 +21,7 @@ export default function ProductTrending() {
       setLoading(true)
       const products = await ProductosDestacados.getProducts.list()
       setProducts(products)
-      console.log(products);
+      console.log(products)
       setLoading(false)
     }
     fechProducts()
@@ -44,7 +44,7 @@ export default function ProductTrending() {
         <div className='flex items-center justify-between px-4 sm:px-6 lg:px-0'>
           <h2
             id='trending-heading'
-            className={` ${raleway.className} uppercase text-2xl font-semibold tracking-tight text-gray-900`}
+            className={` ${raleway.className} uppercase text-2xl font-normal tracking-tight text-gray-900`}
           >
             Productos destacados
           </h2>
@@ -74,6 +74,22 @@ export default function ProductTrending() {
                     style={{ width: '200px', height: '250px', borderRadius: '1rem', margin: '1rem', display: 'inline-flex' }}
                     className='lg:w-[300px] bg-gray-400 md:h-[300px] justify-center items-center flex-col my-3 shadow-sm'
                   />
+                  <Skeleton
+                    style={{ width: '200px', height: '250px', borderRadius: '1rem', margin: '1rem', display: 'inline-flex' }}
+                    className='lg:w-[300px] bg-gray-400 md:h-[300px] justify-center items-center flex-col my-3 shadow-sm'
+                  />
+                  <Skeleton
+                    style={{ width: '200px', height: '250px', borderRadius: '1rem', margin: '1rem', display: 'inline-flex' }}
+                    className='lg:w-[300px] bg-gray-400 md:h-[300px] justify-center items-center flex-col my-3 shadow-sm'
+                  />
+                  <Skeleton
+                    style={{ width: '200px', height: '250px', borderRadius: '1rem', margin: '1rem', display: 'inline-flex' }}
+                    className='lg:w-[300px] bg-gray-400 md:h-[300px] justify-center items-center flex-col my-3 shadow-sm'
+                  />
+                  <Skeleton
+                    style={{ width: '200px', height: '250px', borderRadius: '1rem', margin: '1rem', display: 'inline-flex' }}
+                    className='lg:w-[300px] bg-gray-400 md:h-[300px] justify-center items-center flex-col my-3 shadow-sm'
+                  />
                 </SkeletonTheme>
               ) : (
                 products.map(product => (
@@ -82,8 +98,8 @@ export default function ProductTrending() {
                     className='inline-flex flex-col w-auto h-auto text-center lg:w-72'
                   >
                     <div className='relative px-10'>
-                        <div className='w-full bg-gray-200 rounded-md'>
-                      <Link href={`/productos/${product.realid}`}>
+                      <div className='w-full bg-gray-200 rounded-md'>
+                        <Link href={`/productos/${product.realid}`}>
                           <Image
                             src={product.image}
                             width={300}
@@ -92,7 +108,7 @@ export default function ProductTrending() {
                             className='object-cover object-center w-full h-full cursor-pointer hover:transition-all hover:scale-110 hover:duration-300'
                           />
                         </Link>
-                        </div>
+                      </div>
                       <div className='flex flex-col mt-6'>
                         <h3 className={` ${raleway.className} mt-1 font-normal text-gray-900 uppercase`}>
                           {/* <span className='absolute inset-0' /> */}
@@ -103,9 +119,9 @@ export default function ProductTrending() {
                             <p className='mt-1 text-gray-900'>{formatPrice(product.price_par)}</p>
                             <button
                               onClick={() => AddToCartCard(product)}
-                              className='z-10 flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
+                              className='flex items-center justify-end transition-all border-2 border-transparent rounded-full  hover:scale-110'
                             >
-                              <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                              <ShoppingCartIcon className='w-6 h-6 text-[#e2d0c2]' />
                             </button>
                           </div>
                         ) : (

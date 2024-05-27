@@ -20,7 +20,7 @@ function ModalProfile({ show, handleClose, handlerOpen }) {
           className='flex items-center p-2 -m-2 group'
         >
           <UserIcon
-            className='flex-shrink-0 w-6 h-6 text-[#998779] group-hover:text-[#938377]'
+            className='flex-shrink-0 w-6 h-6 text-black'
             aria-hidden='true'
           />
           <span className='ml-2 text-sm font-medium text-[#998779] group-hover:text-[#938377]'></span>
@@ -47,7 +47,7 @@ function ModalProfile({ show, handleClose, handlerOpen }) {
                 </p>
                 <button
                   onClick={handleLogout}
-                  className='w-full px-4 py-2 text-sm font-medium text-white bg-[#998779] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
+                  className='w-full px-4 py-2 text-sm font-medium text-white bg-[#e2d0c2] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
                 >
                   Cerrar sesión
                 </button>
@@ -56,7 +56,7 @@ function ModalProfile({ show, handleClose, handlerOpen }) {
               <div className='flex flex-col items-center justify-center'>
                 <h2 className='flex items-center justify-center py-2 mb-4 text-lg font-medium text-gray-900 '>Perfil</h2>
                 <Link href='/login'>
-                  <p className='w-full px-4 py-2 text-sm font-medium text-white bg-[#998779] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'>
+                  <p className='w-full px-4 py-2 text-sm font-medium text-white bg-[#e2d0c2] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'>
                     Iniciar sesión
                   </p>
                 </Link>

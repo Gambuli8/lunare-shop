@@ -1,10 +1,12 @@
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
+import { Raleway } from 'next/font/google'
 
+const raleway = Raleway({ subsets: ['latin'] })
 export default function Breadcrumb({ products }) {
   return (
     <nav
-      className='flex pb-4'
+      className={` ${raleway.className} flex pb-4`}
       aria-label='Breadcrumb'
     >
       <ol
@@ -18,7 +20,7 @@ export default function Breadcrumb({ products }) {
               className='text-gray-400 hover:text-gray-500'
             >
               <HomeIcon
-                className='flex-shrink-0 w-5 h-5'
+                className='flex-shrink-0 w-5 h-5 text-black'
                 aria-hidden='true'
               />
               <span className='sr-only'>Home</span>
@@ -28,21 +30,21 @@ export default function Breadcrumb({ products }) {
         <li>
           <div className='flex items-center'>
             <ChevronRightIcon
-              className='flex-shrink-0 w-5 h-5 text-gray-400'
+              className='flex-shrink-0 w-5 h-5 text-[#e2d0c2]'
               aria-hidden='true'
             />
             <Link
               href='/productos'
-              className='ml-2 text-sm font-medium text-gray-500 hover:text-gray-700'
+              className='z-0 ml-2 text-sm font-medium text-black hover:text-gray-700'
             >
-              productos
+              Productos
             </Link>
           </div>
         </li>
         <li>
           <div className='flex items-center'>
             <ChevronRightIcon
-              className='flex-shrink-0 w-5 h-5 text-gray-400'
+              className='flex-shrink-0 w-5 h-5 text-[#e2d0c2]'
               aria-hidden='true'
             />
             <Link

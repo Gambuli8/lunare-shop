@@ -3,14 +3,13 @@ import { useEffect, useState } from 'react'
 import { ShoppingCartIcon } from '@heroicons/react/20/solid'
 import { Productos } from '../apiLocal'
 import { Raleway } from 'next/font/google'
-import Image from 'next/image'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Link from 'next/link'
 import Filters from '../components/Filters'
 import useCart from '../hooks/useCart'
-import SvgShoppinCartPlus from './svgShoppinCartPlus'
 import { preload } from 'react-dom'
+import Breadcrumb from './breadCrumb'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -85,39 +84,26 @@ export default function Products() {
     }
     fetchData()
   }, [])
-  console.log(productsCat)
+
+  console.log(Cart)
 
   return (
-    <div className='bg-[#F4E8D8] pt-24'>
+    <div className='pt-24 bg-white'>
       <main className='pb-24'>
+        <div className='flex items-center justify-start py-10 pl-10'>
+          <Breadcrumb products={products} />
+        </div>
         <div className='relative m-0 mb-5 overflow-hidden'>
-          <div
-            aria-hidden='true'
-            className='absolute inset-0'
-          >
-            <div className='absolute inset-0 mx-auto overflow-hidden max-w-7xl xl:px-8'>
-              <Image
-                src='https://res.cloudinary.com/ds7hhoq17/image/upload/v1708726984/Logo/Imagen_de_WhatsApp_2024-02-22_a_las_22.28.07_82c95ffa_subwee.jpg'
-                alt=''
-                className='object-cover w-full h-full bg-fixed bg-cover '
-                layout='fill'
-                quality={100}
-                priority
-              />
-            </div>
-            <div className='absolute inset-0 bg-white bg-opacity-35' />
-            <div className='absolute inset-0 bg-gradient-to-t ' />
-          </div>
-
-          <div className='relative w-full h-full px-4 py-16 text-center sm:px-6 lg:px-8'>
-            <h1 className={` ${raleway.className} text-6xl font-bold tracking-tight text-gray-900`}>Tienda</h1>
-            <p className='max-w-xl mx-auto mt-4 text-base font-medium text-gray-600'>¡Descubre la elegancia en cada detalle y encuentra la pieza perfecta que refleje tu estilo único!</p>
+          <div className='relative w-full h-full px-4 py-5 text-center sm:px-6 lg:px-8'>
+            <h1 className={` ${raleway.className} text-6xl font-sans font-normal tracking-tight text-gray-900`}>Productos</h1>
           </div>
         </div>
 
         {/* Filters */}
-        <div className='px-3'>
-          <Filters setFiltered={setFiltered} />
+        <div className='flex items-center justify-center px-3'>
+          <div className=''>
+            <Filters setFiltered={setFiltered} />
+          </div>
         </div>
 
         {/* Product grid */}
@@ -184,7 +170,7 @@ export default function Products() {
                   </Link>
                   <div className='p-3 px-2 bg-transparent md:px-4'>
                     <div className='flex items-center justify-between mb-1 bg-transparent'>
-                      <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-blue-gray-900`}>{Item.name}</h5>
+                      <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-black`}>{Item.name}</h5>
                       {Item.material === 'silver' ? (
                         <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
                       ) : (
@@ -196,23 +182,12 @@ export default function Products() {
                         <div className='flex items-center w-full'>
                           <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_par || Item.price_ind)}</span>
                         </div>
-                        {/* {( */}
-
-                        {/* ) ? ( */}
                         <button
                           onClick={() => AddToCartCard(Item)}
                           className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
                         >
-                          <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                          <ShoppingCartIcon className='w-6 h-6 text-[#e2d0c2]' />
                         </button>
-                        {/* ) : ( */}
-                        {/* <button
-                          onClick={() => AddToCartCard(Item)}
-                          className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
-                        >
-                          <SvgShoppinCartPlus className='w-6 h-6 text-[#938377]' />
-                        </button> */}
-                        {/* )} */}
                       </div>
                     ) : (
                       <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
@@ -263,7 +238,7 @@ export default function Products() {
                         onClick={() => AddToCartCard(Item)}
                         className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
                       >
-                        <ShoppingCartIcon className='w-6 h-6 text-[#938377]' />
+                        <ShoppingCartIcon className='w-6 h-6 text-black' />
                       </button>
                     </div>
                   </div>

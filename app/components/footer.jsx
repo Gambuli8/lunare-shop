@@ -1,4 +1,7 @@
-import Link from "next/link"
+import Link from 'next/link'
+import { Raleway } from 'next/font/google'
+
+const raleway = Raleway({ subsets: ['latin'] })
 
 const navigation = {
   main: [
@@ -30,7 +33,7 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <footer className='h-full mb-5 bg-white border-t-2 border-gray-200 lg:mb-5 lg:mt-10'>
+    <footer className={` ${raleway.className} h-full mb-5 bg-white border-t-2 border-gray-200 lg:mb-5 lg:mt-10`}>
       <div className='px-6 mx-auto overflow-hidden max-w-7xl sm:py-24 lg:pb-0 lg:-mt-8 lg:px-8'>
         <nav
           className='-mb-3 columns-2 sm:flex sm:justify-center sm:space-x-12'

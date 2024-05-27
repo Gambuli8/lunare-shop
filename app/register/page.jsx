@@ -4,6 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '../context/authContext'
 import Swal from 'sweetalert2'
+import { Raleway } from 'next/font/google'
+
+const raleway = Raleway({ subsets: ['latin'] })
 export default function Register() {
   const { signUp, loginWithGoogle } = useAuth()
   const [user, setUser] = useState({
@@ -11,8 +14,6 @@ export default function Register() {
     email: '',
     password: ''
   })
-
-  console.log(signUp)
 
   const handlerChange = e => {
     setUser({
@@ -33,7 +34,6 @@ export default function Register() {
         window.location.href = '/'
       })
     } catch (error) {
-      console.log(error.message)
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -96,7 +96,7 @@ export default function Register() {
 
   return (
     <>
-      <div className='flex flex-col justify-center flex-1 min-h-full pb-6 pt-28 sm:px-6 lg:px-8'>
+      <div className={` ${raleway.className} flex flex-col justify-center flex-1 min-h-full pb-6 pt-28 sm:px-6 lg:px-8`}>
         {/* <a href='/'>
           <ArrowLeftCircleIcon className='w-12 md:w-14 h-auto px-1 text-[#998779] hover:scale-105 transition-all' />
         </a> */}
