@@ -1,5 +1,7 @@
 import React from 'react'
+import { Raleway } from 'next/font/google'
 
+const raleway = Raleway({ subsets: ['latin'] })
 export default function Sale() {
   return (
     <div className='relative my-10 overflow-hidden'>
@@ -22,12 +24,12 @@ export default function Sale() {
       {/* Sale */}
       <section
         aria-labelledby='sale-heading'
-        className='relative flex flex-col items-center justify-center px-4 py-20 mx-auto text-center max-w-7xl sm:px-6 lg:px-8'
+        className={` ${raleway.className} relative flex flex-col items-center justify-center px-4 py-20 mx-auto text-center max-w-7xl sm:px-6 lg:px-8`}
       >
         <div className='max-w-2xl mx-auto lg:max-w-none'>
           <h2
             id='sale-heading'
-            className='text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl'
+            className='text-4xl font-medium tracking-tight text-gray-900 sm:text-5xl lg:text-6xl'
           >
             15% off pagando en efectivo
           </h2>

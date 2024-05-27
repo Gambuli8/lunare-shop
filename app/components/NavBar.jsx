@@ -124,7 +124,7 @@ export default function NavBar() {
               leaveFrom='translate-x-0'
               leaveTo='-translate-x-full'
             >
-              <Dialog.Panel className='relative flex flex-col w-full max-w-xs pb-12 overflow-y-auto bg-[#F4E8D8] shadow-xl'>
+              <Dialog.Panel className='relative flex flex-col w-full max-w-xs pb-12 overflow-y-auto bg-white shadow-xl'>
                 <div className='flex px-4 pt-5 pb-2'>
                   <button
                     type='button'
@@ -142,7 +142,7 @@ export default function NavBar() {
                 {/* Links */}
                 <Tab.Group
                   as='div'
-                  className='mt-2 bg-[#F4E8D8]'
+                  className='mt-2 bg-white'
                 >
                   <div className='border-b border-gray-200'>
                     <Tab.List className='flex px-4 -mb-px space-x-8'>Tienda</Tab.List>
@@ -159,7 +159,7 @@ export default function NavBar() {
                               <Link href='/productos?Aro'>
                                 <p
                                   id={`mobile-featured-heading-${categoryIdx}`}
-                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#e2d0c2]'
                                 >
                                   Aros
                                 </p>
@@ -188,7 +188,7 @@ export default function NavBar() {
                               <Link href='/productos?pulsera'>
                                 <p
                                   id={`mobile-featured-heading`}
-                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#e2d0c2]'
                                 >
                                   Pulseras
                                 </p>
@@ -200,7 +200,7 @@ export default function NavBar() {
                               <Link href='/productos?dije'>
                                 <p
                                   id={`mobile-featured-heading`}
-                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#e2d0c2]'
                                 >
                                   Dijes
                                 </p>
@@ -211,7 +211,7 @@ export default function NavBar() {
                               <Link href='/productos?cadena'>
                                 <p
                                   id={`mobile-featured-heading`}
-                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#e2d0c2]'
                                 >
                                   Cadenas
                                 </p>
@@ -222,7 +222,7 @@ export default function NavBar() {
                               <Link href='/productos?Conjunto'>
                                 <p
                                   id={`mobile-featured-heading`}
-                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                  className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#e2d0c2]'
                                 >
                                   Conjuntos
                                 </p>
@@ -231,7 +231,7 @@ export default function NavBar() {
                             <div>
                               <p
                                 id='mobile-brand-heading'
-                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#998779]'
+                                className='font-medium text-gray-900 border-b hover:w-20 hover:border-[#e2d0c2]'
                               >
                                 <Link href='/productos'>Ver Todos</Link>
                               </p>
@@ -269,14 +269,14 @@ export default function NavBar() {
       <header className='fixed z-10 w-full'>
         <nav aria-label='Top'>
           {/* Top navigation */}
-          <div className='bg-[#998779]'>
+          <div className={` ${raleway.className} bg-[#998779]`}>
             <div className='flex items-center justify-center h-8 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
-              <p className='flex-1 text-base font-medium text-center text-white lg:flex-none'>15% OFF en Efectivo</p>
+              <p className='items-center justify-center flex-1 text-base font-medium text-center text-white lg:flex-none'>15% OFF en Efectivo</p>
             </div>
           </div>
 
           {/* Secondary navigation */}
-          <div className='bg-[#F4E8D8] border-b-2 border-[#E2D0C2]'>
+          <div className={` ${raleway.className} bg-white border-b-2 border-[#E2D0C2]`}>
             <div className='border-b border-gray-200'>
               <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
                 <div className='flex items-center justify-between h-16'>
@@ -324,11 +324,11 @@ export default function NavBar() {
                                   leaveFrom='opacity-100 translate-y-0'
                                   leaveTo='opacity-0 translate-y-1'
                                 >
-                                  <Popover.Panel className='absolute z-10 p-4 ml-56 -mt-2 bg-[#F4E8D8] shadow-lg -left-8 top-full w-52 rounded-3xl ring-1 ring-gray-900/5'>
+                                  <Popover.Panel className='absolute z-10 p-4 ml-56 -mt-2 bg-white shadow-lg -left-8 top-full w-52 rounded-3xl ring-1 ring-gray-900/5'>
                                     {productos.map(item => (
                                       <div
                                         key={item.name}
-                                        className='relative p-4 rounded-lg hover:bg-[#998779]'
+                                        className={` ${raleway.className} relative p-4 rounded-lg hover:bg-[#e2d0c2]`}
                                       >
                                         <Link
                                           href={item.href}
@@ -368,7 +368,7 @@ export default function NavBar() {
                     >
                       <span className='sr-only'>Open menu</span>
                       <Bars3Icon
-                        className='w-6 h-6 text-[#998779]'
+                        className='w-6 h-6 text-black'
                         aria-hidden='true'
                       />
                     </button>
@@ -387,7 +387,7 @@ export default function NavBar() {
                           id='2'
                         />
                         <MagnifyingGlassIcon
-                          className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:border-r peer-focus:stroke-[#998779]'
+                          className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-black border border-transparent peer-focus:border-[#998779] peer-focus:border-r peer-focus:stroke-black'
                           aria-hidden='true'
                         />
                       </form>
@@ -448,12 +448,12 @@ export default function NavBar() {
                               id='1'
                             />
                             <MagnifyingGlassIcon
-                              className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-[#998779] border border-transparent peer-focus:border-[#998779] peer-focus:stroke-[#998779]'
+                              className='w-11 h-11 absolute inset-y-0 my-auto px-2.5 stroke-black border border-transparent peer-focus:border-[#998779] peer-focus:stroke-black'
                               aria-hidden='true'
                             />
                           </form>
                           {searchTerm.length > 0 ? (
-                            <div className='z-30 bg-[#F4E8D8] absolute flex-col w-72 h-auto mt-[35px] right-44 overflow-y-auto rounded-md shadow-md max-h-80'>
+                            <div className='z-30 bg-white absolute flex-col w-72 h-auto mt-[35px] right-44 overflow-y-auto rounded-md shadow-md max-h-80'>
                               {product.map(result => {
                                 return (
                                   <Link

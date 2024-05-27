@@ -5,8 +5,9 @@ import { Fragment } from 'react'
 import { ShoppingBagIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { Popover, Transition } from '@headlessui/react'
 import useCart from '../hooks/useCart'
-import Link from 'next/link'
+import { Raleway } from 'next/font/google'
 
+const raleway = Raleway({ subsets: ['latin'] })
 export default function Cart() {
   //* ESTADOS
   const { Cart, RemoveFromCart } = useCart()
@@ -23,14 +24,13 @@ export default function Cart() {
   return (
     <div>
       {/* Cart */}
-      <Popover className='relative flow-root text-sm lg:ml-2'>
+      <Popover className={`${raleway.className} relative flow-root text-sm lg:ml-2`}>
         <Popover.Button className='flex items-center p-2 -m-2 group'>
           <ShoppingBagIcon
-            className='flex-shrink-0 w-6 h-6 text-[#998779] group-hover:text-[#938377]'
+            className='flex-shrink-0 w-6 h-6 text-black group-hover:text-black'
             aria-hidden='true'
           />
-          <span className='ml-2 text-sm font-medium text-[#998779] group-hover:text-[#938377]'>{Cart.length}</span>
-          <span className='sr-only'>items in cart, view bag</span>
+          <span className='ml-2 text-sm font-medium text-gray-400'>{Cart.length}</span>
         </Popover.Button>
         <Transition
           as={Fragment}
@@ -67,7 +67,7 @@ export default function Cart() {
                       />
                       <div className='flex-auto ml-4'>
                         <h3 className='text-base font-medium text-gray-900'>
-                          <Link>{product.name}</Link>
+                          <p className='capitalize'>{product.name}</p>
                         </h3>
                         <p className='text-gray-500'>{formatPrice(product.price)}</p>
                         <p className='text-gray-500'>Cantidad: {product.quantity}</p>
@@ -93,14 +93,14 @@ export default function Cart() {
               </ul>
 
               {Cart.length === 0 ? null : (
-                <Link href='/checkout'>
+                <a href='/checkout'>
                   <button
                     type='button'
-                    className='w-full px-4 py-2 text-sm font-medium text-white bg-[#998779] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
+                    className='w-full px-4 py-2 text-sm font-medium text-white bg-[#e2d0c2] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
                   >
                     Ir al carrito
                   </button>
-                </Link>
+                </a>
               )}
             </form>
           </Popover.Panel>
