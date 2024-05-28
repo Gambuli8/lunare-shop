@@ -17,6 +17,10 @@ export default function RootLayout({ children }) {
       <head>
         <title>Lunare Shop</title>
         <meta
+          name='google-site-verification'
+          content='G6RLI2K9kKxOG9fL9r1izuqhpFcwAP_Xb_8P8JH5cXo'
+        />
+        <meta
           name='viewport'
           content='width=device-width, initial-scale=1.0'
         />
