@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useAuth } from '../context/authContext'
 import Swal from 'sweetalert2'
 import { Raleway } from 'next/font/google'
+import { EyeSlashIcon, EyeIcon } from '@heroicons/react/24/outline'
 
 const raleway = Raleway({ subsets: ['latin'] })
 export default function Register() {
@@ -14,12 +15,19 @@ export default function Register() {
     email: '',
     password: ''
   })
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   const handlerChange = e => {
     setUser({
       ...user,
       [e.target.name]: e.target.value
     })
+  }
+
+  console.log(user)
+
+  const handlerPasswordVisible = () => {
+    setPasswordVisible(!passwordVisible)
   }
 
   const handlerGoogle = async () => {
@@ -82,6 +90,7 @@ export default function Register() {
           text: 'El correo no es valido',
           confirmButtonColor: '#998779'
         })
+        console.log(error)
       }
       if (error.code === 'auth/operation-not-allowed') {
         Swal.fire({
@@ -122,7 +131,7 @@ export default function Register() {
                     name='username'
                     placeholder='Ingresa tu nombre de usuario'
                     type='username'
-                    maxLength={10}
+                    maxLength={15}
                     autoComplete='username'
                     onChange={handlerChange}
                     className='block w-full px-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
@@ -151,24 +160,65 @@ export default function Register() {
               </div>
 
               <div>
-                <label
-                  htmlFor='password'
-                  className='block text-sm font-medium leading-6 text-gray-900'
-                >
-                  Contraseña
-                </label>
-                <div className='mt-2'>
-                  <input
-                    id='password'
-                    name='password'
-                    placeholder='Ingresa tu contraseña'
-                    type='password'
-                    onChange={handlerChange}
-                    autoComplete='current-password'
-                    required
-                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
-                  />
-                </div>
+                {!passwordVisible ? (
+                  <div className=''>
+                    <label
+                      htmlFor='password'
+                      className='block text-sm font-medium leading-6 text-gray-900'
+                    >
+                      Contraseña
+                    </label>
+                    <div className='relative mt-2'>
+                      <input
+                        id='password'
+                        name='password'
+                        type='password'
+                        onChange={handlerChange}
+                        autoComplete='current-password'
+                        required
+                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
+                      />
+                      <div className='absolute right-0 mr-3 top-2'>
+                        <button
+                          onClick={handlerPasswordVisible}
+                          type='button'
+                          className='text-sm font-medium leading-6 text-gray-900 cursor-pointer hover:scale-105 hover:transition-all hover:underline hover:duration-300'
+                        >
+                          <EyeSlashIcon className='w-5 h-5' />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className=''>
+                    <label
+                      htmlFor='password'
+                      className='block text-sm font-medium leading-6 text-gray-900'
+                    >
+                      Contraseña
+                    </label>
+                    <div className='relative mt-2'>
+                      <input
+                        id='password'
+                        name='password'
+                        type='text'
+                        onChange={handlerChange}
+                        autoComplete='current-password'
+                        required
+                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
+                      />
+                      <div className='absolute right-0 mr-3 top-2'>
+                        <button
+                          onClick={handlerPasswordVisible}
+                          type='button'
+                          className='text-sm font-medium leading-6 text-gray-900 cursor-pointer hover:scale-105 hover:transition-all hover:underline hover:duration-300'
+                        >
+                          <EyeIcon className='w-5 h-5' />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               <div>
                 <button

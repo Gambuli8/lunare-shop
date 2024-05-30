@@ -11,6 +11,7 @@ import { Productos } from '../apiLocal'
 import Link from 'next/link'
 import { useAuth } from '../context/authContext'
 import ModalProfile from './ModalProfile'
+import Swal from 'sweetalert2'
 
 const navigation = {
   categories: [
@@ -82,9 +83,12 @@ export default function NavBar() {
       try {
         const result = await Productos.getProductName.list(searchTerm)
         setProduct(result)
-        console.log(result)
       } catch (error) {
-        console.log(error.message)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `Hubo un error, ${error.message} `
+        })
       }
     }
     fetchData()

@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth } from '../firebase/credentials'
 
-export const authcontext = createContext()
+export const authContext = createContext()
 
 export const useAuth = () => {
-  const context = useContext(authcontext)
+  const context = useContext(authContext)
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider')
   }
@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, provider)
   }
 
+  const resetPassword = email => sendPasswordResetEmail(auth, email)
+
   useEffect(() => {
     onAuthStateChanged(auth, currentUser => {
       setUser(currentUser)
@@ -30,5 +32,5 @@ export const AuthProvider = ({ children }) => {
     })
   }, [])
 
-  return <authcontext.Provider value={{ signUp, login, user, logout, loading, loginWithGoogle }}>{children}</authcontext.Provider>
+  return <authContext.Provider value={{ signUp, login, user, logout, loading, loginWithGoogle, resetPassword }}>{children}</authContext.Provider>
 }
