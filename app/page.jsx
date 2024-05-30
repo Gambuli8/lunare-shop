@@ -31,7 +31,7 @@ export default function Home() {
                     <div className='mt-6'>
                       <Link
                         href='/productos'
-                        className='inline-block px-8 py-3 font-medium text-white bg-[#e2d0c2] border border-transparent rounded-md hover:bg-[#e2c9b5]'
+                        className='inline-block px-8 py-3 font-medium text-white bg-[#998779] border border-transparent rounded-md hover:bg-[#e2c9b5]'
                       >
                         Comprar
                       </Link>

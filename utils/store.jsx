@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
     const item = localStorage.getItem('cart')
     const cart = JSON.parse(item)
     //al cart agregarle cart.lenght > 0
-    if (cart) return setCart(cart)
+    if (cart.length > 0) return setCart(cart)
   }, [])
 
   useEffect(() => {

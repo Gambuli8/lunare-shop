@@ -4,13 +4,19 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '../context/authContext'
 import Swal from 'sweetalert2'
+import { EyeSlashIcon, EyeIcon } from '@heroicons/react/24/outline'
 
 export default function Login() {
-  const { login, auth, loginWithGoogle } = useAuth()
+  const { login, auth, loginWithGoogle, resetPassword } = useAuth()
   const [user, setUser] = useState({
     email: '',
     password: ''
   })
+  const [passwordVisible, setPasswordVisible] = useState(false)
+
+  const handlerPasswordVisible = () => {
+    setPasswordVisible(!passwordVisible)
+  }
 
   const handlerGoogle = async () => {
     try {
@@ -29,6 +35,33 @@ export default function Login() {
         icon: 'error',
         title: 'Oops...',
         text: 'Hubo un error',
+        confirmButtonColor: '#998779'
+      })
+    }
+  }
+
+  const handlerResetPassword = async () => {
+    if (!user.email) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ingresa un correo',
+        confirmButtonColor: '#998779'
+      })
+    }
+    try {
+      await resetPassword(user.email)
+      Swal.fire({
+        icon: 'info',
+        title: 'Olvide mi contraseña',
+        text: 'Te enviamos un correo para restablecer tu contraseña',
+        confirmButtonColor: '#998779'
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Hubo un error, ${error.message}`,
         confirmButtonColor: '#998779'
       })
     }
@@ -116,35 +149,77 @@ export default function Login() {
               </div>
 
               <div>
-                <label
-                  htmlFor='password'
-                  className='block text-sm font-medium leading-6 text-gray-900'
-                >
-                  Contraseña
-                </label>
-                <div className='mt-2'>
-                  <input
-                    id='password'
-                    name='password'
-                    type='password'
-                    onChange={handlerChange}
-                    autoComplete='current-password'
-                    required
-                    className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
-                  />
-                </div>
+                {passwordVisible ? (
+                  <div className=''>
+                    <label
+                      htmlFor='password'
+                      className='block text-sm font-medium leading-6 text-gray-900'
+                    >
+                      Contraseña
+                    </label>
+                    <div className='relative mt-2'>
+                      <input
+                        id='password'
+                        name='password'
+                        type='password'
+                        onChange={handlerChange}
+                        autoComplete='current-password'
+                        required
+                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
+                      />
+                      <div className='absolute right-0 mr-3 top-2'>
+                        <button
+                          onClick={handlerPasswordVisible}
+                          type='button'
+                          className='text-sm font-medium leading-6 text-gray-900 cursor-pointer hover:scale-105 hover:transition-all hover:underline hover:duration-300'
+                        >
+                          <EyeSlashIcon className='w-5 h-5' />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className=''>
+                    <label
+                      htmlFor='password'
+                      className='block text-sm font-medium leading-6 text-gray-900'
+                    >
+                      Contraseña
+                    </label>
+                    <div className='relative mt-2'>
+                      <input
+                        id='password'
+                        name='password'
+                        type='text'
+                        onChange={handlerChange}
+                        autoComplete='current-password'
+                        required
+                        className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
+                      />
+                      <div className='absolute right-0 mr-3 top-2'>
+                        <button
+                          onClick={handlerPasswordVisible}
+                          type='button'
+                          className='text-sm font-medium leading-6 text-gray-900 cursor-pointer hover:scale-105 hover:transition-all hover:underline hover:duration-300'
+                        >
+                          <EyeIcon className='w-5 h-5' />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className='flex items-center justify-between'>
                 <div className=''></div>
 
                 <div className='text-sm leading-6 cursor-pointer hover:scale-105 hover:transition-all hover:underline hover:duration-300'>
-                  <Link
-                    href='#'
+                  <a
+                    onClick={handlerResetPassword}
                     className='font-semibold text-[#998779]'
                   >
                     Olvidaste tu contraseña?
-                  </Link>
+                  </a>
                 </div>
               </div>
 
@@ -154,8 +229,11 @@ export default function Login() {
                 </button>
                 <p className='flex items-center justify-start gap-2 mt-3 text-sm leading-6 text-gray-600'>
                   ¿No tienes una cuenta?
-                  <Link href='/register'>
-                    <p className='font-semibold text-sm text-[#998779] hover:scale-105 hover:transition-all hover:underline hover:duration-300 '>Crear cuenta</p>
+                  <Link
+                    className='font-semibold text-sm text-[#998779] hover:scale-105 hover:transition-all hover:underline hover:duration-300 '
+                    href='/register'
+                  >
+                    Crear cuenta
                   </Link>
                 </p>
               </div>

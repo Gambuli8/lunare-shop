@@ -6,6 +6,7 @@ import { ShoppingBagIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { Popover, Transition } from '@headlessui/react'
 import useCart from '../hooks/useCart'
 import { Raleway } from 'next/font/google'
+import Link from 'next/link'
 
 const raleway = Raleway({ subsets: ['latin'] })
 export default function Cart() {
@@ -93,14 +94,14 @@ export default function Cart() {
               </ul>
 
               {Cart.length === 0 ? null : (
-                <a href='/checkout'>
+                <Link href='/checkout'>
                   <button
                     type='button'
                     className='w-full px-4 py-2 text-sm font-medium text-white bg-[#e2d0c2] border border-transparent rounded-md shadow-sm hover:bg-[#938377] focus:outline-none focus:ring-2 focus:ring-[#938377] focus:ring-offset-2 focus:ring-offset-gray-50'
                   >
                     Ir al carrito
                   </button>
-                </a>
+                </Link>
               )}
             </form>
           </Popover.Panel>
