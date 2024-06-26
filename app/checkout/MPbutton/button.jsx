@@ -11,7 +11,7 @@ export default function MPButton(product) {
     const generateLink = async () => {
       setLoading(true)
       try {
-        const { data } = await axios.post('/api/checkout', {
+        const { data } = await axios.post('/api/mercadoPago', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

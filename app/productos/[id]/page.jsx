@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { RadioGroup } from '@headlessui/react'
 import { Productos } from '../../apiLocal'
-import { Italiana } from 'next/font/google'
+import { Italiana, Raleway } from 'next/font/google'
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import Breadcrumb from '../breadCrumb'
 import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
-import {preload} from 'react-dom'
+import { preload } from 'react-dom'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -23,6 +23,7 @@ const productStock = [
 ]
 
 const Italiano = Italiana({ subsets: ['latin'], weight: '400' })
+const raleway = Raleway({ subsets: ['latin'] })
 
 export default function ProductId() {
   //* ESTADOS
@@ -71,11 +72,12 @@ export default function ProductId() {
 
   const Addtocart = () => {
     AddToCart(products, quantity)
+
     // setQuantity(1)
   }
 
   return (
-    <div className='bg-white pt-28'>
+    <div className={` ${raleway.className} bg-white pt-28`}>
       {products.length === 0 ? (
         <div className='flex items-center justify-center h-screen'>
           <Loading />
@@ -87,7 +89,7 @@ export default function ProductId() {
             <Breadcrumb products={products} />
 
             <div className='mt-4'>
-              <h1 className='text-3xl font-bold tracking-tight text-gray-900 capitalize sm:text-4xl'>{products.name}</h1>
+              <h1 className='text-3xl font-medium tracking-tight text-gray-900 capitalize sm:text-4xl'>{products.name}</h1>
             </div>
 
             <section
@@ -113,7 +115,7 @@ export default function ProductId() {
                 <div className='pl-4 ml-4 border-l border-gray-300'>
                   <div className='flex items-center'>
                     <p className='flex items-center gap-1.5 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased'>
-                      {products.material === 'Plata' ? (
+                      {products.material === 'silver' ? (
                         <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{products.material}</span>
                       ) : (
                         <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{products.material}</span>

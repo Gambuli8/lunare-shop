@@ -149,7 +149,7 @@ export default function Login() {
               </div>
 
               <div>
-                {passwordVisible ? (
+                {!passwordVisible ? (
                   <div className=''>
                     <label
                       htmlFor='password'

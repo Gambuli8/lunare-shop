@@ -149,7 +149,14 @@ export default function NavBar() {
                   className='mt-2 bg-white'
                 >
                   <div className='border-b border-gray-200'>
-                    <Tab.List className='flex px-4 -mb-px space-x-8'>Tienda</Tab.List>
+                    <Tab.List
+                      as='ul'
+                      role='tablist'
+                      aria-orientation='horizontal'
+                      className='flex px-4 -mb-px space-x-8'
+                    >
+                      Tienda
+                    </Tab.List>
                   </div>
                   <Tab.Panels as={Fragment}>
                     {navigation.categories.map((category, categoryIdx) => (
@@ -310,7 +317,12 @@ export default function NavBar() {
                             {({ open }) => (
                               <>
                                 <div className='relative flex border-none'>
-                                  <Popover.Button className={classNames(open ? ' text-[#998779]' : ' text-gray-700 hover:text-gray-800', 'relative z-10 -mb-px flex items-center pt-px text-sm font-medium transition-colors duration-200 ease-out')}>
+                                  <Popover.Button
+                                    className={classNames(
+                                      open ? ' text-[#998779] border-none focus:outline-none' : ' text-gray-700 hover:text-gray-800',
+                                      'relative z-10 -mb-px flex items-center border-none focus:outline-none pt-px text-sm font-medium transition-colors duration-200 ease-out'
+                                    )}
+                                  >
                                     {category.name}
                                     <ChevronDownIcon
                                       className='flex-none w-5 h-5 text-gray-400'
