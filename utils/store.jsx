@@ -13,7 +13,7 @@ export const CartProvider = ({ children }) => {
     const item = localStorage.getItem('cart')
     const cart = JSON.parse(item)
     //al cart agregarle cart.lenght > 0
-    if (cart) return setCart(cart)
+    if (cart.length > 0) return setCart(cart)
   }, [])
 
   useEffect(() => {
@@ -35,8 +35,9 @@ export const CartProvider = ({ children }) => {
     if (existItem !== -1) {
       const newItems = structuredClone(Cart)
       {
-        newItems[existItem].quantity < newItems[existItem].stock ? (newItems[existItem].quantity += 1 && toast.success('Producto agregado al carrito')) : toast.error('Maxímo de stock')
+        newItems[existItem].quantity < newItems[existItem].stock ? (newItems[existItem].quantity += quantity) : toast.error('Maximo de stock')
       }
+      newItems[existItem].price = quantity === 2 ? product.price_par : quantity === 1 ? product.price_ind : quantity > 2 ? product.price_ind * quantity : ''
       setCart(newItems)
     } else {
       setCart(prevState => [...prevState, { ...product, quantity, price: quantity === 2 ? product.price_par : quantity === 1 ? product.price_ind : quantity > 2 ? product.price_ind * quantity : '' }])
@@ -89,8 +90,26 @@ export const CartProvider = ({ children }) => {
     }
   }
 
+  const decreaseQuantity = quantity => {
+    if (quantity > 1) {
+      quantity -= 1
+    } else {
+      RemoveFromCart(product)
+    }
+    SaveLocal()
+  }
+
+  const increaseQuantity = (quantity, stock) => {
+    if (quantity < stock) {
+      quantity += 1
+    } else {
+      toast.error('Maximo de stock')
+    }
+    SaveLocal()
+  }
+
   return (
-    <StoreContext.Provider value={{ Cart, AddToCart, ClearCart, RemoveFromCart, cartCount, setCart, setCartCount, AddToCartCard }}>
+    <StoreContext.Provider value={{ Cart, AddToCart, ClearCart, RemoveFromCart, cartCount, setCart, setCartCount, AddToCartCard, decreaseQuantity, increaseQuantity }}>
       {children}
       <Toaster />
     </StoreContext.Provider>

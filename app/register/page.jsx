@@ -54,7 +54,7 @@ export default function Register() {
   const handlerSubmit = async e => {
     e.preventDefault()
     try {
-      await signUp(user.username, user.email, user.password)
+      await signUp(user.email, user.password, user.username)
       Swal.fire({
         icon: 'success',
         title: 'Cuenta creada',
@@ -154,6 +154,7 @@ export default function Register() {
                     type='email'
                     autoComplete='email'
                     onChange={handlerChange}
+                    required
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#998779] sm:text-sm sm:leading-6'
                   />
                 </div>

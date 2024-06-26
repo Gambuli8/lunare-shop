@@ -15,8 +15,20 @@ export default function Checkout() {
   const { Cart, RemoveFromCart } = useCart()
   const [loading, setLoading] = useState(false)
   const [preferenceId, setPreferenceId] = useState(null)
+  const [selectedEnvio, setSelectedEnvio] = useState(null)
+  console.log(selectedEnvio)
 
-  const total = Cart.reduce((acc, item) => acc + Number(item.price), 0)
+  const handleCheckboxChange = value => {
+    setSelectedEnvio(value)
+  }
+
+  const total = Cart.reduce((acc, item) => {
+    if (item.price_par === 0) {
+      return acc + item.price_ind
+    } else {
+      return acc + item.price
+    }
+  }, 0)
 
   const formatPrice = price => {
     return new Intl.NumberFormat('es-MX', {
@@ -62,7 +74,9 @@ export default function Checkout() {
                             <Link href={`${product.href}`}>
                               <p className='text-base text-gray-900 capitalize'>{product.name}</p>
                             </Link>
-                            {product.quantity === 1 ? (
+                            {product.price_par === 0 ? (
+                              <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md'>Individual</span>
+                            ) : product.quantity === 1 ? (
                               <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md'>Individual</span>
                             ) : product.quantity === 2 ? (
                               <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md'>Par</span>
@@ -72,7 +86,7 @@ export default function Checkout() {
                               </span>
                             ) : null}
                           </div>
-                          <p className='text-gray-900'>{formatPrice(product.price)}</p>
+                          <p className='text-gray-900'>{product.price_par === 0 ? formatPrice(product.price_ind) : formatPrice(product.price)}</p>
                           <p className='hidden text-gray-500 sm:block'>{product.description}</p>
                           <p className='hidden text-gray-500 sm:block'>{product.material}</p>
                         </div>
@@ -108,11 +122,11 @@ export default function Checkout() {
                 <dt>
                   descuento <span className='ml-1 text-sm text-gray-400 '>(en efectivo)</span>
                 </dt>
-                <dd className='text-gray-900'>{formatPrice(total * 0.15) || '$0'}</dd>
+                {selectedEnvio === 'retiro' ? <dd className='text-gray-900'>{formatPrice(total * 0.15) || '$0'}</dd> : '$0'}
               </div>
               <div className='flex justify-between pt-6 text-gray-900 border-t border-gray-200'>
                 <dt className='text-base'>Total</dt>
-                <dd className='text-base'>{formatPrice(total * 0.85) || '$0'}</dd>
+                <dd className='text-base'>{selectedEnvio === 'retiro' ? formatPrice(total * 0.85) : formatPrice(total)}</dd>
               </div>
             </dl>
           </div>
@@ -123,7 +137,7 @@ export default function Checkout() {
 
               <div className='flex items-center justify-between gap-2 mt-6'>
                 <label
-                  htmlFor='email-address'
+                  htmlFor='retiro'
                   className='block text-sm font-medium text-gray-700'
                 >
                   Retiro por Nueva Córdoba
@@ -134,13 +148,17 @@ export default function Checkout() {
                   <input
                     type='checkbox'
                     className='rounded-md'
+                    name='retiro'
+                    id='retiro'
+                    checked={selectedEnvio === 'retiro'}
+                    onChange={() => handleCheckboxChange('retiro')}
                   />
                 </div>
               </div>
 
               <div className='flex items-center justify-between gap-2 mt-6'>
                 <label
-                  htmlFor='email-address'
+                  htmlFor='acordar-vendedor'
                   className='block text-sm font-medium text-gray-700'
                 >
                   Envio a domicilio
@@ -150,6 +168,10 @@ export default function Checkout() {
                   <input
                     type='checkbox'
                     className='rounded-md'
+                    name='acordar-vendedor'
+                    id='acordar-vendedor'
+                    checked={selectedEnvio === 'acordar-vendedor'}
+                    onChange={() => handleCheckboxChange('acordar-vendedor')}
                   />
                 </div>
               </div>

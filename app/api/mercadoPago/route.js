@@ -1,9 +1,7 @@
-'use server'
-
-import { Preference, MercadoPagoConfig, mercadopago } from 'mercadopago'
+import { Preference, MercadoPagoConfig } from 'mercadopago'
 
 const Client = new MercadoPagoConfig({
-  access_token: 'TEST-2842580480810529-031314-1d485d37701b8ae66fc9cf349e82d7da-388596973'
+  access_token: process.env.MP_ACCESS_TOKEN
 })
 
 const handler = async (req, res) => {
@@ -22,15 +20,15 @@ const handler = async (req, res) => {
           ],
           auto_return: 'approved',
           back_urls: {
-            success: `${URL}`,
-            failure: `${URL}`,
-            pending: `${URL}`
+            success: `${URL}/success`,
+            failure: `${URL}/failure`,
+            pending: `${URL}/pending`
           },
           notification_url: `${URL}/api/notifications`
         }
       })
       const response = await preference
-      res.status(201).json({ url: response.init_point })
+      res.status(200).json({ url: response.init_point })
     } catch (error) {
       res.status(500).json({ message: error.message })
     }

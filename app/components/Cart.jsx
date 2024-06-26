@@ -7,11 +7,12 @@ import { Popover, Transition } from '@headlessui/react'
 import useCart from '../hooks/useCart'
 import { Raleway } from 'next/font/google'
 import Link from 'next/link'
+import { toast } from 'react-hot-toast'
 
 const raleway = Raleway({ subsets: ['latin'] })
 export default function Cart() {
   //* ESTADOS
-  const { Cart, RemoveFromCart } = useCart()
+  const { Cart, RemoveFromCart, decreaseQuantity, increaseQuantity } = useCart()
 
   const formatPrice = price => {
     return new Intl.NumberFormat('es-MX', {
@@ -50,42 +51,66 @@ export default function Cart() {
                 role='list'
                 className='grid grid-flow-row divide-y divide-gray-200'
               >
-                <div className='items-center justify-center w-full h-full overflow-auto max-h-[380px]'>
+                <div className='items-center justify-center w-full h-full overflow-auto max-h-[340px]'>
                   {Cart.length === 0 ? (
                     <li className='flex items-center justify-center py-6'>
                       <p>No hay productos en el carrito</p>
                     </li>
                   ) : null}
-                  {Cart.map(product => (
-                    <li
-                      key={product.id}
-                      className='flex items-center py-6'
-                    >
-                      <img
-                        src={product.image}
-                        alt={product.image}
-                        className='flex-none w-16 h-16 border border-gray-200 rounded-md'
-                      />
-                      <div className='flex-auto ml-4'>
-                        <h3 className='text-base font-medium text-gray-900'>
-                          <p className='capitalize'>{product.name}</p>
-                        </h3>
-                        <p className='text-gray-500'>{formatPrice(product.price)}</p>
-                        <p className='text-gray-500'>Cantidad: {product.quantity}</p>
-                      </div>
-                      <div className='flex items-center justify-center'>
-                        <button>
-                          <TrashIcon
-                            className='w-5 h-5 text-gray-400 hover:text-gray-500'
-                            aria-hidden='true'
-                            onClick={() => {
-                              RemoveFromCart(product)
-                            }}
+                  {Cart.map(
+                    product => (
+                      console.log(product),
+                      (
+                        <li
+                          key={product.id}
+                          className='flex items-center py-6'
+                        >
+                          <img
+                            src={product.image}
+                            alt={product.image}
+                            className='flex-none w-16 h-16 border border-gray-200 rounded-md'
                           />
-                        </button>
-                      </div>
-                    </li>
-                  ))}
+                          <div className='flex-auto ml-4'>
+                            <h3 className='text-base font-medium text-gray-900'>
+                              <p className='capitalize'>{product.name}</p>
+                            </h3>
+                            <p className='text-gray-500'>{product.price_par === 0 ? formatPrice(product.price_ind) : formatPrice(product.price)}</p>
+                            <div className='flex items-center justify-start'>
+                              <p className='text-gray-500'>Cantidad:</p>
+                              <div className='flex items-center px-2'>
+                                <button
+                                  type='button'
+                                  onClick={() => decreaseQuantity(product.quantity)}
+                                  className='text-lg text-gray-500 '
+                                >
+                                  -
+                                </button>
+                                <p className='px-2 py-1 mx-2 text-sm font-medium text-gray-500 border border-gray-200 rounded'> {product.price_par === 0 ? '1' : product.quantity}</p>
+                                <button
+                                  type='button'
+                                  onClick={() => increaseQuantity(product.quantity, product.stock)}
+                                  className='text-lg text-gray-500'
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className='flex items-center justify-center'>
+                            <button>
+                              <TrashIcon
+                                className='w-5 h-5 text-gray-400 hover:text-gray-500'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  RemoveFromCart(product)
+                                }}
+                              />
+                            </button>
+                          </div>
+                        </li>
+                      )
+                    )
+                  )}
                 </div>
                 <div className='flex items-center justify-between px-4 py-6'>
                   <span className='text-lg font-medium text-gray-900'>Total</span>

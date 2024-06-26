@@ -8,8 +8,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Link from 'next/link'
 import Filters from '../components/Filters'
 import useCart from '../hooks/useCart'
-import { preload } from 'react-dom'
 import Breadcrumb from './breadCrumb'
+import { Pagination } from '../components/pagination'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -22,6 +22,13 @@ export default function Products() {
     category: 'All',
     sort: 'All'
   })
+  const [productPerPage, setProductPerPage] = useState(9)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const totalProducts = products.length
+
+  const lastIndex = currentPage * productPerPage
+  const firstIndex = lastIndex - productPerPage
 
   const filterProducts = Products => {
     return Products.filter(product => {
@@ -72,7 +79,7 @@ export default function Products() {
       setProducts(result)
       setLoading(false)
     }
-    preload(fetchData())
+    fetchData()
   }, [])
 
   useEffect(() => {
@@ -89,7 +96,7 @@ export default function Products() {
 
   return (
     <div className='pt-24 bg-white'>
-      <main className='pb-24'>
+      <main className='pb-12'>
         <div className='flex items-center justify-start py-10 pl-10'>
           <Breadcrumb products={products} />
         </div>
@@ -109,7 +116,7 @@ export default function Products() {
         {/* Product grid */}
         <section
           aria-labelledby='products-heading'
-          className='pb-8 mx-auto overflow-hidden max-w-7xl sm:px-6 lg:px-8'
+          className='pb-16 mx-auto overflow-hidden max-w-7xl sm:px-6 lg:px-8'
         >
           <h2
             id='products-heading'
@@ -150,58 +157,60 @@ export default function Products() {
                 />
               </SkeletonTheme>
             ) : productsCat.length === 0 ? (
-              filteredProducts.map(Item => (
-                <div
-                  key={Item.id}
-                  className='relative flex w-full max-w-[17rem] md:max-h-[35rem] h-full flex-col rounded-xl bg-white bg-clip-border  text-gray-700 shadow-lg'
-                >
-                  <Link
-                    href={`/productos/${Item.id}`}
-                    className=''
+              filteredProducts
+                .map(Item => (
+                  <div
+                    key={Item.id}
+                    className='relative flex w-full max-w-[17rem] md:max-h-[35rem] h-full flex-col rounded-xl bg-white bg-clip-border  text-gray-700 shadow-lg'
                   >
-                    <div className='relative overflow-hidden text-white md:max-h-60 max-h-40 rounded-xl'>
-                      <img
-                        src={Item.image}
-                        alt={Item.name}
-                        className='top-0 z-50 object-contain object-center w-full h-full cursor-pointer hover:transition-all hover:scale-110 hover:duration-300 hover:ease-in-out'
-                      />
-                      {/* <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/10'></div> */}
-                    </div>
-                  </Link>
-                  <div className='p-3 px-2 bg-transparent md:px-4'>
-                    <div className='flex items-center justify-between mb-1 bg-transparent'>
-                      <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-black`}>{Item.name}</h5>
-                      {Item.material === 'silver' ? (
-                        <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
+                    <Link
+                      href={`/productos/${Item.id}`}
+                      className=''
+                    >
+                      <div className='relative overflow-hidden text-white md:max-h-60 max-h-40 rounded-xl'>
+                        <img
+                          src={Item.image}
+                          alt={Item.name}
+                          className='top-0 z-50 object-contain object-center w-full h-full cursor-pointer hover:transition-all hover:scale-110 hover:duration-300 hover:ease-in-out'
+                        />
+                        {/* <div className='absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/10'></div> */}
+                      </div>
+                    </Link>
+                    <div className='p-3 px-2 bg-transparent md:px-4'>
+                      <div className='flex items-center justify-between mb-1 bg-transparent'>
+                        <h5 className={` ${raleway.className} uppercase block font-sans md:text-base text-sm py-2  antialiased font-normal leading-snug tracking-normal text-black`}>{Item.name}</h5>
+                        {Item.material === 'silver' ? (
+                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-gray-400 rounded-md bg-gray-400/10 ring-1 ring-inset ring-gray-400/20'>{Item.material}</span>
+                        ) : (
+                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
+                        )}
+                      </div>
+                      {Item.stock > 0 ? (
+                        <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                          <div className='flex items-center w-full'>
+                            <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_par || Item.price_ind)}</span>
+                          </div>
+                          <button
+                            onClick={() => AddToCartCard(Item)}
+                            className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
+                          >
+                            <ShoppingCartIcon className='w-6 h-6 text-[#e2d0c2]' />
+                          </button>
+                        </div>
                       ) : (
-                        <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-yellow-500 rounded-md bg-yellow-400/10 ring-1 ring-inset ring-yellow-400/20'>{Item.material}</span>
+                        <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
+                          <div className='flex items-center w-full'>
+                            <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-red-400 rounded-md bg-red-400/10 ring-1 ring-inset ring-red-400/20'>Sin Stock</span>
+                          </div>
+                          <button className='flex items-center justify-end transition-all border-2 border-transparent rounded-full '>
+                            <ShoppingCartIcon className='w-6 h-6 text-slate-300' />
+                          </button>
+                        </div>
                       )}
                     </div>
-                    {Item.stock > 0 ? (
-                      <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
-                        <div className='flex items-center w-full'>
-                          <span className='font-sans text-base font-normal leading-relaxed text-gray-900 md:text-lg'>{formatPrice(Item.price_par || Item.price_ind)}</span>
-                        </div>
-                        <button
-                          onClick={() => AddToCartCard(Item)}
-                          className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
-                        >
-                          <ShoppingCartIcon className='w-6 h-6 text-[#e2d0c2]' />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className='flex items-center justify-between w-full gap-3 mt-5 group'>
-                        <div className='flex items-center w-full'>
-                          <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-red-400 rounded-md bg-red-400/10 ring-1 ring-inset ring-red-400/20'>Sin Stock</span>
-                        </div>
-                        <button className='flex items-center justify-end transition-all border-2 border-transparent rounded-full '>
-                          <ShoppingCartIcon className='w-6 h-6 text-slate-300' />
-                        </button>
-                      </div>
-                    )}
                   </div>
-                </div>
-              ))
+                ))
+                .slice(firstIndex, lastIndex)
             ) : (
               productsCat.map(Item => (
                 <div
@@ -249,48 +258,12 @@ export default function Products() {
         </section>
 
         {/* Pagination */}
-        <nav
-          aria-label='Pagination'
-          className='flex justify-between px-4 mx-auto mt-6 text-sm font-medium text-gray-700 max-w-7xl sm:px-6 lg:px-8'
-        >
-          <div className='flex-1 min-w-0'>
-            <Link
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              Anterior
-            </Link>
-          </div>
-          <div className='hidden space-x-2 sm:flex'>
-            {/* Current: "border-indigo-600 ring-1 ring-indigo-600", Default: "border-gray-300" */}
-            <Link
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              1
-            </Link>
-            <Link
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              2
-            </Link>
-            <Link
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-indigo-600 rounded-md ring-1 ring-indigo-600 hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              3
-            </Link>
-          </div>
-          <div className='flex justify-end flex-1 min-w-0'>
-            <Link
-              href='#'
-              className='inline-flex items-center h-10 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600'
-            >
-              Siguiente
-            </Link>
-          </div>
-        </nav>
+        <Pagination
+          productPerPage={productPerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalProducts={totalProducts}
+        />
       </main>
     </div>
   )
