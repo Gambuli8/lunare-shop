@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import { RadioGroup } from '@headlessui/react'
 import { Productos } from '../../apiLocal'
 import { Italiana, Raleway } from 'next/font/google'
 import { CheckIcon, QuestionMarkCircleIcon, XMarkIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid'
@@ -11,7 +10,8 @@ import Loading from './loading'
 import useCart from '../../hooks/useCart.jsx'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
-import { preload } from 'react-dom'
+import ReactImageGallery from 'react-image-gallery'
+import 'react-image-gallery/styles/css/image-gallery.css'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -42,7 +42,7 @@ export default function ProductId() {
         console.log(error.message)
       }
     }
-    preload(fetchData())
+    fetchData()
   }, [id])
 
   // //* AGREGAR PRODUCTO AL CARRITO
@@ -158,14 +158,23 @@ export default function ProductId() {
           </div>
 
           {/* Product image */}
-          <div className='mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center'>
-            <div className='p-20 overflow-hidden rounded-lg aspect-h-1 aspect-w-1'>
-              <img
-                src={products.image}
-                alt={products.name}
-                className='object-cover object-center w-full h-full'
-              />
-            </div>
+          <div className='mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center min-w-10'>
+            <ReactImageGallery
+              items={[
+                {
+                  original: products.image,
+                  thumbnail: products.image
+                },
+                {
+                  original: products.image2,
+                  thumbnail: products.image2
+                }
+              ]}
+              showPlayButton={false}
+              showFullscreenButton={false}
+              showThumbnails={false}
+              showIndex={false}
+            />
           </div>
 
           {/* Product form */}
