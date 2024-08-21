@@ -5,9 +5,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { HiOutlineTrash } from 'react-icons/hi2'
 import { Raleway } from 'next/font/google'
-import MercadoPagoConfig, { Preference } from 'mercadopago'
-import { redirect } from 'next/dist/server/api-utils'
-import MPButton from './MPbutton/button'
+import axios from 'axios'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -16,7 +15,31 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false)
   const [preferenceId, setPreferenceId] = useState(null)
   const [selectedEnvio, setSelectedEnvio] = useState(null)
-  console.log(selectedEnvio)
+  initMercadoPago('TEST-ff8c5bf3-2e85-44b6-b7eb-3fdb7ac431ab', {
+    locale: 'es-AR'
+  })
+
+  const createPreference = async () => {
+    try {
+      setLoading(true)
+      const response = await axios.post('http://localhost:3000/api/mercadoPago', {
+        items: Cart
+      })
+      const { id } = response.data
+      return id
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlerBuy = async () => {
+    const id = await createPreference()
+    if (id) {
+      setPreferenceId(id)
+    }
+  }
 
   const handleCheckboxChange = value => {
     setSelectedEnvio(value)
@@ -177,8 +200,12 @@ export default function Checkout() {
               </div>
             </div>
 
-            <MPButton product={Cart} />
-            {preferenceId && <p className='text-sm text-gray-500'>Tu ID de compra es: {preferenceId}</p>}
+            {/* <MPButton
+              product={Cart}
+              handlerBuy={handlerBuy}
+            /> */}
+            <button onClick={handlerBuy}>Comprar</button>
+            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }} />}
           </div>
         </div>
       </div>

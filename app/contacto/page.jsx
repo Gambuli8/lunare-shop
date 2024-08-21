@@ -1,10 +1,62 @@
+'use client'
+
 import { EnvelopeIcon, ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline'
 import { Raleway } from 'next/font/google'
 import Link from 'next/link'
+import { useState } from 'react'
+import Loading from './loading'
+import axios from 'axios'
 
 const raleway = Raleway({ subsets: ['latin'] })
 
 export default function Contacto() {
+  const [initialValues, setInitialValues] = useState({
+    name: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    message: ''
+  })
+  const [loading, setLoading] = useState(false)
+  console.log(initialValues)
+
+  const handlerSubmit = async () => {
+    setLoading(true)
+    try {
+      const { data } = await axios.post('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(initialValues)
+      })
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const validate = values => {
+    const errors = {}
+    if (!values.name) {
+      errors.name = 'El nombre es requerido'
+    }
+    if (!values.email) {
+      errors.email = 'El correo electrónico es requerido'
+    } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+      errors.email = 'El correo electrónico es inválido'
+    }
+    if (!values.phone) {
+      errors.phone = 'El teléfono es requerido'
+    }
+    if (!values.message) {
+      errors.message = 'El mensaje es requerido'
+    }
+    return errors
+  }
+
   return (
     <div className='relative bg-white pt-14 isolate'>
       {/* <NavBar /> */}
@@ -59,11 +111,11 @@ export default function Contacto() {
             <p className='mt-6 text-lg leading-8 text-gray-600'>
               Ante cualquier duda o consulta, envianos un mensaje directo a nuestro instagram{' '}
               <Link
-                href='https://www.instagram.com/gerogambuli/'
+                href='https://www.instagram.com/lunarejewelry_/'
                 className='border-b hover:scale-110 transition-all border-transparent hover:border-[#998779] hover:text-[#998779] '
                 target='_blank'
               >
-                @lunareJewerly
+                @lunarejewelry_
               </Link>
             </p>
             <dl className='mt-10 space-y-4 text-base leading-7 text-gray-600'>
@@ -122,6 +174,8 @@ export default function Contacto() {
                 <div className='mt-2.5'>
                   <input
                     type='text'
+                    required
+                    onChange={e => setInitialValues({ ...initialValues, name: e.target.value })}
                     name='first-name'
                     id='first-name'
                     autoComplete='given-name'
@@ -140,6 +194,8 @@ export default function Contacto() {
                   <input
                     type='text'
                     name='last-name'
+                    required
+                    onChange={e => setInitialValues({ ...initialValues, lastName: e.target.value })}
                     id='last-name'
                     autoComplete='family-name'
                     className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
@@ -158,7 +214,28 @@ export default function Contacto() {
                     type='email'
                     name='email'
                     id='email'
+                    required
+                    onChange={e => setInitialValues({ ...initialValues, email: e.target.value })}
                     autoComplete='email'
+                    className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
+              </div>
+              <div className='sm:col-span-2'>
+                <label
+                  htmlFor='telephone'
+                  className={` ${raleway.className} block text-sm font-semibold leading-6 text-gray-900`}
+                >
+                  Telefono
+                </label>
+                <div className='mt-2.5'>
+                  <input
+                    type='tel'
+                    name='telephone'
+                    id='telephone'
+                    required
+                    onChange={e => setInitialValues({ ...initialValues, phone: e.target.value })}
+                    autoComplete='telephone'
                     className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                   />
                 </div>
@@ -174,6 +251,8 @@ export default function Contacto() {
                   <textarea
                     name='message'
                     id='message'
+                    required
+                    onChange={e => setInitialValues({ ...initialValues, message: e.target.value })}
                     rows={4}
                     className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     defaultValue={''}
@@ -183,10 +262,12 @@ export default function Contacto() {
             </div>
             <div className='flex justify-end mt-8'>
               <button
-                type='submit'
-                className='rounded-md bg-[#998779] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#938377] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#998779]'
+                type='button'
+                onClick={handlerSubmit}
+                disabled={!initialValues.name || !initialValues.lastName || !initialValues.email || !initialValues.phone || !initialValues.message}
+                className='rounded-md bg-[#998779] min-w-[130px] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#938377] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#998779]'
               >
-                Enviar Mensaje
+                {loading ? <Loading /> : 'Enviar mensaje'}
               </button>
             </div>
           </div>

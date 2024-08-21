@@ -54,7 +54,7 @@ export default function ProductTrending() {
           <div className='relative w-full overflow-x-auto'>
             <ul
               role='list'
-              className='inline-flex items-center justify-center mx-4 mb-5 space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:space-x-0'
+              className='inline-flex items-center justify-center mx-4 mb-5 space-x-8 sm:mx-6 '
             >
               {loading ? (
                 <SkeletonTheme
@@ -116,10 +116,10 @@ export default function ProductTrending() {
                         </h3>
                         {product.stock ? (
                           <div className='flex items-center justify-between gap-3 mt-5 '>
-                            <p className='mt-1 text-gray-900'>{formatPrice(product.price_par)}</p>
+                            <p className='mt-1 text-gray-900'>{product.price_par ? formatPrice(product.price_par) : formatPrice(product.price_ind)}</p>
                             <button
                               onClick={() => AddToCartCard(product)}
-                              className='flex items-center justify-end transition-all border-2 border-transparent rounded-full  hover:scale-110'
+                              className='flex items-center justify-end transition-all border-2 border-transparent rounded-full hover:scale-110'
                             >
                               <ShoppingCartIcon className='w-6 h-6 text-[#e2d0c2]' />
                             </button>

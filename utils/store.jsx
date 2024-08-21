@@ -53,11 +53,13 @@ export const CartProvider = ({ children }) => {
       {
         newItems[existItem].quantity < newItems[existItem].stock ? (newItems[existItem].quantity += 1) : toast.error('Maxímo de stock')
       }
-      newItems[existItem].price = product.price_par
+      {
+        !product.price_par ? (newItems[existItem].price = product.price_ind) : (newItems[existItem].price = product.price_par)
+      }
       setCart(newItems)
       toast.success('Producto agregado al carrito')
     } else {
-      setCart(prevState => [...prevState, { ...product, quantity: 2, price: product.price_par }])
+      setCart(prevState => [...prevState, { ...product, quantity: product.price_par ? 2 : 1, price: product.price_par ? product.price_par : product.price_ind }])
       toast.success('Producto agregado al carrito')
     }
     SaveLocal()

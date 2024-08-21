@@ -13,7 +13,7 @@ const navigation = {
   social: [
     {
       name: 'Instagram',
-      href: 'https://www.instagram.com/gerogambuli/',
+      href: 'https://www.instagram.com/lunarejewelry_/',
       icon: props => (
         <svg
           fill='currentColor'
